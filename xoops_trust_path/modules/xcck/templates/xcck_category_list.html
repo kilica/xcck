@@ -1,0 +1,23 @@
+<div class="xcck">
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
+
+<h1><{$xoops_modulename}> <{$smarty.const._LIST}></h1>
+
+<{foreach item=category from=$tree.category key=k}>
+<h2><{$category->getShow('title')}></h2>
+<dl>
+<{foreach item=obj from=$tree.page[$k]}>
+<dt>
+  <{if $obj->getShow('status')<9}><span class="status" title="<{$obj->getShowStatus()}>">*</span> <{/if}><a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>"><{$obj->getShow('title')}></a>
+  <{if $accessController->isEditor($obj->get('category_id'), $obj->get('uid'))}>
+  [<a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=edit}>"><{$smarty.const._EDIT}></a>]
+  [<a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=delete}>"><{$smarty.const._DELETE}></a>]
+  <{/if}>
+</dt>
+<{foreach item=def from=$definitions}>
+<dd><{$obj->showField($def->getShow('field_name'))}></dd>
+<{/foreach}>
+<{/foreach}>
+</dl>
+<{/foreach}>
+</div>

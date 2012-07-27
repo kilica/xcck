@@ -1,0 +1,24 @@
+<ul class="adminMenu">
+<{foreach item=menu from=$adminMenu}>
+<li><a href="<{$menu.link}>"><{$menu.title}></a></li>
+<{/foreach}>
+</ul>
+<div class="adminPage">
+<h1><{$smarty.const._MD_XCCK_LANG_CONFIG_CATEGORY2_WIZARD}></h1>
+<p class="description">
+<{$smarty.const._MD_XCCK_DESC_CONFIG_CATEGORY2_WIZARD}>
+</p>
+
+<form action="index.php" method="POST">
+<dl>
+  <dt><{$smarty.const._AD_XCCK_LANG_SHOW_ORDER}></dt>
+  <dd><select name="list_order"><{foreach item=item from=$orderList}><option value="<{$item}>"<{if $item==$showOrder}> selected="selected"<{/if}>><{$item}></option><{/foreach}></select></dd>
+  <{if $type=='cat'}>
+  <dt><{$smarty.const._AD_XCCK_LANG_AUTH_TYPE}></dt>
+  <dd><select name="auth_type"><{foreach item=item from=$list}><option value="<{$item}>"<{if $item==$authType}> selected="selected"<{/if}>><{$item}></option><{/foreach}></select></dd>
+  <{/if}>
+</dl>
+<{xoops_input type=hidden name=action value="Config%sWizard"|sprintf:$type}>
+<input type="submit" value="<{$smarty.const._SUBMIT}>" />
+</form>
+</div>

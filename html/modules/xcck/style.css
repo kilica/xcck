@@ -1,0 +1,75 @@
+.desc{
+	border:	1px solid #DDDDDD;
+	margin:	10px 20px 10px 20px;
+	padding:	10px;
+}
+
+.clear{
+	clear:	both;
+}
+
+.hideOption {
+	display:	none;
+}
+
+/* horizontal menu */
+ul.hmenu {
+	margin-bottom:20px;
+	padding-left:10px;
+	background-color:#EFEFEF;
+	height:30px;
+	width:100%;
+}
+
+.hmenu li {
+	display:	block;
+	float:	left;
+	margin-right:15px;
+}
+
+/* item info */
+.xcck .itemInfo dt{
+	float:left;
+	margin-right:5px;
+}
+
+.xcck .itemInfo dd{
+	float:left;
+	margin-right:20px;
+}
+
+
+/* 2 column table */
+
+.view dt{
+clear:both;
+width:140px;
+float:left;
+margin-top:10px;
+}
+
+.view dd{
+float:left;
+margin-top:10px;
+width: 400px;
+}
+
+/* Form */
+
+.edit{
+	
+}
+
+.edit dt{
+clear:both;
+width:140px;
+float:left;
+margin-top:10px;
+}
+
+.edit dd{
+float:left;
+margin-top:10px;
+width:400px;
+}
+

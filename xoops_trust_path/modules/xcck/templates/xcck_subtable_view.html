@@ -1,0 +1,20 @@
+<div class="xcck">
+<h1><{$object->getShow('title')}></h1>
+<div class="maintable">
+<h2><a href="<{xoops_cooluri dirname=$object->mMaintable->getDirname() data_id=$object->mMaintable->getShow('page_id')}>"><{$object->mMaintable->getShow('title')}></a></h2>
+<dl class="view">
+<{foreach item=pfield from=$pFields}>
+  <dt><{$pfield->getShow('label')}></dt>
+  <dd><{$object->mMaintable->getShow($pfield->get('field_name'))}></dd>
+<{/foreach}>
+</dl>
+</div>
+<div class="clear"></div>
+<dl class="view">
+<{foreach item=definition from=$definitions}>
+  <dt><{$definition->getShow('label')}></dt>
+  <dd><{$object->get($definition->getShow('field_name'))}></dd>
+<{/foreach}>
+</dl>
+<div class="clear"></div>
+</div>

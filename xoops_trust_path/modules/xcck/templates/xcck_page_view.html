@@ -1,0 +1,133 @@
+<div class="xcck">
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
+
+<div class="item">
+  <div class="itemHead">
+    <h1 class="itemTitle">
+      <{$object->getShow('title')}>
+      <{if $accessController->isEditor($object->get('category_id'), $object->get('uid'))===true}>
+      <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$object->getShow('page_id') action=edit}>"><img src="<{$xoops_url}>/images/icons/edit.gif" alt="<{$smarty.const._EDIT}>" /></a>
+      <{/if}>
+    </h1>
+  </div><!-- .itemHead -->
+  <dl class="itemInfo">
+    <!-- tag -->
+    <{if count($object->mTag)>0}>
+    <dt class="tagList"><{$smarty.const._TAG}>: </dt>
+    <{foreach item=tag from=$object->mTag}>
+     <{assign var=tagurl value=$tag|xoops_escape:url}>
+      <dd><a href="<{xoops_cooluri dirname=$dirname dataname=$dataname query="tag=`$tag`"}>"><{$tag|xoops_escape}></a> </dd>
+    <{/foreach}>
+    <{/if}>
+
+    <{if $object->get('status')==constant('Lenum_WorkflowStatus::PROGRESS')}>
+    <div class="msgInfo">
+      <{$smarty.const._MD_XCCK_MESSAGE_STATUS_POSTED}>
+    <div>
+    <{/if}>
+    <dd class="itemPoster"><{$object->getShow('uid')|xoops_user:'user_name'}></dd>
+    <dt><{$smarty.const._MD_XCCK_LANG_POSTTIME}></dth>
+    <dd><{$object->getShow('posttime')|xoops_formattimestamp:m}></dd>
+    <{if $catTitle}>
+    <dt><{$smarty.const._MD_XCCK_LANG_CATEGORY_ID}></dt>
+    <dd><{$catTitle|xoops_escape}></dd>
+    <{/if}>
+  </dl><!-- .itemInfo -->
+  <div class="itemBody">
+    <dl class="view">
+      <!--
+        if you want to show field outside foreach loop, you can write down 
+        like below (when the field's name is "memo").
+        <dt>< {$definitions.memo->get('field_name')} ></dt>
+        <dd>< {$object->showField($definitions.memo->get('field_name'))} ></dd>
+      -->
+      <{foreach item=definition from=$definitions}>
+      <{if $definition->get('field_type')!='startdate'&&$definition->get('field_type')!='enddate'}>
+      <dt><{$definition->getShow('label')}></dt>
+      <dd><{$object->showField($definition->get('field_name'))}></dd>
+      <{/if}>
+      <{/foreach}>
+    </dl>
+  </div><!-- .itemBody -->
+</div><!-- .item -->
+<div class="clear"></div>
+
+<!-- image list -->
+<{if count($imageObjs)>0}>
+<div class="imageList">
+  <h2><{$smarty.const._MD_XCCK_LANG_IMAGE_LIST}></h2>
+  <dl>
+    <{foreach item=imageName from=$imageNameList key=n}>
+      <td><{$imageName}></td>
+      <dd>
+        <{$imageObjs[$n]->makeImageTag()}><br />
+      </dd>
+    <{/foreach}>
+  </dl>
+</div><!-- .imageList -->
+<{/if}>
+
+<{if $useMap}>
+<!-- Map -->
+<{legacy_map_view dirname=$dirname dataname=$dataname data_id=$object->get('page_id') template=lemap_inc_view.html}>
+<{/if}>
+
+<!-- tree of contents -->
+<{if $isHierarchical==1}>
+<div class="pageTree">
+  <h2><{$smarty.const._MD_XCCK_LANG_PAGE_TREE}></h2>
+  <p><a href="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit query="p_id="|cat:$object->get('page_id')}>"><{$smarty.const._ADD}></a></p>
+  <{foreach item=page from=$pageTree name=pageTree}>
+  <{if $smarty.foreach.pageTree.first}><{assign var=d value=$page->getDepth()}><{/if}>
+  <{if $smarty.foreach.pageTree.first || $d < $page->getDepth()}>
+    <ul class="catL<{$page->getDepth()}>">
+      <li><a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$page->getShow('page_id')}>"><{$page->getShow('title')}></a></li>
+  <{elseif $d==$page->getDepth()}>
+      <li><a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$page->getShow('page_id')}>"><{$page->getShow('title')}></a></li>
+  <{else}>
+    <{section name=i start=0 loop=$d-$page->getDepth()}>
+    </ul>
+    <{/section}>
+      <li><a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$page->getShow('page_id')}>"><{$page->getShow('title')}></a></li>
+  <{/if}>
+  <{if $smarty.foreach.pageTree.last}>
+    <{section name=i start=0 loop=$page->getDepth()}>
+    </ul>
+    <{/section}>
+  <{/if}>
+  <{assign var=d value=$page->getDepth()}>
+  <{/foreach}>
+</div><!-- .pageTree -->
+<{/if}>
+
+<!-- subtable list -->
+<{foreach item=subtable from=$subtableArr}>
+<{assign var=cdirname value=$subtable.dirname}>
+<h2><{$subtable.name}></h2>
+<table class="outer">
+  <tr>
+    <th><{$smarty.const._MD_XCCK_LANG_TITLE}></th>
+    <{foreach item=def from=$definitionArr.$cdirname}>
+    <th><{$def->getShow('field_name')}></th>
+    <{/foreach}>
+  </tr>
+  <{foreach item=page from=$pageArr.$cdirname}>
+  <{assign var=subtableId value=$page->getShow('page_id')}>
+  <tr>
+    <td><a href="<{xoops_cooluri dirname=$cdirname dataname=page data_id=$subtableId}>"><{$page->getShow('title')}></a> [<a href="<{xoops_cooluri dirname=$cdirname dataname=subtable data_id=$subtableId action=edit}>"><{$smarty.const._EDIT}></a>]</dt>
+    <{foreach item=def from=$definitionArr.$cdirname}>
+    <td><{$page->showField($def->getShow('field_name'))}></td>
+    <{/foreach}>
+  </tr>
+  <{/foreach}>
+</table>
+<ul>
+<li><a href="<{xoops_cooluri dirname=$cdirname dataname=subtable action=edit query='maintable_id='|cat:$object->getShow('page_id')}>"><{$smarty.const._MD_XCCK_LANG_ADD_A_NEW_PAGE}></a></li>
+</ul>
+<{/foreach}>
+
+<!-- comment module -->
+<{if $commentDirname}>
+  <{legacy_comment cDirname=$commentDirname dirname=$dirname dataname=$dataname data_id=$object->get('page_id') category_id=$object->get('category_id') title=$object->get('title')}>
+<{/if}>
+</div>

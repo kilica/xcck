@@ -1,0 +1,30 @@
+<div class="xcck">
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
+
+<h1><{$xoops_modulename}> <{$smarty.const._LIST}></h1>
+
+<{if $moduleDescription}>
+<p><{$moduleDescription}></p>
+<{/if}>
+
+<{if count($objects) > 0}>
+  <div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
+  <ul class="imageAlbum">
+  <{foreach item=obj from=$objects}>
+    <li class="imageBox">
+      <a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>">
+        <div class="itemImage"><{legacy_image dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') size=1}></div>
+      </a>
+      <a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>">
+        <div class="itemTitle"><{$obj->getShow('title')}></div>
+      </a>
+    <!--
+      if you want to show field outside foreach loop, you can write down 
+      like below (when the field's name is "memo").
+      <dd>< {$obj->showField($definitions.memo->get('field_name'))} ></dd>
+    -->
+  <{/foreach}>
+  </ul>
+  <div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
+<{/if}>
+</div>

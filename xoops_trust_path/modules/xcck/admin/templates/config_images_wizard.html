@@ -1,0 +1,22 @@
+<ul class="adminMenu">
+<{foreach item=menu from=$adminMenu}>
+<li><a href="<{$menu.link}>"><{$menu.title}></a></li>
+<{/foreach}>
+</ul>
+
+<div class="adminPage">
+<h1><{$smarty.const._MD_XCCK_LANG_CONFIG_IMAGES_WIZARD}></h1>
+<p class="description">
+<{$smarty.const._MD_XCCK_DESC_CONFIG_IMAGES_WIZARD}>
+</p>
+<form action="index.php" method="POST">
+<dl>
+  <dt><{$smarty.const._AD_XCCK_LANG_IMAGES}></dt>
+  <dd>
+    <{xoops_textarea type=text name=images value=$images}>
+  </dd>
+</dl>
+<{xoops_input type=hidden name=action value=ConfigImagesWizard}>
+<input type="submit" value="<{$smarty.const._SUBMIT}>" />
+</form>
+</div>

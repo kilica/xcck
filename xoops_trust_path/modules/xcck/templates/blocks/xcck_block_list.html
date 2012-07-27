@@ -1,0 +1,11 @@
+<ul>
+  <{foreach item=obj from=$block}>
+    <li>
+      <a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>">
+        <{$obj->getShow('title')}>
+      </a>
+      <{$obj->getShow('posttime')|xoops_formattimestamp:m}>
+    </li>
+  <{/foreach}>
+</ul>
+<a href="<{xoops_cooluri dirname=$dirname}>">more</a>

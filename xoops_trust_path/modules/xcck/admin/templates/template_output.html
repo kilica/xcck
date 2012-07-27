@@ -1,0 +1,87 @@
+<div class="adminPage">
+<h1><{$smarty.const._AD_XCCK_LANG_TEMPLATE_OUTPUT}></h1>
+
+<h2><{$smarty.const._AD_XCCK_LANG_TEMPLATE_OUTPUT_VIEW}></h2>
+<p class="description">
+<{$smarty.const._AD_XCCK_DESC_TEMPLATE_OUTPUT_VIEW}>
+</p>
+<textarea rows="10" cols="60">
+<{foreach item=definition from=$definitions}>
+<{if $definition->get('field_type')!='startdate'||$definition->get('field_type')!='enddate'}>
+<dt>&lt;{$definitions.<{$definition->getShow('field_name')}>->getShow('label')}&gt;</dt>
+<dd>&lt;{$object->showField('<{$definition->get('field_name')}>')}&gt;</dd>
+<{/if}>
+<{/foreach}>
+</textarea>
+
+
+<h2><{$smarty.const._AD_XCCK_LANG_TEMPLATE_OUTPUT_EDIT}></h2>
+<p class="description">
+<{$smarty.const._AD_XCCK_DESC_TEMPLATE_OUTPUT_EDIT}>
+</p>
+<textarea rows="10" cols="60">
+<{foreach item=definition from=$definitions}>
+  <tr>
+    <th<{if $definition->get('required')==true}> class="required"<{/if}>>&lt;{$fields.<{$definition->getShow('field_name')}>->getShow('label')}&gt;</th>
+    <td>
+<{if $definition->get('field_type')=="string"}>
+      &lt;{xoops_input type=text name=<{$definition->getShow('field_name')}> value=$actionForm->get('<{$definition->getShow('field_name')}>')  size=40 maxlength=255}&gt;
+<{elseif $definition->get('field_type')=="int"}>
+      &lt;{xoops_input type=text name=<{$definition->getShow('field_name')}> value=$actionForm->get('<{$definition->getShow('field_name')}>') size=15 maxlength=11}&gt;
+<{elseif $definition->get('field_type')=="uri"}>
+      &lt;{xoops_input type=text name=<{$definition->getShow('field_name')}> value=$actionForm->get('<{$definition->getShow('field_name')}>') size=40}&gt;
+<{elseif $definition->get('field_type')=="text"}>
+        &lt;{xoops_dhtmltarea type=text name=<{$definition->getShow('field_name')}> value=$actionForm->get('<{$definition->getShow('field_name')}>') editor=$fields.<{$definition->getShow('field_name')}>->mFieldType->getOption($field.<{$definition->getShow('field_name')}>, 'editor')}&gt;
+<{elseif $definition->get('field_type')=="date"||$definition->get('field_type')=="startdate"||$definition->get('field_type')=="enddate"}>
+        &lt;{assign var=datetime value=$actionForm->get('<{$definition->getShow('field_name')}>')}&gt;
+<{if $definition->get('field_type')=="startdate"||$definition->get('field_type')=="enddate"}>
+        <label><input type="checkbox" name="enable_<{$definition->getShow('field_name')}>" class="enableDate" id="enable_<{$definition->getShow('field_name')}>" value="1"&lt;{if $actionForm->get('enable_<{$definition->getShow('field_name')}>')}&gt; checked="checked"&lt;{/if}&gt;/>&lt;{$smarty.const._MD_XCCK_DESC_ENABLE_DATE}&gt;</label>
+<{/if}>
+        <div id="date-<{$definition->getShow('field_name')}>">
+        &lt;{xoops_input type=text name=<{$definition->getShow('field_name')}>[0] class=datepicker value=$datetime[0]}&gt;
+<{if $definition->get('options')=='hour'}>
+        <select name="<{$definition->getShow('field_name')}>[1]">
+          &lt;{foreach item=hour from=$hours}&gt;<option value="&lt;{$hour}&gt;"&lt;{if $hour==$datetime[1]}&gt; selected="selected"&lt;{/if}&gt;>&lt;{$hour}&gt;</option>&lt;{/foreach}&gt;
+        </select>
+<{elseif in_array($definition->get('options'),array('half','quarter','10min','min'))}>
+        <select name="<{$definition->getShow('field_name')}>[1]">
+          &lt;{foreach item=hour from=$hours}&gt;<option value="&lt;{$hour}&gt;"&lt;{if $hour==$datetime[1]}&gt; selected="selected"&lt;{/if}&gt;>&lt;{$hour}&gt;</option>&lt;{/foreach}&gt;
+        </select>
+        <select name="<{$definition->getShow('field_name')}>[2]">
+          &lt;{foreach item=minute from=$dields.<{$definition->getShow('field_name')}>->getMinuteOption()}&gt;<option value="&lt;{$minute}&gt;"&lt;{if $minute==$datetime[2]}&gt; selected="selected"&lt;{/if}&gt;>&lt;{$minute}&gt;</option>&lt;{/foreach}&gt;
+        </select>
+<{/if}>
+        </div>
+<{elseif $definition->get('field_type')=="checkbox"}>
+        &lt;{xoops_input type=checkbox name=<{$definition->getShow('field_name')}> value=1 default=$actionForm->get('<{$definition->getShow('field_name')}>')}&gt;
+<{elseif $definition->get('field_type')=="selectbox"}>
+        <select name="<{$definition->getShow('field_name')}>" id="legacy_xoopsform_&lt;{<{$definition->getShow('field_name')}>}&gt;">
+          &lt;{foreach item=option from=<{$definition->getShow('field_name')}>->getOptions()}&gt;
+          <option value="&lt;{$option}&gt;"&lt;{if $actionForm->get('<{$definition->getShow('field_name')}>')==$option}&gt; selected="selected"&lt;{/if}&gt;>&lt;{$option}&gt;</option>
+          &lt;{/foreach}&gt;
+        </select>
+<{elseif $definition->get('field_type')=="category"}>
+        <select name="<{$definition->getShow('field_name')}>">
+        &lt;{legacy_category_select tree=$catTree.<{$definition->getShow('field_name')}> selectedValue=$object->getShow(<{$definition->getShow('field_name')}>) show="all"}&gt;
+        </select>
+<{/if}>
+      <!-- description for this field -->
+<{if $definition->get('description')}>
+        <p class="description">&lt;{$fields.<{$definition->getShow('field_name')}>->getShow('description')}&gt;</p>
+<{/if}>
+    </td>
+  </tr>
+  <{/foreach}>
+</textarea>
+
+
+<h2><{$smarty.const._AD_XCCK_LANG_TEMPLATE_OUTPUT_LIST}></h2>
+<p class="description">
+<{$smarty.const._AD_XCCK_DESC_TEMPLATE_OUTPUT_LIST}>
+</p>
+<textarea rows="10" cols="60">
+  <{foreach item=def from=$definitions}>
+  <dd class="itemBody">&lt;{$obj->showField('<{$def->getShow('field_name')}>')}&gt;</dd>
+  <{/foreach}>
+</textarea>
+</div>

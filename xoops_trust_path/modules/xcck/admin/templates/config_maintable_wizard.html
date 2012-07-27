@@ -1,0 +1,19 @@
+<ul class="adminMenu">
+<{foreach item=menu from=$adminMenu}>
+<li><a href="<{$menu.link}>"><{$menu.title}></a></li>
+<{/foreach}>
+</ul>
+<div class="adminPage">
+<h1><{$smarty.const._MD_XCCK_LANG_CONFIG_MAINTABLE_WIZARD}></h1>
+<p class="description">
+<{$smarty.const._MD_XCCK_DESC_CONFIG_MAINTABLE_WIZARD}>
+</p>
+<form action="index.php" method="POST">
+<dl>
+  <dt><{$smarty.const._AD_XCCK_LANG_MAINTABLE}></dt>
+  <dd><select name="maintable"><{foreach item=xcck from=$xcckList key=k2}><option value="<{$xcck}>"<{if $xcck==$maintable}> selected="selected"<{/if}>><{$xcck}></option><{/foreach}></select></dd>
+</dl>
+<{xoops_input type=hidden name=action value=ConfigMaintableWizard}>
+<input type="submit" value="<{$smarty.const._SUBMIT}>" />
+</form>
+</div>

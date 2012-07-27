@@ -1,0 +1,130 @@
+<div class="xcck">
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
+
+<h1><{$xoops_modulename}> <{$smarty.const._EDIT}></h1>
+<{if $actionForm->hasError()}>
+  <ul class="error">
+    <{foreach item=message from=$actionForm->getErrorMessages()}>
+      <li><{$message|xoops_escape}></li>
+    <{/foreach}>
+  </ul>
+<{/if}>
+<form action="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit}>" method="post"<{if $imageNameList.key|count > 0}> enctype="multipart/form-data"<{/if}>>
+  <dl class="edit">
+    <dt class="required"><{$smarty.const._MD_XCCK_LANG_TITLE}></dt>
+    <dd>
+      <{xoops_input type=text name=title value=$actionForm->get('title') size=50 maxlength=255}>
+    </dd>
+    <{if $categoryType===true && $object->get('p_id')==0}>
+    <dt class="required"><{$smarty.const._MD_XCCK_LANG_CATEGORY_ID}></dt>
+    <dd>
+      <select name="category_id">
+      <{legacy_category_select tree=$mainCatTree selectedValue=$object->getShow('category_id')}>
+      </select>
+    </dd>
+    <{else}>
+      <{xoops_input type=hidden name=category_id value=$actionForm->get('category_id')}>
+    <{/if}>
+    <{if $defaultOrder==0}>
+    <dt><{$smarty.const._MD_XCCK_LANG_WEIGHT}></dt>
+    <dd>
+      <{xoops_input type=text name=weight value=$actionForm->get('weight') size=10 maxlength=3}>
+    </dd>
+    <{else}>
+      <{xoops_input type=hidden name=weight value=$actionForm->get('weight')}>
+    <{/if}>
+    <{foreach item=field from=$fields}>
+      <dt<{if $field->get('required')==true}> class="required"<{/if}>><{$field->getShow('label')}></dt>
+      <dd>
+        <{if $field->get('field_type')=="string"}>
+        <{xoops_input type=text name=$field->get('field_name') value=$actionForm->get($field->get('field_name'))  size=40 maxlength=255}>
+        <{elseif $field->get('field_type')=="int"}>
+        <{xoops_input type=text name=$field->get('field_name') value=$actionForm->get($field->get('field_name')) size=15 maxlength=11}>
+        <{elseif $field->get('field_type')=="uri"}>
+        <{xoops_input type=text name=$field->get('field_name') value=$actionForm->get($field->get('field_name')) size=40}>
+        <{elseif $field->get('field_type')=="text"}>
+          <{xoops_dhtmltarea type=text name=$field->get('field_name') value=$actionForm->get($field->get('field_name')) editor=$field->mFieldType->getOption($field, 'editor')}>
+        <{elseif $field->get('field_type')=="date"||$field->get('field_type')=="startdate"||$field->get('field_type')=="enddate"}>
+          <{assign var=fieldName value=$field->get('field_name')}>
+          <{assign var=datetime value=$actionForm->get($field->get('field_name'))}>
+          <{if $field->get('field_type')=="startdate"||$field->get('field_type')=="enddate"}>
+          <label><input type="checkbox" name="enable_<{$fieldName}>" class="enableDate" id="enable_<{$fieldName}>" value="1"<{if $actionForm->get('enable_'|cat:$fieldName)}> checked="checked"<{/if}>/><{$smarty.const._MD_XCCK_DESC_ENABLE_DATE}></label>
+          <{/if}>
+          <div id="date-<{$fieldName}>">
+          <{xoops_input type=text name=$fieldName|cat:'[0]' class=datepicker value=$datetime[0]}>
+          <{if $field->get('options')=='hour'}>
+          <select name="<{$field->get('field_name')}>[1]">
+            <{foreach item=hour from=$hours}><option value="<{$hour}>"<{if $hour==$datetime[1]}> selected="selected"<{/if}>><{$hour}></option><{/foreach}>
+          </select>
+          <{elseif in_array($field->get('options'),array('half','quarter','10min','min'))}>
+          <select name="<{$field->get('field_name')}>[1]">
+            <{foreach item=hour from=$hours}><option value="<{$hour}>"<{if $hour==$datetime[1]}> selected="selected"<{/if}>><{$hour}></option><{/foreach}>
+          </select>
+          <select name="<{$field->get('field_name')}>[2]">
+            <{foreach item=minute from=$field->getMinuteOption()}><option value="<{$minute}>"<{if $minute==$datetime[2]}> selected="selected"<{/if}>><{$minute}></option><{/foreach}>
+          </select>
+          <{/if}>
+          </div>
+        <{elseif $field->get('field_type')=="checkbox"}>
+          <{xoops_input type=checkbox name=$field->get('field_name') value=1 default=$actionForm->get($field->get('field_name'))}>
+        <{elseif $field->get('field_type')=="selectbox"}>
+          <select name="<{$field->get('field_name')}>" id="legacy_xoopsform_<{$field->get('field_name')}>">
+            <{foreach item=option from=$field->getOptions()}>
+            <option value="<{$option}>"<{if $actionForm->get($field->get('field_name'))==$option}> selected="selected"<{/if}>><{$option}></option>
+            <{/foreach}>
+          </select>
+        <{elseif $field->get('field_type')=="category"}>
+          <{assign var=fieldName value=$field->get('field_name')}>
+          <select name="<{$field->get('field_name')}>">
+          <{legacy_category_select tree=$catTree.$fieldName selectedValue=$object->getShow($field->get('field_name')) show="all"}>
+          </select>
+        <{/if}>
+      </dd>
+      <{if $field->get('description')}>
+        <dd class="description"><{$field->getShow('description')}></dd>
+      <{/if}>
+    </dt>
+    <{/foreach}>
+
+    <!-- tag -->
+    <{if $useTag===true}>
+    <dt><{$smarty.const._TAG}></dt>
+    <dd>
+      <{xoops_input type=text name=tags value=$actionForm->get('tags')}>
+      <{legacy_tag_select tDirname=$tag_dirname tags=$object->mTag}>
+    </dd>
+    <{/if}>
+
+    <!-- Image -->
+    <{foreach item=imageKey from=$imageNameList.key key=n}>
+    <dt><{$imageNameList.title[$n]}></dt>
+    <dd>
+      <{if $imageObjs[$n]}>
+      <{xoops_input type="checkbox" name="delete_image[$n]" value="1"}>
+      <img src="<{$imageObjs[$n]->getFileUrl()}>" alt="<{$imageObjs[$n]->getShow('title')}>" /><br />
+      <{/if}>
+      <{xoops_input type="file" name=$imageKey size="30"}>
+    </dd>
+    <{/foreach}>
+
+    <!-- MAP -->
+    <{*
+    <{if $useMap===true}>
+    <dt><{$smarty.const._MD_XCCK_LANG_MAP}></dt>
+    <dd><{legacy_map_edit dirname=$dirname dataname=$dataname data_id=$object->get('page_id') template=lemap_inc_edit.html}></dd>
+    <{/if}>
+    *}>
+  
+    <dt></dt>
+    <dd>
+      <{xoops_token form=$actionForm}>
+      <{xoops_input type=hidden name=page_id value=$actionForm->get('page_id')}>
+      <{xoops_input type=hidden name=p_id value=$actionForm->get('p_id')}>
+      <{xoops_input type=hidden name=maintable_id value=$actionForm->get('maintable_id')}>
+      <{xoops_input type=hidden name=descendant value=$actionForm->get('descendant')}>
+      <input type="submit" value="<{$smarty.const._SUBMIT}>" />
+      <input type="submit" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel" />
+    </dd>
+  </dl>
+</form>
+</div>

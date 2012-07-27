@@ -1,0 +1,30 @@
+<div class="xcck">
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
+
+<h1><{$object->getShow('label')}> <{$smarty.const._MD_XCCK_LANG_DEFINITION}> <{$smarty.const._EDIT}></h1>
+
+<a href="<{xoops_cooluri dirname=$dirname dataname=definition data_id=$object->getShow('definition_id') action=edit}>"><{$smarty.const._MD_XCCK_LANG_DEFINITION_EDIT}></a>
+
+<dl class="view">
+  <dt><{$smarty.const._MD_XCCK_LANG_FIELD_NAME}></dt>
+  <dd><{$object->getShow('field_name')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_LABEL}></dt>
+  <dd><{$object->getShow('label')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_FIELD_TYPE}></dt>
+  <dd><{$object->getShow('field_type')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_VALIDATION}></dt>
+  <dd><{$object->getShow('validation')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_REQUIRED}></dt>
+  <dd><{$object->getShow('required')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_WEIGHT}></dt>
+  <dd><{$object->getShow('weight')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_SHOW_LIST}></dt>
+  <dd><{$object->getShowYN('show_list')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_SEARCH_FLAG}></dt>
+  <dd><{$object->getShowYN('search_flag')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_DESCRIPTION}></dt>
+  <dd><{$object->getShow('description')}></dd>
+  <dt><{$smarty.const._MD_XCCK_LANG_OPTIONS}></dt>
+  <dd><{$object->getShow('options')}></dd>
+</dl>
+</div>

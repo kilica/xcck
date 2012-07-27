@@ -1,0 +1,107 @@
+<div class="adminPage">
+<h1><{$smarty.const._AD_XCCK_LANG_SETTING_OUTPUT}></h1>
+<p class="description">
+<{$smarty.const._AD_XCCK_DESC_SETTING_OUTPUT}>
+</p>
+<textarea rows="10" cols="60">
+<?php
+/**
+ * @file
+ * @package xcck
+ * @version $Id$
+ */
+
+if (!defined('XOOPS_ROOT_PATH')) exit();
+
+class Legacy_<{$dirname|ucfirst}>Install extends XCube_ActionFilter
+{
+  /**
+   * @public
+   */
+  function preBlockFilter()
+  {
+    $this->mRoot->mDelegateManager->add('Legacy.Admin.Event.ModuleInstall.<{$dirname|ucfirst}>.Success', array(&$this, 'installXcck'));
+  }
+
+  /**
+   *  @public
+  */
+  public function installXcck(&$module, &$log)
+  {
+    $handler = Legacy_Utils::getModuleHandler('definition', $module->dirname());
+    $arr = self::_getFieldSetting();
+    foreach($arr as $field){
+      //set definitions
+      $obj = $handler->create();
+      self::_setupObject($obj, $field);
+      $handler->insert($obj, true);
+    }
+
+    //set config
+    $mid = $module->mid();
+<{foreach item=conf from=$xcckConfigs key=key}>
+    self::_setConfig('<{$key}>', '<{$conf}>', $mid);
+<{/foreach}>
+  }
+
+  protected static function _getFieldSetting()
+  {
+    $settingArr = array();
+
+    //Opposite Team
+<{foreach item=def from=$definitions}>
+    $settingArr[] = array(
+        'field_name' => '<{$def->getShow('field_name')}>',
+        'label' => '<{$def->getShow('label')}>',
+        'field_type' => '<{$def->getShow('field_type')}>',
+        'validation' => '<{$def->getShow('validation')}>',
+        'required' => <{if $def->getShow('required')==true}>true<{else}>false<{/if}>,
+        'weight' => <{$def->getShow('weight')}>,
+        'show_list' => <{if $def->getShow('show_list')==true}>true<{else}>false<{/if}>,
+        'search_flag' => <{$def->getShow('search_flag')}>,
+        'description' => '<{$def->getShow('description')}>',
+        'options' => '<{$def->getShow('options')}>',
+    );
+<{/foreach}>
+    return $settingArr;
+  }
+
+  protected static function _setupObject(/*** Xcck_DefinitionObject ***/ $obj, /*** mixed[] ***/ $field)
+  {
+        $obj->set('field_name', $field['field_name']);
+        $obj->set('label', $field['label']);
+        $obj->set('field_type', $field['field_type']);
+        $obj->set('validation', $field['validation']);
+        $obj->set('required', $field['required']);
+        $obj->set('weight', $field['weight']);
+        $obj->set('show_list', $field['show_list']);
+        $obj->set('search_flag', $field['search_flag']);
+        $obj->set('description', $field['description']);
+        $obj->set('options', $field['options']);
+  }
+
+  protected static function _setConfig($key, $value, $mid)
+  {
+    $iHandler = xoops_gethandler('configitem');
+    $cri = new CriteriaCompo();
+    $cri->add(new Criteria('conf_modid', $mid));
+    $cri->add(new Criteria('conf_name', $key));
+    $objs = $iHandler->getObjects($cri);
+    if(count($objs)>0){
+      $obj =array_shift($objs);
+    }
+    elseif(count($objs)==0){
+      $obj = $handler->create();
+      $obj->set('conf_modid', $mid);
+      $obj->set('conf_name', $key);
+    }
+
+    $obj->set('conf_value', $value);
+    $iHandler->insert($obj);
+  }
+}
+
+?>
+</textarea>
+
+</div>

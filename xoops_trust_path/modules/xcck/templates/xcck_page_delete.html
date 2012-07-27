@@ -1,0 +1,57 @@
+<div class="xcck">
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
+
+<h1><{$smarty.const._MD_XCCK_LANG_PAGE_DELETE}></h1>
+
+<div class="confirm"><{$smarty.const._MD_XCCK_MESSAGE_CONFIRM_DELETE}></div>
+
+<form action="<{xoops_cooluri dirname=$dirname dataname=page action=delete}>" method="post">
+  <dl class="view">
+    <dt><{$smarty.const._MD_XCCK_LANG_PAGE_ID}></dt>
+    <dd><{$object->getShow('page_id')}></dd>
+    <dt><{$smarty.const._MD_XCCK_LANG_TITLE}></dt>
+    <dd><{$object->getShow('title')}></dd>
+    <dt><{$smarty.const._MD_XCCK_LANG_UID}></dt>
+    <dd><{$object->getShow('uid')|xoops_user:"user_name"}></dd>
+    <dt><{$smarty.const._MD_XCCK_LANG_POSTTIME}></dt>
+    <dd><{$object->get('posttime')|xoops_formattimestamp:l}></dd>
+    <dt></dt>
+    <dd>
+      <{xoops_token form=$actionForm}>
+      <{xoops_input type=hidden name=page_id value=$actionForm->get('page_id')}>
+      <input type="submit" class="formButton" value="<{$smarty.const._DELETE}>"/>
+      <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel"/>
+    </dd>
+  </dl>
+</form>
+<div class="clear"></div>
+
+<{if $isHierarchical==true}>
+<div class="pageTree">
+<h2><{$smarty.const._MD_XCCK_LANG_PAGE_TREE}></h2>
+<p><{$smarty.const._MD_XCCK_LANG_PAGE_TREE_DELETE}></p>
+<{foreach item=page from=$pageTree name=pageTree}>
+<{if $smarty.foreach.pageTree.first}>
+<{assign var=d value=$page->getDepth()}>
+<{/if}>
+<{if $smarty.foreach.pageTree.first || $d < $page->getDepth()}>
+  <ul class="catL<{$page->getDepth()}>">
+    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page data_id=$page->getShow('page_id')}>"><{$page->getShow('title')}></a></li>
+<{elseif $d==$page->getDepth()}>
+    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page data_id=$page->getShow('page_id')}>"><{$page->getShow('title')}></a></li>
+<{else}>
+  <{section name=i start=0 loop=$d-$page->getDepth()}>
+  </ul>
+  <{/section}>
+    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page data_id=$page->getShow('page_id')}>"><{$page->getShow('title')}></a></li>
+<{/if}>
+<{if $smarty.foreach.pageTree.first}>
+  <{section name=i start=0 loop=$page->getDepth()}>
+  </ul>
+  <{/section}>
+<{/if}>
+<{assign var=d value=$page->getDepth()}>
+<{/foreach}>
+</div><!-- .pageTree -->
+<{/if}>
+</div>
