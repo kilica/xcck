@@ -320,6 +320,7 @@ class Xcck_Utils
         $page->set('weight', $revision->get('weight'));
         $page->set('updatetime', $revision->get('updatetime'));
 
+		$page->mImage = $revision->mImage;
 		$page->mTag = $revision->mTag;
 		$page->mLatlng = $revision->mLatlng;
 
@@ -349,7 +350,8 @@ class Xcck_Utils
 		$revision->set('status', $page->get('status'));
 		$revision->set('weight', $page->get('weight'));
 		$revision->set('updatetime', $page->get('updatetime'));
-	
+
+		$revision->mImage = $page->mImage;
 		$revision->mTag = $page->mTag;
 		$revision->mLatlng = $page->mLatlng;
 	
