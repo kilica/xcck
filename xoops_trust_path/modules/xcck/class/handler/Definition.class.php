@@ -16,10 +16,10 @@ require_once XCCK_TRUST_PATH . '/class/FieldType.class.php';
 /**
  * Xcck_DefinitionObject
 **/
-class Xcck_DefinitionObject extends XoopsSimpleObject
+class Xcck_DefinitionObject extends Legacy_AbstractObject
 {
-    public $mDirname = null;
-    public $mFieldType = null;
+	const PRIMARY = 'definition_id';
+	const DATANAME = 'definition';
 
     /**
      * __construct
