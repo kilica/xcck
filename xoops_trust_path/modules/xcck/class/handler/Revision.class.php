@@ -96,6 +96,27 @@ class Xcck_RevisionObject extends Xcck_PageObject
 
         return $revisionHandler->insert($revision, true);
     }
+
+    public function loadTag()
+    {
+        $chandler = xoops_gethandler('config');
+        $configArr = $chandler->getConfigsByDirname($this->getDirname());
+    
+        if($this->_mIsTagLoaded==false && $tagDirname = $configArr['tag_dirname']){
+            $tagArr = array();
+            if(! $this->isNew()){
+                XCube_DelegateUtils::call('Legacy_Tag.'.$configArr['tag_dirname'].'.GetTags',
+                    new XCube_Ref($tagArr),
+                    $tagDirname,
+                    $this->getDirname(),
+                    'page',
+                    $this->get('page_id')
+                );
+            }
+            $this->mTag = $tagArr;
+            $this->_mIsTagLoaded = true;
+        }
+    }
 }
 
 /**
