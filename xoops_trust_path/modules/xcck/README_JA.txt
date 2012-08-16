@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.81(2012.08.16)
+- Revision 機能のバグ
+
 0.80(2012.04.26)
 - Revision（履歴管理）機能の見直し
 
