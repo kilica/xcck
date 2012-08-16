@@ -320,6 +320,9 @@ class Xcck_Utils
         $page->set('weight', $revision->get('weight'));
         $page->set('updatetime', $revision->get('updatetime'));
 
+		$page->mTag = $revision->mTag;
+		$page->mLatlng = $revision->mLatlng;
+
         foreach($page->mDef as $def){
             $page->set($def->getShow('field_name'), $revision->get($def->getShow('field_name')));
         }
@@ -346,7 +349,10 @@ class Xcck_Utils
 		$revision->set('status', $page->get('status'));
 		$revision->set('weight', $page->get('weight'));
 		$revision->set('updatetime', $page->get('updatetime'));
-
+	
+		$revision->mTag = $page->mTag;
+		$revision->mLatlng = $page->mLatlng;
+	
 		$page->loadDefinition();
 		foreach($page->mDef as $def){
 			$revision->set($def->getShow('field_name'), $page->get($def->getShow('field_name')));
