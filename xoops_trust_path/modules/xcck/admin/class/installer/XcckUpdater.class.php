@@ -42,7 +42,7 @@ class Xcck_Updater
     {
         $this->mLog = new Legacy_ModuleInstallLog();
         $this->_mMileStone = array(
-            '080' => 'update080'
+            '081' => 'update081'
         );
     }
 
