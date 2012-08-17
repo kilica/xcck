@@ -47,7 +47,7 @@ class Xcck_Updater
     }
 
 
-    function update080()
+    function update081()
     {
         $this->mLog->addReport(_AD_LEGACY_MESSAGE_UPDATE_STARTED);
         $dirname = $this->_mCurrentXoopsModule->get('dirname');
@@ -172,7 +172,7 @@ class Xcck_Updater
     
         foreach($this->_mMileStone as $tVer => $tMethod)
         {
-            if($tVer >= $this->getCurrentVersion())
+            if($tVer > $this->getCurrentVersion())
             {
                 return intval($tVer);
             }
@@ -194,7 +194,7 @@ class Xcck_Updater
     
         foreach($this->_mMileStone as $tVer => $tMethod)
         {
-            if($tVer >= $this->getCurrentVersion() && is_callable(array($this,$tMethod)))
+            if($tVer > $this->getCurrentVersion() && is_callable(array($this,$tMethod)))
             {
                 return true;
             }
@@ -279,7 +279,7 @@ class Xcck_Updater
     
         foreach($this->_mMileStone as $tVer => $tMethod)
         {
-            if($tVer >= $this->getCurrentVersion() && is_callable(array($this,$tMethod)))
+            if($tVer > $this->getCurrentVersion() && is_callable(array($this,$tMethod)))
             {
                 return $this->$tMethod();
             }
