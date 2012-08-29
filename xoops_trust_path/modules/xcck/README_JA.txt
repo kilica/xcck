@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.82(2012.08.29)
+- モジュールアイコン新調。デザインオフィスアキラ（http://design-office-akira.com/）さんに作っていただきました。
+
 0.81(2012.08.16)
 - Revision 機能のバグ
 
