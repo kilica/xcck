@@ -50,6 +50,11 @@ class Xcck_RevisionObject extends Xcck_PageObject
         }
     }
 
+	public function isPublished()
+	{
+		return $this->get('status')===Lenum_Status::PUBLISHED ? true : false;
+	}
+
 	public function publish()
 	{
 		$handler = Legacy_Utils::getModuleHandler('page', $this->getDirname());
@@ -67,7 +72,7 @@ class Xcck_RevisionObject extends Xcck_PageObject
 		$page->set('weight', $this->get('weight'));
 		$page->set('updatetime', $this->get('updatetime'));
 
-		foreach(array_keys($page->mDef) as $def){
+		foreach($page->mDef as $def){
 			$page->set($def->getShow('field_name'), $this->get($def->getShow('field_name')));
 		}
 
