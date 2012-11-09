@@ -50,11 +50,6 @@ class Xcck_RevisionObject extends Xcck_PageObject
         }
     }
 
-	public function isPublished()
-	{
-		return $this->get('status')===Lenum_Status::PUBLISHED ? true : false;
-	}
-
 	public function publish()
 	{
 		$handler = Legacy_Utils::getModuleHandler('page', $this->getDirname());
@@ -136,11 +131,11 @@ class Xcck_RevisionHandler extends Xcck_ObjectGenericHandler
     protected $_mClientField = array('title'=>'title', 'category'=>'category_id', 'posttime'=>'posttime');
     protected $_mClientConfig = array('tag'=>'', 'image'=>'', 'workflow'=>'publish', 'activity'=>'', 'map'=>'');
 
-    public function getLatestRevision(/*** int ***/ $pageId)
+    public function getLatestRevision(/*** int ***/ $pageId, /*** Enum ***/ $status=Lenum_Status::PROGRESS)
     {
         $cri = new CriteriaCompo();
         $cri->add(new Criteria('page_id', $pageId));
-        $cri->add(new Criteria('status', Lenum_Status::PROGRESS, '>='));
+        $cri->add(new Criteria('status', $status, '>='));
         $cri->setSort('revision_id', 'DESC');
         $objs = $this->getObjects($cri);
         if(count($objs)>0){
@@ -148,9 +143,9 @@ class Xcck_RevisionHandler extends Xcck_ObjectGenericHandler
         }
     }
 
-	public function updateStatus(/*** int ***/ $revisionId, /*** Enum ***/$status)
+	public function updateStatus(/*** int ***/ $pageId, /*** Enum ***/$status)
 	{
-		$obj = $this->get($revisionId);
+		$obj = $this->getLatestRevision($pageId);
 		if($obj instanceof Xcck_RevisionObject){
 			$obj->set('status', $status);
 			if(! $this->insert($obj, true)){

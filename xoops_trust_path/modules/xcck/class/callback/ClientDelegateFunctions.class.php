@@ -330,7 +330,7 @@ class Xcck_WorkflowClientDelegate implements Legacy_iWorkflowClientDelegate
 			//setup client module info
 			$conf = $handler->getConfigsByDirname($dir);
 			if($conf['publish']=='linear'){
-				$list[] = array('dirname'=>$dir, 'dataname'=>'revision');
+				$list[] = array('dirname'=>$dir, 'dataname'=>'page');
 			}
 		}
 	
@@ -359,8 +359,8 @@ class Xcck_WorkflowClientDelegate implements Legacy_iWorkflowClientDelegate
 	
 		$dirnames = Legacy_Utils::getDirnameListByTrustDirname(basename(dirname(dirname(dirname(__FILE__)))));
 		foreach($dirnames as $xcckDirname){
-			if($dirname == $xcckDirname && $dataname=='revision'){
-				$handler = Legacy_Utils::getModuleHandler($dataname, $dirname);
+			if($dirname == $xcckDirname && $dataname=='page'){
+				$handler = Legacy_Utils::getModuleHandler('revision', $dirname);
 				$handler->updateStatus($id, $status);
 			}
 		}

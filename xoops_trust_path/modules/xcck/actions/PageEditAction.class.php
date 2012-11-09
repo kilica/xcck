@@ -171,7 +171,7 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
 
 		$this->mObjectHandler =& $this->_getHandler();
 
-		$this->mObject = $handler->getLatestRevision($id);
+		$this->mObject = $handler->getLatestRevision($id, Lenum_Status::REJECTED);
 
 		if($this->mObject == null && $this->_isEnableCreate())
 		{
@@ -305,8 +305,34 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
         if($this->mObject->revise()===false){
             return XCCK_FRAME_VIEW_ERROR;
         }
-	    return XCCK_FRAME_VIEW_SUCCESS;
+
+        if(Xcck_Utils::getModuleConfig($this->mAsset->mDirname, 'publish')=='linear'){
+            if($this->mObject->getShow('status')!=Lenum_Status::DELETED){
+                $this->_saveWorkflow($this->mObject);
+            }
+        }
+
+        return XCCK_FRAME_VIEW_SUCCESS;
 	}
+
+    /**
+     * save workflow
+     *
+     * @param XoopsSimpleObject	$obj
+     *
+     * @return	void
+     */
+    protected function _saveWorkflow(/*** XoopsSimpleObject ***/ $obj)
+    {
+        XCube_DelegateUtils::call(
+            'Legacy_Workflow.AddItem',
+            $obj->getShow('title'),
+            $obj->getDirname(),
+            'page',
+            $obj->get('page_id'),
+            Legacy_Utils::renderUri($obj->getDirname(), 'revision', $obj->get('revision_id'))
+        );
+    }
 
 	/**
 	 * _setHeaderScript
