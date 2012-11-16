@@ -179,6 +179,17 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
 		}
 	}
 
+	protected function _prepare()
+	{
+		$request = $this->mRoot->mContext->mRequest;
+		$textFilter = $this->mRoot->getTextFilter();
+		$setupFields = explode(",", Xcck_Utils::getModuleConfig($this->mAsset->mDirname, 'setup_fields'));
+		foreach($setupFields as $field){
+			$this->mObject->set($field, $textFilter->toEdit($request->getRequest($field)));
+		}
+		XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.PrepareEditAction', $this->mObject);
+	}
+
 	/**
 	 * prepare
 	 * 
@@ -208,6 +219,8 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
 	
 		//setup tags
 		$this->mObject->loadTag();
+		$this->_prepare();
+
 		return true;
 	}
 

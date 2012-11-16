@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.85(2012.11.16)
+- Delegate Point "Module.xcck.PreparePageEdit" 追加
+
 0.84(2012.11.09)
 - ワークフローの処理中のバグを修正
 
@@ -132,6 +135,6 @@ XOOPS Cube CCK(Content Creation Kit)
 
 サポート
 --------
-http://sourceforge.net/projects/xcck/
+https://github.com/kilica/xcck
 http://jp.xoopsdev.com/modules/wiki/?Menu%2Fxcck
 

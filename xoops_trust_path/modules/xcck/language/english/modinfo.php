@@ -105,6 +105,8 @@ define('_MI_XCCK_DESC_DESCRIPTION', 'Write description about this module. It is 
 define('_MI_XCCK_LANG_USE_MAP', 'Use Map ?');
 define('_MI_XCCK_DESC_USE_MAP', 'Set latitude/longitude for the data ?');
 define('_MI_XCCK_LANG_REVISION', 'Revision management ?');
+define('_MI_XCCK_LANG_SETUP_FIELD', 'Fields set up from URL parameters');
+define('_MI_XCCK_DESC_SETUP_FIELD', 'Write fields set up its value from URL parameters devided by comma');
 
 /* Sub Menu */
 define('_MI_XCCK_LANG_SUB_ADD_A_PAGE', 'Add a Page');

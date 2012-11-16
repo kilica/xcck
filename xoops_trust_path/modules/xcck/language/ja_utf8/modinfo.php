@@ -116,6 +116,8 @@ define('_MI_XCCK_DESC_DESCRIPTION', 'モジュールのトップにこのモジ�
 define('_MI_XCCK_LANG_USE_MAP', '地図の利用');
 define('_MI_XCCK_DESC_USE_MAP', 'データに関連する位置情報を登録するか？');
 define('_MI_XCCK_LANG_REVISION', '更新履歴を残す');
+define('_MI_XCCK_LANG_SETUP_FIELD', 'URLからセットするフィールド');
+define('_MI_XCCK_DESC_SETUP_FIELD', 'URLのパラメタで値を指定した時にセットするフィールドをカンマ区切りで指定');
 
 /* Sub Menu */
 define('_MI_XCCK_LANG_SUB_ADD_A_PAGE', 'コンテンツの追加');
