@@ -42,9 +42,20 @@
         <dd>< {$object->showField($definitions.memo->get('field_name'))} ></dd>
       -->
       <{foreach item=definition from=$definitions}>
-      <{if $definition->get('field_type')!='startdate'&&$definition->get('field_type')!='enddate'}>
+      <{if $definition->get('field_type')!='startdate' && $definition->get('field_type')!='enddate'}>
       <dt><{$definition->getShow('label')}></dt>
-      <dd><{$object->showField($definition->get('field_name'))}></dd>
+      <dd>
+        <{if $definition->get('field_type')=='checkbox'}>
+        <ul>
+          <{assign var=titleArr value=$object->showField($definition->get('field_name'))}>
+          <{foreach item=option from=$titleArr.checked}>
+          <li><{$option}></li>
+          <{/foreach}>
+        </ul>
+        <{else}>
+          <{$object->showField($definition->get('field_name'))}>
+        <{/if}>
+      </dd>
       <{/if}>
       <{/foreach}>
     </dl>

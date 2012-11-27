@@ -37,7 +37,18 @@
       <dd>< {$obj->showField($definitions.memo->get('field_name'))} ></dd>
     -->
     <{foreach item=def from=$definitions}>
+    <{if $def->get('field_type')=='checkbox'}>
+    <dd class="itemBody">
+      <ul>
+        <{assign var=titleArr value=$obj->showField($def->get('field_name'))}>
+        <{foreach item=option from=$titleArr.checked}>
+        <li><{$option}></li>
+        <{/foreach}>
+      </ul>
+    </dd>
+    <{else}>
     <dd class="itemBody"><{$obj->showField($def->getShow('field_name'))}></dd>
+    <{/if}>
     <{/foreach}>
   </dl>
   <{/foreach}>

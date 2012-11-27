@@ -13,7 +13,17 @@
 <dl class="view">
 <{foreach item=definition from=$definitions}>
   <dt><{$definition->getShow('label')}></dt>
-  <dd><{$object->get($definition->getShow('field_name'))}></dd>
+  <dd>
+    <{if $definition->get('field_type')=='checkbox'}>
+    <ul>
+      <{assign var=titleArr value=$object->showField($definition->get('field_name'))}>
+      <{foreach item=option from=$titleArr.checked}>
+      <li><{$option}></li>
+      <{/foreach}>
+    </ul>
+    <{else}>
+    <{$object->get($definition->getShow('field_name'))}>
+  </dd>
 <{/foreach}>
 </dl>
 <div class="clear"></div>

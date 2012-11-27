@@ -73,7 +73,11 @@
           <{/if}>
           </div>
         <{elseif $definition->get('field_type')=="checkbox"}>
-          <{xoops_input type=checkbox name=$definition->get('field_name') value=1 default=$actionForm->get($definition->get('field_name'))}>
+            <{assign var=fieldname value=$definition->get('field_name')}>
+            <{assign var=valueArr value=$actionForm->get($definition->get('field_name'))}>
+            <{foreach item=opt from=$definition->mFieldType->getOption($definition, 'title') key=k}>
+            <label><{xoops_input type=checkbox name=`$fieldname`[$k] value=2|pow:$k default=$valueArr[$k]}><{$opt}></label>
+            <{/foreach}>
         <{elseif $definition->get('field_type')=="selectbox"}>
           <select name="<{$definition->get('field_name')}>" id="legacy_xoopsform_<{$definition->get('field_name')}>">
             <{foreach item=option from=$definition->getOptions()}>

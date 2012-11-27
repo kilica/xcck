@@ -15,7 +15,18 @@
   <{/if}>
 </dt>
 <{foreach item=def from=$definitions}>
+<{if $def->get('field_type')=='checkbox'}>
+<dd>
+  <ul>
+    <{assign var=titleArr value=$obj->showField($def->get('field_name'))}>
+    <{foreach item=option from=$titleArr.checked}>
+    <li><{$option}></li>
+    <{/foreach}>
+  </ul>
+</dd>
+<{else}>
 <dd><{$obj->showField($def->getShow('field_name'))}></dd>
+<{/if}>
 <{/foreach}>
 <{/foreach}>
 </dl>
