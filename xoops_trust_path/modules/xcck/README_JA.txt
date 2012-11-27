@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.86(2012.11.27)
+- テンプレートを複数のチェックボックスに対応
+
 0.85(2012.11.16)
 - Delegate Point "Module.xcck.PreparePageEdit" 追加
 
