@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.87(2012.12.18)
+デリゲートポイント 'Module.{$dirname}.SetupListCriteria' を追加
+
 0.86(2012.11.27)
 - テンプレートを複数のチェックボックスに対応
 

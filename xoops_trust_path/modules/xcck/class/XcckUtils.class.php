@@ -221,7 +221,12 @@ class Xcck_Utils
 				$cri->setSort('weight', 'ASC');
 			}
 		}
-	
+
+        XCube_DelegateUtils::call(
+            'Module.'.$dirname.'.SetupListCriteria',
+            $cri
+        );
+
 		return $cri;
 	}
 
