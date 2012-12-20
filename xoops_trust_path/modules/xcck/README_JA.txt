@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.88(2012.12.19)
+フィールド追加時にフィールド名の重複をチェック
+
 0.87(2012.12.18)
 デリゲートポイント 'Module.{$dirname}.SetupListCriteria' を追加
 

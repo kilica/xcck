@@ -17,6 +17,7 @@ define('_MD_XCCK_ERROR_OBJECTEXIST', "{0}の入力値が不正です");
 define('_MD_XCCK_ERROR_DBUPDATE_FAILED', "データベースの更新に失敗しました");
 define('_MD_XCCK_ERROR_EMAIL', "{0}は不正なメールアドレスです");
 define('_MD_XCCK_ERROR_INVALID_MAINTABLE', 'メインテーブルが取得できませんでした。');
+define('_MD_XCCK_ERROR_INVALID_FIELD_NAME', '次のフィールド名はすでに使われています');
 define('_MD_XCCK_LANG_FIELD_NAME_RESERVED', 'このフィールド名は予約されているため使えません。');
 define('_MD_XCCK_LANG_FIELD_NAME_DUPLICATED', 'このフィールド名は既に使われています。');
 define('_MD_XCCK_MESSAGE_CONFIRM_DELETE', "以下のデータを本当に削除しますか？");

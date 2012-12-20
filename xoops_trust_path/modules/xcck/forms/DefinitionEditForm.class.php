@@ -86,6 +86,16 @@ class Xcck_DefinitionEditForm extends XCube_ActionForm
         $this->mFieldProperties['weight']->addMessage('required', _MD_XCCK_ERROR_REQUIRED, _MD_XCCK_LANG_WEIGHT);
     }
 
+    public function validateField_name()
+    {
+        $bookingFields = Xcck_Utils::getOrderList($this->_mDirname);
+        $fieldName = $this->mFormProperties['field_name']->get();
+        if(in_array($fieldName, $bookingFields)){
+            $this->mErrorFlag = true;
+            $this->addErrorMessage(_MD_XCCK_ERROR_INVALID_FIELD_NAME . implode(',', $bookingFields));
+        }
+    }
+
     /**
      * load
      * 
