@@ -90,7 +90,7 @@ class Xcck_DefinitionEditForm extends XCube_ActionForm
     {
         $bookingFields = Xcck_Utils::getOrderList($this->_mDirname);
         $fieldName = $this->mFormProperties['field_name']->get();
-        if(in_array($fieldName, $bookingFields)){
+        if($this->mFormProperties['definition_id']->get()==0 && in_array($fieldName, $bookingFields)){
             $this->mErrorFlag = true;
             $this->addErrorMessage(_MD_XCCK_ERROR_INVALID_FIELD_NAME . implode(',', $bookingFields));
         }
