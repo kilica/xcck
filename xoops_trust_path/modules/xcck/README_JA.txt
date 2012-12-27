@@ -27,6 +27,10 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.90(2012.12.27)
+- Xcck_PageObject クラスに $mLatlng プロパティを追加
+- date フィールドタイプのオプション値のバグを修正 'minute' -> 'min'
+
 0.89(2012.12.24)
 - フィールド定義の重複チェックのバグを修正。編集時にチェックに引っかかっていた
 
