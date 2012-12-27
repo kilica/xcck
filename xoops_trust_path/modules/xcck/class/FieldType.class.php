@@ -297,7 +297,7 @@ class Xcck_FieldTypeDate implements Xcck_iFieldType
             $value = array(date(_PHPDATEPICKSTRING, $obj->get($key)), date('H', $obj->get($key)), date('i', $obj->get($key)));
         }
         elseif($option==Xcck_ActionType::VIEW){
-            $format = (in_array($obj->mDef[$key]->get('options'), array('hour','half','quarter','10min','minute'))) ? "m" : "s";
+            $format = (in_array($obj->mDef[$key]->get('options'), array('hour','half','quarter','10min','min'))) ? "m" : "s";
             $value = ($obj->get($key)) ? formatTimestamp($obj->get($key), $format) : "";
         }
     
@@ -357,7 +357,7 @@ class Xcck_FieldTypeStartdate extends Xcck_FieldTypeDate
             $value = array(date(_PHPDATEPICKSTRING, $date), date('H', $date), date('i', $date));
         }
         elseif($option==Xcck_ActionType::VIEW){
-            $format = (in_array($obj->mDef[$key]->get('options'), array('hour','half','quarter','10min','minute'))) ? "m" : "s";
+            $format = (in_array($obj->mDef[$key]->get('options'), array('hour','half','quarter','10min','min'))) ? "m" : "s";
             $value = ($obj->get($key)) ? formatTimestamp($obj->get($key), $format) : "";
         }
     

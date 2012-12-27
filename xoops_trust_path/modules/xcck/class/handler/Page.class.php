@@ -30,6 +30,7 @@ class Xcck_PageObject extends Legacy_AbstractObject
     protected $_mIsPathLoaded = false;
     public $mParent = null;
     protected $_mIsParentLoaded = false;
+    public $mLatlng = null;
 
     /**
      * __construct
