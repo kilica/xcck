@@ -155,7 +155,13 @@ class Xcck_PageDeleteAction extends Xcck_AbstractDeleteAction
 	**/
 	public function executeViewSuccess(/*** XCube_RenderTarget ***/ &$render)
 	{
-		$this->mRoot->mController->executeForward(Legacy_Utils::renderUri($this->mAsset->mDirname));
+        $url = null;
+        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Delete.Success', new XCube_Ref($url), $this->mObject);
+        if(isset($url)){
+            $this->mRoot->mController->executeForward($url);
+        }
+
+        $this->mRoot->mController->executeForward(Legacy_Utils::renderUri($this->mAsset->mDirname));
 	}
 
 	/**

@@ -130,7 +130,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
          * 
          * @param   &Xcck_PageEditForm
         **/
-        XCube_DelegateUtils::call('Xcck.Event.ValidateRegisterForm',new XCube_Ref($this));
+        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ActionForm.Update', $this);
     }
 
     /**
@@ -226,6 +226,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
         if($this->mUseMap){
             $obj->mLatlng = array($this->get('latitude'), $this->get('longitude'));
         }
+        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ActionForm.Update', $this, $obj);
     }
 
     protected function _makeUnixtime($key)
