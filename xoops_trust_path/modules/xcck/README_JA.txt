@@ -27,6 +27,10 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.91(2013.01.18)
+EditForm の prepare デリゲートの名前を変更
+Delete Action の Forward 先の変更
+
 0.90(2012.12.27)
 - Xcck_PageObject クラスに $mLatlng プロパティを追加
 - date フィールドタイプのオプション値のバグを修正 'minute' -> 'min'
