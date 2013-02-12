@@ -27,6 +27,12 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.93(2013.02.12)
+- xcck_block_category.html のリンク先が間違っていたので訂正
+
+0.92(2013.02.02)
+- Delegate Point "Module.xcck.PreparePageEdit" の位置が間違っていたので訂正
+
 0.91(2013.01.18)
 EditForm の prepare デリゲートの名前を変更
 Delete Action の Forward 先の変更
