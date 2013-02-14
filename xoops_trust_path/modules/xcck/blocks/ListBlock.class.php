@@ -169,7 +169,12 @@ class Xcck_ListBlock extends Legacy_BlockProcedure
         $render->setAttribute('bid', $this->_mBlock->get('bid'));
         $render->setAttribute('dirname', $this->_mBlock->get('dirname'));
         $renderSystem =& $root->getRenderSystem($this->getRenderSystemName());
-        //var_dump($renderSystem);die();
+        $list = array();
+        $category = Xcck_Utils::getAccessController($this->_mBlock->get('dirname'));
+        if($category){
+            XCube_DelegateUtils::call('Legacy_Category.'.$category->get('dirname').'.GetTitleList', new XCube_Ref($list), $category->get('dirname'));
+        }
+        $render->setAttribute('catTitleList', $list);
         $renderSystem->renderBlock($render);
     }
 }

@@ -4,7 +4,8 @@
       <a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>">
         <{$obj->getShow('title')}>
       </a>
-      <{$obj->getShow('posttime')|xoops_formattimestamp:m}>
+      <{if count($catTitleList)>0 && $obj->get('category_id')>0}><{assign var=catId value=$obj->get('category_id')}><{$catTitleList[$catId]}><{/if}>
+        <{$obj->getShow('posttime')|xoops_formattimestamp:m}>
     </li>
   <{/foreach}>
 </ul>

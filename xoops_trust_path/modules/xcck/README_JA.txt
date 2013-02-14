@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.94(2013.02.14)
+- Listブロックにカテゴリ名を表示できるよう修正
+
 0.93(2013.02.12)
 - xcck_block_category.html のリンク先が間違っていたので訂正
 
