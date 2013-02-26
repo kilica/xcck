@@ -85,7 +85,7 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
         }
     
     	//filter by tag
-		if($tags = $request->getRequest('tag') !==null){
+		if(($tags = $request->getRequest('tag')) !==null){
 			$this->_setTagRequest($tags, $dirname);
 		}
 	

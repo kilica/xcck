@@ -18,7 +18,7 @@ require_once XOOPS_MODULE_PATH . '/legacy/class/Legacy_Validator.class.php';
 **/
 class Xcck_PageEditForm extends XCube_ActionForm
 {
-	public $mDirname = null;
+    public $mDirname = null;
     protected $_mDef = array();
 
     /**
@@ -42,7 +42,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
     **/
     public function prepare($dirname)
     {
-    	$this->mDirname = $dirname;
+        $this->mDirname = $dirname;
         $handler = Legacy_Utils::getModuleHandler('definition', $dirname);
         $this->_mDef = $handler->getObjects();
         $this->mFieldType = new Xcck_FieldType();
@@ -91,7 +91,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
             $this->mFormProperties[$this->_mDef[$key]->get('field_name')] = new $formPropertyClass($this->_mDef[$key]->get('field_name'));
             //add checkbox for startdate/enddate field
             if(in_array($this->_mDef[$key]->get('field_type'), array('startdate', 'enddate'))){
-            	$this->mFormProperties['enable_'.$this->_mDef[$key]->get('field_name')] = new XCube_BoolProperty('enable_'.$this->_mDef[$key]->get('field_name'));
+                $this->mFormProperties['enable_'.$this->_mDef[$key]->get('field_name')] = new XCube_BoolProperty('enable_'.$this->_mDef[$key]->get('field_name'));
             }
         
             //
@@ -157,7 +157,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
             $this->set($this->_mDef[$key]->get('field_name'), $obj->editField($this->_mDef[$key]->get('field_name')));
             //enable start/end date field if set
             if(in_array($this->_mDef[$key]->get('field_type'), array('startdate', 'enddate')) && $obj->get($this->_mDef[$key]->get('field_name'))>0 && ! $obj->isNew()){
-            	$this->set('enable_'.$this->_mDef[$key]->get('field_name'), 1);
+                $this->set('enable_'.$this->_mDef[$key]->get('field_name'), 1);
             }
         }
         
@@ -177,6 +177,8 @@ class Xcck_PageEditForm extends XCube_ActionForm
     **/
     public function update(/*** XoopsSimpleObject ***/ &$obj)
     {
+        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ActionForm.Update', $this, $obj);
+
         //$obj->set('page_id', $this->get('page_id'));
         $obj->set('title', $this->get('title'));
         $obj->set('category_id', $this->get('category_id'));
@@ -189,29 +191,29 @@ class Xcck_PageEditForm extends XCube_ActionForm
         foreach($this->_mDef as $def){
             switch($def->get('field_type')){
             case Xcck_FieldType::DATE:
-            	if($this->get($def->get('field_name'))){
-	                $val = $this->_makeUnixtime($def->get('field_name'));
-	            }
-	            else{
-	            	$val = 0;
-	            }
+            if($this->get($def->get('field_name'))){
+                $val = $this->_makeUnixtime($def->get('field_name'));
+            }
+            else{
+            $val = 0;
+            }
                 break;
             case Xcck_FieldType::STARTDATE:
             case Xcck_FieldType::ENDDATE:
-            	if($this->get($def->get('field_name')) && $this->get('enable_'.$def->get('field_name'))==1){
-	                $val = $this->_makeUnixtime($def->get('field_name'));
-	            }
-	            else{
-	            	$val = 0;
-	            }
+            if($this->get($def->get('field_name')) && $this->get('enable_'.$def->get('field_name'))==1){
+                $val = $this->_makeUnixtime($def->get('field_name'));
+            }
+            else{
+            $val = 0;
+            }
                 break;
             case Xcck_FieldType::TEXT:
                 $val = $def->get('options')=='html' ? $this->_getPurifiedHtml($def->get('field_name')) : $this->get($def->get('field_name'));
                 break;
             case Xcck_FieldType::CHECKBOX:
-				$val = decbin(array_sum($this->get($def->get('field_name'))));
-				//var_dump($this->get($def->get('field_name')));var_dump($val);die();
-				break;
+$val = decbin(array_sum($this->get($def->get('field_name'))));
+//var_dump($this->get($def->get('field_name')));var_dump($val);die();
+break;
             default:
                 $val = $this->get($def->get('field_name'));
                 break;
@@ -226,7 +228,6 @@ class Xcck_PageEditForm extends XCube_ActionForm
         if($this->mUseMap){
             $obj->mLatlng = array($this->get('latitude'), $this->get('longitude'));
         }
-        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ActionForm.Update', $this, $obj);
     }
 
     protected function _makeUnixtime($key)
