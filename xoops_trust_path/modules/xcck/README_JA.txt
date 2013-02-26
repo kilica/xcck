@@ -27,6 +27,10 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.95(2013.02.26)
+- SearchForm のタグでの絞り込みのバグ修正
+- PageEditForm のデリゲートポイントを変更
+
 0.94(2013.02.14)
 - Listブロックにカテゴリ名を表示できるよう修正
 
