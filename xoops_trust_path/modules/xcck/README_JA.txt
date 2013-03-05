@@ -27,6 +27,10 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.96(2013.03.05)
+- Search Filter 関連のバグを修正
+- Module.xcck.FetchSearchFilter のデリゲートポイントを追加
+
 0.95(2013.02.26)
 - SearchForm のタグでの絞り込みのバグ修正
 - PageEditForm のデリゲートポイントを変更

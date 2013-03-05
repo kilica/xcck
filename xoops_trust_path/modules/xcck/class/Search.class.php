@@ -4,7 +4,7 @@ class Xcck_SearchUtils
 {
     public static function makeKeyword(/*** string ***/ $keyword)
     {
-        return '%'.addslashes(stripslashes($word)).'%';
+        return '%'.addslashes(stripslashes($keyword)).'%';
     }
 
     public static function splitKeywords(/*** string ***/ $keywords)
@@ -14,7 +14,7 @@ class Xcck_SearchUtils
 
     public static function makeKeywordCriteria(CriteriaCompo $cri, /*** string ***/ $dirname, /*** string ***/ $keywords, /*** string ***/ $andor='AND')
     {
-        $handler = Legacy_Utils::getModuleHandler('definition', $this->mDirname);
+        $handler = Legacy_Utils::getModuleHandler('definition', $dirname);
     	//keywords
     	$keywordArr = self::splitKeywords($keywords);
     
@@ -44,7 +44,7 @@ class Xcck_SearchUtils
     public static function searchKeyword(/*** string ***/ $dirname, /*** string[] ***/ $keywords, /*** string ***/ $andor='AND', /*** int ***/ $limit=null, /*** int ***/ $offset=null, /*** int ***/ $uid=null)
     {
         $cri = Xcck_Utils::getListCriteria($dirname);
-        $cri = $this->makeKeywordCriteria($cri, $dirname, $keywords, $andor);
+        $cri = self::makeKeywordCriteria($cri, $dirname, $keywords, $andor);
         if(intval($uid)>0){
             $cri->add(new Criteria('uid', $uid));
         }
@@ -53,7 +53,7 @@ class Xcck_SearchUtils
         $pageObjs = $handler->getObjects($cri, $limit, $offset);
         foreach($pageObjs as $page){
             $ret[] = array(
-                'link' => "index.php?post_id=$post_id",
+                'link' => "index.php?page_id=".$page->getShow('page_id'),
                 'title' => $page->getShow('title'),
                 'time' => $page->get('posttime'),
                 'uid' => $uid,
