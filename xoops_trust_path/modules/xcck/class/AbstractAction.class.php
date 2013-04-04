@@ -176,7 +176,8 @@ abstract class Xcck_AbstractAction
     public function getPagetitle()
     {
         $title = null;
-        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.SetPagetitle', new XCube_Ref($title), $this->mAsset->mDirname, $this->_getPagetitle(), $this->_getActionName());
+        $object = isset($this->mObject) ? $this->mObject : null;
+        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.SetPagetitle', new XCube_Ref($title), $this->mAsset->mDirname, $this->_getPagetitle(), $this->_getActionName(), $object);
 
         return isset($title) ? $title : Legacy_Utils::formatPagetitle($this->mRoot->mContext->mModule->mXoopsModule->get('name'), $this->_getPagetitle(), $this->_getActionName());
     }
