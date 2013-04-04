@@ -28,10 +28,10 @@ class Xcck_CatCategoryManager extends Xcck_AbstractCategoryManager
 	 * 
 	 * @return	void
 		**/
-	public function __construct(/*** string ***/ $categoryDir, /*** string ***/ $dirname, /*** string ***/ $dataname)
+	public function __construct(/*** string ***/ $CategoryDir, /*** string ***/ $dirname, /*** string ***/ $dataname=null)
 	{
 		$this->_mDirname = $dirname;
-		$this->_mCategoryDir = $categoryDir;
+		$this->_mCategoryDir = $CategoryDir;
 	}
 
 	/**
