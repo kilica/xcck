@@ -23,7 +23,8 @@ abstract class Xcck_AbstractFilterForm
 
     protected /*** XoopsObjectGenericHandler ***/ $_mHandler = null;
 
-    protected /*** Criteria ***/ $_mCriteria = null;
+    // todo
+    public /*** Criteria ***/ $_mCriteria = null;
 
     /**
      * _getId

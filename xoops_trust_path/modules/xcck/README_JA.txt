@@ -1,7 +1,7 @@
 XCCK
 ====
 XOOPS Cube CCK(Content Creation Kit)
-管理者は、好きな項目を持ったデータベース方のモジュールを作ることができます。
+管理者は、好きな項目を持ったデータベース型のモジュールを作ることができます。
 
 必要な環境
 ----------
@@ -27,6 +27,13 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.97(2013.03.19)
+- Module.{dirname}.SetupSubtableCriteria デリゲート追加
+- Xcck_PageObject に showCategory() メソッドを追加
+- サブテーブル削除のバグを修正
+- デリゲートポイント Xcck.{dirname}.SetPagetitle を追加
+- データ削除時の、サブテーブルの削除に関するバグを修正
+
 0.96(2013.03.05)
 - Search Filter 関連のバグを修正
 - Module.xcck.FetchSearchFilter のデリゲートポイントを追加

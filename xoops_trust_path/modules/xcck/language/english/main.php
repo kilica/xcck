@@ -59,6 +59,7 @@ define('_MD_XCCK_LANG_STATUS', 'Status');
 define('_MD_XCCK_LANG_SHOW_LIST', 'Show on list');
 define('_MD_XCCK_LANG_SEARCH', 'Search');
 define('_MD_XCCK_LANG_SEARCH_FLAG', 'Search Condition');
+define('_MD_XCCK_LANG_SEARCH_RESULT', 'Search Result');
 define('_MD_XCCK_LANG_STATUS_DELETED', 'deleted');
 define('_MD_XCCK_LANG_STATUS_REJECTED', 'rejected');
 define('_MD_XCCK_LANG_STATUS_POSTED', 'posted');

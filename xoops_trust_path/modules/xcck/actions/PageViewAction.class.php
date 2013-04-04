@@ -134,25 +134,26 @@ class Xcck_PageViewAction extends Xcck_AbstractViewAction
     
         //setup subtable objects
         $render->setAttribute('isSubtable', $this->_isSubtable());
-        $subtableDirnameArr = array();
         $chandler = xoops_gethandler('config');
         $mhandler = xoops_gethandler('module');
-        $dirnames = Legacy_Utils::getDirnameListByTrustDirname('xcck');
-    
+        $subtableDirnameArr = Legacy_Utils::getDirnameListByTrustDirname('xcck');
+
         //page criteria
         $subtableArr = array();
         $cri = new CriteriaCompo();
         $cri->add(new Criteria('status', Lenum_Status::PUBLISHED));
         $cri->add(new Criteria('maintable_id', $this->mObject->get('page_id')));
-        XCube_DelegateUtils::call('Module.xcck.Event.GetSubtableCriteria', new XCube_Ref($cri), $this->mAsset->mDirname);
+        XCube_DelegateUtils::call('Module.xcck.Event.GetSubtableCriteria', new XCube_Ref($cri), $this->mAsset->mDirname);   //deprecated
         //definition criteria
-        foreach($dirnames as $dirname){
+        foreach($subtableDirnameArr as $dirname){
             $configArr = $chandler->getConfigsByDirname($dirname);
             if($configArr['maintable']==$this->mAsset->mDirname){
+                $subtableCri = clone $cri;
+                XCube_DelegateUtils::call('Module.'.$dirname.'.SetupSubtableCriteria', new XCube_Ref($subtableCri), $this->mAsset->mDirname);
                 $module = $mhandler->getByDirname($dirname);
                 $subtableArr[] = array('dirname'=>$dirname, 'name'=>$module->get('name'));
                 $definitionArr[$dirname] = Legacy_Utils::getModuleHandler('definition', $dirname)->getFields(true);
-                $pageArr[$dirname] = Legacy_Utils::getModuleHandler('page', $dirname)->getObjects($cri);
+                $pageArr[$dirname] = Legacy_Utils::getModuleHandler('page', $dirname)->getObjects($subtableCri);
             }
         }
         if(count($subtableArr)>0){

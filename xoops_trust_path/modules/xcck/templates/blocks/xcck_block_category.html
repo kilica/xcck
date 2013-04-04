@@ -7,14 +7,14 @@
 
 <{if $smarty.foreach.tree.first || $d < $cat->getDepth()}>
   <ul class="catL<{$cat->getDepth()}>">
-    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page query="cat_id=`$catId`"}>"><{$cat->getShow('title')}></a> (<{$countArr[$k]}>)</li>
+    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page query="category_id=`$catId`"}>"><{$cat->getShow('title')}></a> (<{$countArr[$k]}>)</li>
 <{elseif $d==$cat->getDepth()}>
-    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page query="cat_id=`$catId`"}>"><{$cat->getShow('title')}></a> (<{$countArr[$k]}>)</li>
+    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page query="category_id=`$catId`"}>"><{$cat->getShow('title')}></a> (<{$countArr[$k]}>)</li>
 <{else}>
   <{section name=i start=0 loop=$d-$cat->getDepth()}>
   </ul>
   <{/section}>
-    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page query="cat_id=`$catId`"}>"><{$cat->getShow('title')}></a> (<{$countArr[$k]}>)</li>
+    <li><a href="<{xoops_cooluri dirname=$dirname dataname=page query="category_id=`$catId`"}>"><{$cat->getShow('title')}></a> (<{$countArr[$k]}>)</li>
 <{/if}>
 <{if $smarty.foreach.tree.last}>
   <{section name=i start=0 loop=$cat->getDepth()}>

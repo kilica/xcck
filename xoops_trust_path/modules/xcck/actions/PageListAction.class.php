@@ -199,6 +199,7 @@ class Xcck_PageListAction extends Xcck_AbstractListAction
 		$render->setAttribute('dataname', 'page');
 		$render->setAttribute('accessController', $this->mCategoryManager);
 		$render->setAttribute('isSubtable', $this->_isSubtable());
+        $render->setAttribute('editPageName', $this->_isSubtable() ? 'subtable' : 'page');
 		$render->setAttribute('moduleDescription', $this->mRoot->mContext->mModuleConfig['description']);
 	
     	$render->setAttribute('xoops_breadcrumbs', $this->_getBreadcrumb());

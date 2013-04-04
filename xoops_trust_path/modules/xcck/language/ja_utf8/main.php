@@ -62,6 +62,7 @@ define('_MD_XCCK_TIPS_FIELD_NAME', 'データベースのフィールド名。�
 define('_MD_XCCK_TIPS_LABEL', '表示に使われるフィールドの名前');
 define('_MD_XCCK_LANG_VIEW', '詳細');
 define('_MD_XCCK_LANG_SEARCH', '検索');
+define('_MD_XCCK_LANG_SEARCH_RESULT', '検索結果');
 define('_MD_XCCK_LANG_SHOW_LIST', 'リストに表示する');
 define('_MD_XCCK_LANG_SEARCH_FLAG', '検索条件に使う');
 define('_MD_XCCK_ERROR_NO_PERMISSION', '権限がありません');

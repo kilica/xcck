@@ -43,6 +43,18 @@ class Xcck_PageSearchAction extends Xcck_PageListAction
 		return Legacy_Utils::renderUri($this->mAsset->mDirname, 'page', 'search');
 	}
 
+    /**
+     * _getPageTitle
+     *
+     * @param   void
+     *
+     * @return  string
+     **/
+    protected function _getPagetitle()
+    {
+        return _MD_XCCK_LANG_SEARCH_RESULT;
+    }
+
 	/**
 	 * getDefaultView
 	 * 

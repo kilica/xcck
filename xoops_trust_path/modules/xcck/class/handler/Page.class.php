@@ -63,6 +63,24 @@ class Xcck_PageObject extends Legacy_AbstractObject
         }
     }
 
+    public function showCategory()
+    {
+        if(! $this->get('category_id')){
+            return '';
+        }
+
+        $chandler = xoops_gethandler('config');
+        $conf = $chandler->getConfigsByDirname($this->getDirname());
+        if(trim($conf['maintable'])){
+            $conf = $chandler->getConfigsByDirname(trim($conf['maintable']));
+        }
+        $catDirname = $conf['access_controller'];
+
+        $category = '';
+        XCube_DelegateUtils::call('Legacy_Category.'.$catDirname.'.GetTitle', new XCube_Ref($category), $catDirname, $this->get('category_id'));
+        return $category;
+    }
+
     /**
      * showField
      * 
@@ -460,8 +478,8 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
         //delete subtable
         $dirnames = Legacy_Utils::getDirnameListByTrustDirname('xcck');
         foreach($dirnames as $dirname){
-            if(Xcck_Utils::getModuleConfig($this->getDirname(), 'maintable')==$obj->getDirname()){
-                return Legacy_Utils::getModuleHandler('page', $dirname)->deleteAll(new Criteria('maintable_id', $obj->get($obj->get('page_id'))));
+            if(Xcck_Utils::getModuleConfig($dirname, 'maintable')==$obj->getDirname()){
+                return Legacy_Utils::getModuleHandler('page', $dirname)->deleteAll(new Criteria('maintable_id', $obj->get('page_id')));
             }
         }
 	}

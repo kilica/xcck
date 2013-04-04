@@ -29,6 +29,7 @@ class Xcck_PageDeleteAction extends Xcck_AbstractDeleteAction
 	protected function _getCatId()
 	{
 		if($this->_isSubtable()){
+            $this->loadMaintable();
 			return $this->mObject->mMaintable->get('category_id');
 		}
 		else{
