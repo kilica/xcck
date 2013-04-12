@@ -560,18 +560,6 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
     }
 
     /**
-     * check if use Legacy_Activity
-     *
-     * @param mixed[]   $conf
-     *
-     * @return  bool
-     */
-    protected function _isActivityClient(/*** mixed[] ***/ $conf)
-    {
-        return defined('LEGACY_ACTIVITY_DIRNAME') ? true : false;
-    }
-
-    /**
      * check if use Legacy_Image
      *
      * @param mixed[]   $conf

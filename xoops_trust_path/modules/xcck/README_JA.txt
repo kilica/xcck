@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.98(2013.04.12)
+- Activity（Feed）への連携をするかどうかのオプションを追加
+
 0.97(2013.03.19)
 - Module.{dirname}.SetupSubtableCriteria デリゲート追加
 - Xcck_PageObject に showCategory() メソッドを追加
