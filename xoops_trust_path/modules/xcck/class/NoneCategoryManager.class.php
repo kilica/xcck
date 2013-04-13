@@ -28,7 +28,7 @@ class Xcck_NoneCategoryManager extends Xcck_AbstractCategoryManager
 	 * 
 	 * @return	void
 		**/
-	public function __construct(/*** string ***/ $categoryDir, /*** string ***/ $dirname, /*** string ***/ $dataname)
+	public function __construct(/*** string ***/ $categoryDir, /*** string ***/ $dirname, /*** string ***/ $dataname=null)
 	{
 		$this->_mDirname = $dirname;
 	}
