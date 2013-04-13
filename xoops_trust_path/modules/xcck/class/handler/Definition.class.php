@@ -252,6 +252,11 @@ class Xcck_DefinitionHandler extends Xcck_ObjectGenericHandler
 			return array_shift($objs);
 		}
 	}
+
+    protected function _isActivityClient()
+    {
+        return false;
+    }
 }
 
 ?>
