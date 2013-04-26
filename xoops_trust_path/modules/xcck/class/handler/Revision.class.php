@@ -50,53 +50,6 @@ class Xcck_RevisionObject extends Xcck_PageObject
         }
     }
 
-	public function publish()
-	{
-		$handler = Legacy_Utils::getModuleHandler('page', $this->getDirname());
-		$page = $handler->get($this->get('page_id'));
-		$page->loadDefinition();
-
-		$page->set('page_id', $this->get('page_id'));
-		$page->set('title', $this->get('title'));
-		$page->set('category_id', $this->get('category_id'));
-		$page->set('maintable_id', $this->get('maintable_id'));
-		$page->set('p_id', $this->get('p_id'));
-		$page->set('descendant', $this->get('descendant'));
-		$page->set('uid', $this->get('uid'));
-		$page->set('status', $this->get('status'));
-		$page->set('weight', $this->get('weight'));
-		$page->set('updatetime', $this->get('updatetime'));
-
-		foreach($page->mDef as $def){
-			$page->set($def->getShow('field_name'), $this->get($def->getShow('field_name')));
-		}
-
-		return $handler->insert($page, true);
-	}
-
-    public function revise()
-    {
-        $revisionHandler = Legacy_Utils::getModuleHandler('revision', $this->getDirname());
-        $revision = $revisionHandler->create();
-
-        $revision->set('page_id', $this->get('page_id'));
-        $revision->set('title', $this->get('title'));
-        $revision->set('category_id', $this->get('category_id'));
-        $revision->set('maintable_id', $this->get('maintable_id'));
-        $revision->set('p_id', $this->get('p_id'));
-        $revision->set('descendant', $this->get('descendant'));
-        $revision->set('uid', $this->get('uid'));
-        $revision->set('status', Xcck_Utils::getDefaultStatus($this->getDirname()));
-        $revision->set('weight', $this->get('weight'));
-        $revision->set('updatetime', $this->get('updatetime'));
-
-        foreach($this->mDef as $def){
-            $revision->set($def->getShow('field_name'), $this->get($def->getShow('field_name')));
-        }
-
-        return $revisionHandler->insert($revision, true);
-    }
-
     public function loadTag()
     {
         $chandler = xoops_gethandler('config');
@@ -138,38 +91,34 @@ class Xcck_RevisionHandler extends Xcck_ObjectGenericHandler
         $cri->add(new Criteria('status', $status, '>='));
         $cri->setSort('revision_id', 'DESC');
         $objs = $this->getObjects($cri);
-        if(count($objs)>0){
-            return array_shift($objs);
-        }
+        return (count($objs)>0) ? array_shift($objs) : null;
     }
 
-	public function updateStatus(/*** int ***/ $pageId, /*** Enum ***/$status)
-	{
-		$obj = $this->getLatestRevision($pageId);
-		if($obj instanceof Xcck_RevisionObject){
-			$obj->set('status', $status);
-			if(! $this->insert($obj, true)){
-				return false;
-			}
-		}
-		else{
-			return false;
-		}
+    public function updateStatus(/*** int ***/ $pageId, /*** Enum ***/$status)
+    {
+        $obj = $this->getLatestRevision($pageId);
+        if(! ($obj instanceof Xcck_RevisionObject)){
+            return false;
+        }
+        $obj->set('status', $status);
 
-		if($status===Lenum_Status::PUBLISHED){
-			if(! $obj->publish()){
-				return false;
-			}
-		}
-		return true;
-	}
+        if($status===Lenum_Status::PUBLISHED){
+            $handler = Legacy_Utils::getModuleHandler('page', $this->getDirname());
+            $page = Xcck_Utils::setupPageByRevision($this);
+
+            return $handler->insert($page, true);
+        }
+        else{
+            return $this->insert($obj, true);
+        }
+    }
 
     /**
      * @return  bool
      */
     protected function _isWorkflowClient(/*** mixed[] ***/ $conf)
     {
-		return ($conf[$this->_mClientConfig['workflow']]=='linear') ? true : false;
+        return ($conf[$this->_mClientConfig['workflow']]=='linear') ? true : false;
     }
 
     /**

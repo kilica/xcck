@@ -317,37 +317,8 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
         if($this->mObjectHandler->insert($page)===false){
             return XCCK_FRAME_VIEW_ERROR;
         }
-        $this->mObject->set('page_id', $page->get('page_id'));
-        if($this->mObject->revise()===false){
-            return XCCK_FRAME_VIEW_ERROR;
-        }
-
-        if(Xcck_Utils::getModuleConfig($this->mAsset->mDirname, 'publish')=='linear'){
-            if($this->mObject->getShow('status')!=Lenum_Status::DELETED){
-                $this->_saveWorkflow($this->mObject);
-            }
-        }
 
         return XCCK_FRAME_VIEW_SUCCESS;
-    }
-
-    /**
-     * save workflow
-     *
-     * @param XoopsSimpleObject    $obj
-     *
-     * @return    void
-     */
-    protected function _saveWorkflow(/*** XoopsSimpleObject ***/ $obj)
-    {
-        XCube_DelegateUtils::call(
-            'Legacy_Workflow.AddItem',
-            $obj->getShow('title'),
-            $obj->getDirname(),
-            'page',
-            $obj->get('page_id'),
-            Legacy_Utils::renderUri($obj->getDirname(), 'revision', $obj->get('revision_id'))
-        );
     }
 
     /**

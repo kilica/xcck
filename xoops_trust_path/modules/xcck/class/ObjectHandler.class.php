@@ -59,7 +59,7 @@ class Xcck_ObjectGenericHandler extends Legacy_AbstractClientObjectHandler
      * 
      * @return  XoopsSimpleObject  $obj
     **/
-	public function create($isNew = true)
+	public function &create($isNew = true)
 	{
 		$obj = null;
 		if (XC_CLASS_EXISTS($this->mClass)) {
@@ -80,7 +80,7 @@ class Xcck_ObjectGenericHandler extends Legacy_AbstractClientObjectHandler
      * 
      * @return  XoopsSimpleObject[]  $ret
     **/
-	public function getObjects($criteria = null, $limit = null, $start = null, $id_as_key = false)
+	public function &getObjects($criteria = null, $limit = null, $start = null, $id_as_key = false)
 	{
 		$ret = array();
 

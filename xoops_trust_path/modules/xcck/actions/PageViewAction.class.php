@@ -41,7 +41,7 @@ class Xcck_PageViewAction extends Xcck_AbstractViewAction
      * 
      * @return  Xcck_PageHandler
     **/
-    protected function _getHandler()
+    protected function &_getHandler()
     {
         $handler =& $this->mAsset->getObject('handler', 'Page');
         return $handler;

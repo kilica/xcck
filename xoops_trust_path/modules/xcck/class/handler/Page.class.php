@@ -24,25 +24,25 @@ class Xcck_PageObject extends Legacy_AbstractObject
     protected $_mIsDefinitionLoaded = false;
     protected $_mIsMaintableLoaded = false;
     protected $_mIsPrevNextLoaded = false;
+    protected $_mIsPathLoaded = false;
+    protected $_mIsParentLoaded = false;
     public $mDef = array();
     public $mMaintable = null;
     public $mPath = array('page_id'=>array(), 'title'=>array());
-    protected $_mIsPathLoaded = false;
     public $mParent = null;
-    protected $_mIsParentLoaded = false;
     public $mLatlng = null;
+    public $mLatestRevision = null;
 
     /**
      * __construct
      * 
-     * @param   string	$dirname
+     * @param   string    $dirname
      * 
      * @return  void
     **/
     public function __construct($dirname)
     {
         $this->mDirname = $dirname;
-        $defHandler = Legacy_Utils::getModuleHandler('definition', $this->getDirname());
         $this->loadDefinition();
     
         $this->initVar('page_id', XOBJ_DTYPE_INT, '', false);
@@ -50,7 +50,7 @@ class Xcck_PageObject extends Legacy_AbstractObject
         $this->initVar('category_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('maintable_id', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('p_id', XOBJ_DTYPE_INT, 0, false);
-        $this->initVar('descendant', XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('descendant', XOBJ_DTYPE_INT, 0, false); // deprecated
         $this->initVar('uid', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('status', XOBJ_DTYPE_INT, Lenum_Status::PROGRESS, false);
         $this->initVar('weight', XOBJ_DTYPE_INT, 50, false);
@@ -85,7 +85,7 @@ class Xcck_PageObject extends Legacy_AbstractObject
      * showField
      * 
      * @param   string  $key
-     * @param   Enum  $option	DEPRECATED
+     * @param   Enum  $option    DEPRECATED
      * 
      * @return  mixed
     **/
@@ -147,8 +147,6 @@ class Xcck_PageObject extends Legacy_AbstractObject
                 $this->set($key, $value);
                 break;
         }
-        
-        return $value;
     }
 
     /**
@@ -178,14 +176,15 @@ class Xcck_PageObject extends Legacy_AbstractObject
     public function checkPublish()
     {
         $pubCondition = Xcck_Utils::getModuleConfig($this->getDirname(), 'publish');
-        //$threshold = $this->_getConfig('threshold');
         switch($pubCondition){
             case 'none':
-                return true;
-            case 'approval':
-                
-            case 'rating':
+                $ret = true;
+                break;
+            case 'linear':
+                $ret = $this->get('status')===Lenum_Status::PUBLISHED ? true : false;
+                break;
         }
+        return $ret;
     }
 
     /**
@@ -195,22 +194,22 @@ class Xcck_PageObject extends Legacy_AbstractObject
      * 
      * @return  bool
     **/
-	public function isOpen($time=null)
-	{
-		$time = isset($time) ? $time : time();
-		$handler = Legacy_Utils::getModuleHandler('definition', $this->getDirname());
-		$startField = $handler->getStartField();
-		$endField = $handler->getEndField();
-		$starttime = $startField ? $this->get($startField->get('field_name')) : 0;
-		if($starttime > $time){
-			return false;
-		}
-		$endtime = $endField ? $this->get($endField->get('field_name')) : 0;
-		if($endtime < $time && $endtime>0){
-			return false;
-		}
-		return true;
-	}
+    public function isOpen($time=null)
+    {
+        $time = isset($time) ? $time : time();
+        $handler = Legacy_Utils::getModuleHandler('definition', $this->getDirname());
+        $startField = $handler->getStartField();
+        $endField = $handler->getEndField();
+        $starttime = $startField ? $this->get($startField->get('field_name')) : 0;
+        if($starttime > $time){
+            return false;
+        }
+        $endtime = $endField ? $this->get($endField->get('field_name')) : 0;
+        if($endtime < $time && $endtime>0){
+            return false;
+        }
+        return true;
+    }
 
     /**
      * getShowStatus
@@ -258,7 +257,7 @@ class Xcck_PageObject extends Legacy_AbstractObject
     /**
      * loadPrevNext
      * 
-     * @param   int		$order
+     * @param   int        $order
      * 
      * @return  void
      */
@@ -269,16 +268,16 @@ class Xcck_PageObject extends Legacy_AbstractObject
             $order = isset($order) ? $order :Xcck_Utils::getModuleConfig($this->getDirname(), 'default_order');
             $orderList = Xcck_Utils::getOrderList($this->getDirname());
         
-        	//previous object
+            //previous object
             if($order>0){
-            	$condA = '<=';
-            	$condB = '<';
-            	$sort = 'ASC';
+                $condA = '<=';
+                $condB = '<';
+                $sort = 'ASC';
             }
             else{
-            	$condA = '>=';
-            	$condB = '>';
-            	$sort = 'DESC';
+                $condA = '>=';
+                $condB = '>';
+                $sort = 'DESC';
             }
             $cri = new CriteriaCompo();
             $cri->add(new Criteria($orderList[abs($order)], $this->get($orderList[abs($order)]), $condA));
@@ -287,16 +286,16 @@ class Xcck_PageObject extends Legacy_AbstractObject
             $prevObj = $handler->getObjects($cri, 1, 0);
             $this->mPrev = count($prevObj)>0 ? array_shift($prevObj) : null;
         
-        	//next object
+            //next object
             if($order>0){
-            	$condA = '>=';
-            	$condB = '>';
-            	$sort = 'ASC';
+                $condA = '>=';
+                $condB = '>';
+                $sort = 'ASC';
             }
             else{
-            	$condA = '<=';
-            	$condB = '<';
-            	$sort = 'DESC';
+                $condA = '<=';
+                $condB = '<';
+                $sort = 'DESC';
             }
             $cri = new CriteriaCompo();
             $cri->add(new Criteria($orderList[abs($order)], $this->get($orderList[abs($order)]), $condA));
@@ -304,7 +303,7 @@ class Xcck_PageObject extends Legacy_AbstractObject
             $cri->setSort($orderList[abs($order)], $sort);
             $nextObj = $handler->getObjects($cri, 1, 0);
             $this->mNext = count($nextObj)>0 ? array_shift($nextObj) : null;
-		
+        
             $this->_mIsPrevNextLoaded = true;
         }
     }
@@ -336,6 +335,12 @@ class Xcck_PageObject extends Legacy_AbstractObject
             $this->mPath['title'][] = $page->getShow('title');
             $this->_loadPath($page->get('p_id'), $handler);
         }
+    }
+
+    public function loadLatestRevision()
+    {
+        $handler = Legacy_Utils::getModuleHandler('revision', $this->getDirname());
+        $this->mLatestRevision = $handler->getLatestRevision($this->get('page_id'));
     }
 
     /**
@@ -371,11 +376,11 @@ class Xcck_PageObject extends Legacy_AbstractObject
      * 
      * @return  int
     **/
-	public function getImageNumber()
-	{
-		$list = Xcck_Utils::getImageNameList($this->getDirname());
-		return count($list);
-	}
+    public function getImageNumber()
+    {
+        $list = Xcck_Utils::getImageNameList($this->getDirname());
+        return count($list);
+    }
 }
 
 
@@ -400,32 +405,60 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
      *
      * @return  string[]
      */
-    protected function _getTagList(Legacy_AbstractObject $obj)
+    protected function _getTagList($obj)
     {
         return $obj->mTag;
     }
 
-    public function insert($obj, $force=false)
+    public function insert(&$obj, $force=false)
     {
-		if($obj->isNew()){
-			if(parent::insert($obj, $force)===false){
-				return false;
-			}
-			else{
-				$this->_countupDescendant($obj);
-			}
-		}
-		elseif($obj->get('status')===Lenum_Status::PUBLISHED){
-			return parent::insert($obj, $force);
-		}
-		return true;
+        $ret = true;
+        if($obj->isNew() || $obj->get('status')===Lenum_Status::PUBLISHED){
+            $ret = parent::insert($obj, $force);
+        }
+
+        if($ret===false){
+            return false;
+        }
+
+        //update revision
+        $revision = Xcck_Utils::setupRevisionByPage($obj);
+        $handler = Legacy_Utils::getModuleHandler('revision', $this->getDirname());
+        $ret = $handler->insert($revision, $force);
+
+        //workflow
+        $this->_saveWorkflow($revision);
+
+        return $ret;
     }
 
     /**
+     * save workflow
+     *
+     * @param XoopsSimpleObject    $obj
+     *
+     * @return    void
+     */
+    protected function _saveWorkflow(Xcck_RevisionObject $obj)
+    {
+        if(Xcck_Utils::getModuleConfig($obj->getDirname(), 'publish')=='linear' && $obj->getShow('status')!=Lenum_Status::DELETED){
+            XCube_DelegateUtils::call(
+                'Legacy_Workflow.AddItem',
+                $obj->getShow('title'),
+                $obj->getDirname(),
+                'page',
+                $obj->get('page_id'),
+                Legacy_Utils::renderUri($obj->getDirname(), 'revision', $obj->get('revision_id'))
+            );
+        }
+    }
+
+    /**
+     * @deprecated
      * @return  void
      */
-	protected function _countupDescendant(Xcck_PageObject $obj)
-	{
+    protected function _countupDescendant(Xcck_PageObject $obj)
+    {
         //count up number of descendant
         if($obj->get('p_id')>0){
             $topId = $obj->getTopId();
@@ -436,7 +469,7 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
                 $this->insert($topObj, true);
             }
         }
-	}
+    }
 
     protected function _deleteMap(Xcck_PageObject $obj)
     {
@@ -446,26 +479,18 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
         return $result;
     }
 
-    public function delete(Xcck_PageObject $obj, $force=false)
+    public function delete(&$obj, $force=false)
     {
         //delete page tree
         $tree = $this->getTree($obj->get('page_id'));
-        if($count = count($tree) && $obj->get('p_id')>0){
-            $topId = $obj->getTopId();
-            $topObj = $this->get($topId);
-            if(is_object($topObj)===true){
-                $topObj->set('descendant', $topObj->get('descendant')-$count);
-                $this->insert($topObj, $force);
-            }
-        }
         foreach($tree as $page){
-            if(! parent::delete($obj, $force)){
+            if(! parent::delete($page, $force)){
                 return XCCK_FRAME_VIEW_ERROR;
             }
         }
     
-    	$this->_deleteSubtable($obj);
-    	$this->_deleteRevision($obj);
+        $this->_deleteSubtable($obj);
+        $this->_deleteRevision($obj);
     
         return XCCK_FRAME_VIEW_SUCCESS;
     }
@@ -473,8 +498,8 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
     /**
      * @return  bool
      */
-	protected function _deleteSubtable(Xcck_PageObject $obj)
-	{
+    protected function _deleteSubtable(Xcck_PageObject $obj)
+    {
         //delete subtable
         $dirnames = Legacy_Utils::getDirnameListByTrustDirname('xcck');
         foreach($dirnames as $dirname){
@@ -482,17 +507,17 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
                 return Legacy_Utils::getModuleHandler('page', $dirname)->deleteAll(new Criteria('maintable_id', $obj->get('page_id')));
             }
         }
-	}
+    }
 
     /**
      * @return  bool
      */
-	protected function _deleteRevision(Xcck_PageObject $obj)
-	{
+    protected function _deleteRevision(Xcck_PageObject $obj)
+    {
         //count up number of descendant
-       	$handler = Legacy_Utils::getModuleHandler('revision', $this->getDirname());
-       	return $handler->deleteAll(new Criteria('page_id', $obj->get('page_id')));
-	}
+           $handler = Legacy_Utils::getModuleHandler('revision', $this->getDirname());
+           return $handler->deleteAll(new Criteria('page_id', $obj->get('page_id')));
+    }
 
     /**
      * count page in given category
@@ -502,8 +527,8 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
     **/
     public function countPageByCategory(/*** int ***/ $catId)
     {
-    	$cri = Xcck_Utils::getListCriteria($this->getDirname(), $catId);
-    	return $this->getCount($cri);
+        $cri = Xcck_Utils::getListCriteria($this->getDirname(), $catId);
+        return $this->getCount($cri);
     }
 
     /**

@@ -42,7 +42,7 @@ class Xcck_AssetManager
      * 
      * @return  Xcck_AssetManager
     **/
-    public function &getInstance(/*** string ***/ $dirname)
+    public static function &getInstance(/*** string ***/ $dirname)
     {
         /**
          *  @var    Xcck_AssetManager[]

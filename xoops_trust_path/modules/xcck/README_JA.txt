@@ -27,6 +27,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+0.99(2013.04.17)
+- Revision と Page の insert まわりのリファクタリング
+
 0.98(2013.04.12)
 - Activity（Feed）への連携をするかどうかのオプションを追加
 - NoneCategoryManager.class.php の __construct() 引数のバグを修正

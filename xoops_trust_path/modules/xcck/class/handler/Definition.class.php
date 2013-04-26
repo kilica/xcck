@@ -144,20 +144,28 @@ class Xcck_DefinitionHandler extends Xcck_ObjectGenericHandler
      */
     function getFields($list=false)
     {
-		$cri = new CriteriaCompo();
-		if($list===true){
-			$cri->add(new Criteria('show_list', 1));
-		}
-		$cri->setSort('weight');
-		$objs = $this->getObjects($cri);
-		$ret = array();
-		foreach($objs as $obj){
-			$ret[$obj->get('field_name')] = $obj;
-		}
-		return $ret;
+        $listStatus = $list===true ? 1 : 0;
+        static $fields = array();
+        $dirname = $this->getDirname();
+        if(isset($fields[$dirname][$listStatus])){
+            return $fields[$dirname][$listStatus];
+        }
+
+        $cri = new CriteriaCompo();
+        if($list===true){
+            $cri->add(new Criteria('show_list', 1));
+        }
+        $cri->setSort('weight');
+        $objs = $this->getObjects($cri);
+        $ret = array();
+        foreach($objs as $obj){
+            $ret[$obj->get('field_name')] = $obj;
+        }
+        $fields[$dirname][$listStatus] = $ret;
+        return $ret;
     }
 
-    public function getObjects($criteria = null, $limit = null, $start = null, $id_as_key = false)
+    public function &getObjects($criteria = null, $limit = null, $start = null, $id_as_key = false)
     {
         $objs = parent::getObjects($criteria, $limit, $start, $id_as_key);
         foreach($objs as $obj){
@@ -169,7 +177,7 @@ class Xcck_DefinitionHandler extends Xcck_ObjectGenericHandler
     /**
      * @public
      */
-    public function insert(&$obj)
+    public function insert(&$obj, $force = false)
     {
         $fieldType = $obj->getFieldType();
         if ($obj->isNew()) {
@@ -186,19 +194,19 @@ class Xcck_DefinitionHandler extends Xcck_ObjectGenericHandler
             }
         }
     
-        return parent::insert($obj);
+        return parent::insert($obj, $force);
     }
 
     /**
      * @return bool
      */
-    public function delete(&$obj)
+    public function delete(&$obj, $force=false)
     {
         $sql = 'ALTER TABLE %s DROP `'. $obj->get('field_name') .'`';
         $this->_alterPage($sql);
         $this->_alterRevision($sql);
     
-        return parent::delete($obj);
+        return parent::delete($obj, $force);
     }
 
     /**
@@ -219,14 +227,20 @@ class Xcck_DefinitionHandler extends Xcck_ObjectGenericHandler
 
     public function getDefinitionsArr()
     {
+        static $defArr = array();
+        if(isset($defArr[$this->getDirname()])){
+            return $defArr[$this->getDirname()];
+        }
         $criteria = new CriteriaCompo();
         $criteria->setSort('weight', 'ASC');
         $definitions = $this->getObjects($criteria);
-        $defArr = array();
+        $arr = array();
         foreach($definitions as $def){
-            $defArr[$def->get('field_name')] = $def->gets();
+            $arr[$def->get('field_name')] = $def->gets();
         }
-        return $defArr;
+        $defArr[$this->getDirname()] = $arr;
+
+        return $arr;
     }
 
     /**
@@ -253,7 +267,7 @@ class Xcck_DefinitionHandler extends Xcck_ObjectGenericHandler
 		}
 	}
 
-    protected function _isActivityClient()
+    protected function _isActivityClient(/*** mixed[] ***/ $conf)
     {
         return false;
     }
