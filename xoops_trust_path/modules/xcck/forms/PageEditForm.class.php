@@ -130,7 +130,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
          * 
          * @param   &Xcck_PageEditForm
         **/
-        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ActionForm.Update', $this);
+        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ValidateRegisterForm', $this);
     }
 
     /**

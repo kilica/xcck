@@ -27,6 +27,10 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+1.00(2013.05.25)
+- Workflow のバグ修正
+- PageEditAction における page と revision を交換
+
 0.99(2013.04.17)
 - Revision と Page の insert まわりのリファクタリング
 

@@ -18,6 +18,7 @@ require_once XCCK_TRUST_PATH . '/class/AbstractEditAction.class.php';
 class Xcck_PageEditAction extends Xcck_AbstractEditAction
 {
     public $mDefinitions = array();
+    public $mRevisionHandler = null;
 
     /**
      * _getId
@@ -166,16 +167,17 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
      **/
     protected function _setupObject()
     {
-        $handler = Legacy_Utils::getModuleHandler('revision', $this->mAsset->mDirname);
         $id = $this->_getId();
 
         $this->mObjectHandler =& $this->_getHandler();
+        $this->mRevisionHandler = Legacy_Utils::getModuleHandler('revision', $this->mAsset->mDirname);
 
-        $this->mObject = $handler->getLatestRevision($id, Lenum_Status::REJECTED);
-
-        if($this->mObject == null && $this->_isEnableCreate())
-        {
-            $this->mObject =& $handler->create();
+        $revision = $this->mRevisionHandler->getLatestRevision($id, Lenum_Status::REJECTED);
+        if($revision == null && $this->_isEnableCreate()) {
+            $this->mObject =& $this->mObjectHandler->create();
+        }
+        else{
+            $this->mObject = Xcck_Utils::setupPageByRevision($revision);
         }
     }
 
@@ -312,13 +314,33 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
      **/
     protected function _doExecute()
     {
-        $page = Xcck_Utils::setupPageByRevision($this->mObject);
+        $ret = parent::_doExecute();
+        $this->_saveWorkflow();
 
-        if($this->mObjectHandler->insert($page)===false){
-            return XCCK_FRAME_VIEW_ERROR;
+        return $ret;
+    }
+
+
+    /**
+     * save workflow
+     *
+     * @param XoopsSimpleObject    $obj
+     *
+     * @return    void
+     */
+    protected function _saveWorkflow()
+    {
+        $obj = $this->mRevisionHandler->getLatestRevision($this->mObject->get('page_id'));
+        if(Xcck_Utils::getModuleConfig($obj->getDirname(), 'publish')=='linear' && $obj->getShow('status')!=Lenum_Status::DELETED){
+            XCube_DelegateUtils::call(
+                'Legacy_Workflow.AddItem',
+                $obj->getShow('title'),
+                $obj->getDirname(),
+                'page',
+                $obj->get('page_id'),
+                Legacy_Utils::renderUri($obj->getDirname(), 'revision', $obj->get('revision_id'))
+            );
         }
-
-        return XCCK_FRAME_VIEW_SUCCESS;
     }
 
     /**

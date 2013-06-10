@@ -343,6 +343,26 @@ class Xcck_PageObject extends Legacy_AbstractObject
         $this->mLatestRevision = $handler->getLatestRevision($this->get('page_id'));
     }
 
+    public function loadTag()
+    {
+        $tagDirname = Xcck_Utils::getModuleConfig($this->getDirname(), 'tag_dirname');
+        if($this->_mIsTagLoaded==false && $tagDirname){
+            $tagArr = array();
+            if(! $this->isNew()){
+                XCube_DelegateUtils::call(
+                    'Legacy_Tag.'.$tagDirname.'.GetTags',
+                    new XCube_Ref($tagArr),
+                    $tagDirname,
+                    $this->getDirname(),
+                    'page',
+                    $this->get('page_id')
+                );
+            }
+            $this->mTag = $tagArr;
+            $this->_mIsTagLoaded = true;
+        }
+    }
+
     /**
      * @public
      * get top page_id in hierarchical page tree
@@ -426,32 +446,9 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
         $handler = Legacy_Utils::getModuleHandler('revision', $this->getDirname());
         $ret = $handler->insert($revision, $force);
 
-        //workflow
-        $this->_saveWorkflow($revision);
-
         return $ret;
     }
 
-    /**
-     * save workflow
-     *
-     * @param XoopsSimpleObject    $obj
-     *
-     * @return    void
-     */
-    protected function _saveWorkflow(Xcck_RevisionObject $obj)
-    {
-        if(Xcck_Utils::getModuleConfig($obj->getDirname(), 'publish')=='linear' && $obj->getShow('status')!=Lenum_Status::DELETED){
-            XCube_DelegateUtils::call(
-                'Legacy_Workflow.AddItem',
-                $obj->getShow('title'),
-                $obj->getDirname(),
-                'page',
-                $obj->get('page_id'),
-                Legacy_Utils::renderUri($obj->getDirname(), 'revision', $obj->get('revision_id'))
-            );
-        }
-    }
 
     /**
      * @deprecated

@@ -21,7 +21,7 @@ require_once XCCK_TRUST_PATH . '/class/XcckUtils.class.php';
 // Define a basic manifesto.
 //
 $modversion['name'] = $myDirName;
-$modversion['version'] = 0.99;
+$modversion['version'] = 1.00;
 $modversion['description'] = _MI_XCCK_DESC_XCCK;
 $modversion['author'] = _MI_XCCK_LANG_AUTHOR;
 $modversion['credits'] = _MI_XCCK_LANG_CREDITS;
@@ -270,7 +270,7 @@ $modversion['config'] = array(
         'description'   => '_MI_XCCK_DESC_USE_ACTIVITY',
         'formtype'      => 'yesno',
         'valuetype'     => 'int',
-        'default'       => 1,
+        'default'       => 0,
         'options'       => array()
     ),
     array(

@@ -28,7 +28,6 @@ class Xcck_RevisionObject extends Xcck_PageObject
     public function __construct(/*** string ***/ $dirname)
     {
         $this->mDirname = $dirname;
-        $defHandler = Legacy_Utils::getModuleHandler('definition', $this->getDirname());
         $this->loadDefinition();
     
         $this->initVar('revision_id', XOBJ_DTYPE_INT, '', false);
@@ -47,27 +46,6 @@ class Xcck_RevisionObject extends Xcck_PageObject
         foreach(array_keys($this->mDef) as $key){
             $this->mDef[$key]->mFieldType = $this->mDef[$key]->getFieldType();
             $this->mDef[$key]->mFieldType->setInitVar($this, $this->mDef[$key]->getShow('field_name'), $this->mDef[$key]->getDefault());
-        }
-    }
-
-    public function loadTag()
-    {
-        $chandler = xoops_gethandler('config');
-        $configArr = $chandler->getConfigsByDirname($this->getDirname());
-    
-        if($this->_mIsTagLoaded==false && $tagDirname = $configArr['tag_dirname']){
-            $tagArr = array();
-            if(! $this->isNew()){
-                XCube_DelegateUtils::call('Legacy_Tag.'.$configArr['tag_dirname'].'.GetTags',
-                    new XCube_Ref($tagArr),
-                    $tagDirname,
-                    $this->getDirname(),
-                    'page',
-                    $this->get('page_id')
-                );
-            }
-            $this->mTag = $tagArr;
-            $this->_mIsTagLoaded = true;
         }
     }
 }
@@ -102,15 +80,10 @@ class Xcck_RevisionHandler extends Xcck_ObjectGenericHandler
         }
         $obj->set('status', $status);
 
-        if($status===Lenum_Status::PUBLISHED){
-            $handler = Legacy_Utils::getModuleHandler('page', $this->getDirname());
-            $page = Xcck_Utils::setupPageByRevision($this);
+        $handler = Legacy_Utils::getModuleHandler('page', $this->getDirname());
+        $page = Xcck_Utils::setupPageByRevision($obj);
 
-            return $handler->insert($page, true);
-        }
-        else{
-            return $this->insert($obj, true);
-        }
+        return $handler->insert($page, true);
     }
 
     /**
