@@ -68,7 +68,8 @@ class Xcck_PageViewAction extends Xcck_AbstractViewAction
     **/
     public function hasPermission()
     {
-        if($this->mObject->get('uid')==Legacy_Utils::getUid()){
+        $uid = Legacy_Utils::getUid();
+        if($uid>0 && $this->mObject->get('uid')==$uid){
             return true;
         }
     

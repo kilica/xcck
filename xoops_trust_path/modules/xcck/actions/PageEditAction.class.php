@@ -49,7 +49,7 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
         if($this->mObject->get('category_id')>0){
             $catId = $this->mObject->get('category_id');
         }
-        elseif($pId = $this->_getParentId()>0){
+        elseif(($pId = $this->_getParentId())>0){
             $handler = Legacy_Utils::getModuleHandler('page', $this->mAsset->mDirname);
             $parent = $handler->get($pId);
             $catId = $parent->get('category_id');

@@ -92,7 +92,7 @@ class Xcck_Module extends Legacy_ModuleAdapter
 			}
 		}
 	
-		if($root->mContext->mModuleConfig['default_query'] && $hasQueryString===false){
+		if($root->mContext->mRequest->getRequest(_REQUESTED_DATA_NAME)=='page' && $root->mContext->mModuleConfig['default_query'] && $hasQueryString===false){
 			$defaultQueries = explode('|', $root->mContext->mModuleConfig['default_query']);
 			if(isset($sessid)) $defaultQueries[] = 'PHPSESSID='.$sessid;
 			foreach($defaultQueries as $query){
@@ -149,7 +149,7 @@ class Xcck_Module extends Legacy_ModuleAdapter
 			}
 			else{
 				$default = $root->mContext->mModuleConfig['default_action'];
-				$default = $default ? ucfirst($default) : 'List';
+				$default = ($default && $dataname=='page') ? ucfirst($default) : 'List';
 				$actionName = ucfirst($dataname) . $default;
 			}
 		}
