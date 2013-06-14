@@ -1,36 +1,34 @@
 <div class="xcck">
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
+<div class="page-header">
+  <h1><{$smarty.const._MD_XCCK_LANG_DEFINITION_DELETE}></h1>
+</div>
+<div class="alert alert-warning"><{$smarty.const._MD_XCCK_MESSAGE_CONFIRM_DELETE}></div>
 
-<h1><{$smarty.const._MD_XCCK_LANG_DEFINITION_DELETE}></h1>
-
-<div class="confirm"><{$smarty.const._MD_XCCK_MESSAGE_CONFIRM_DELETE}></div>
-
-<form action="<{xoops_cooluri dirname=$dirname dataname=definition action=delete}>" method="post">
-  <dl class="view">
-    <dt><{$smarty.const._MD_XCCK_LANG_DEFINITION_ID}></dt>
-    <dd><{$object->getShow('definition_id')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_FIELD_NAME}></dt>
-    <dd><{$object->getShow('field_name')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_LABEL}></dt>
-    <dd><{$object->getShow('label')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_FIELD_TYPE}></dt>
-    <dd><{$object->getShow('field_type')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_VALIDATION}></dt>
-    <dd><{$object->getShow('validation')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_REQUIRED}></dt>
-    <dd><{$object->getShow('required')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_WEIGHT}></dt>
-    <dd><{$object->getShow('weight')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_DESCRIPTION}></dt>
-    <dd><{$object->getShow('description')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_OPTIONS}></dt>
-    <dd><{$object->getShow('options')}></dd>
-    <dd>
+<form class="form-horizontal" action="<{xoops_cooluri dirname=$dirname dataname=definition action=delete}>" method="post">
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_DEFINITION_ID}></label>
+    <div class="controls"><{$object->getShow('definition_id')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_FIELD_NAME}></label>
+    <div class="controls"><{$object->getShow('field_name')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_LABEL}></label>
+    <div class="controls"><{$object->getShow('label')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_FIELD_TYPE}></label>
+    <div class="controls"><{$object->getShow('field_type')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_VALIDATION}></label>
+    <div class="controls"><{$object->getShow('validation')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_REQUIRED}></label>
+    <div class="controls"><{$object->getShow('required')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_WEIGHT}></label>
+    <div class="controls"><{$object->getShow('weight')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_DESCRIPTION}></label>
+    <div class="controls"><{$object->getShow('description')}></div>
+    <label class="control-label"><{$smarty.const._MD_XCCK_LANG_OPTIONS}></label>
+    <div class="controls"><{$object->getShow('options')}></div>
+    <div class="form-actions">
       <{xoops_token form=$actionForm}>
       <{xoops_input type=hidden name=definition_id value=$actionForm->get('definition_id')}>
-      <input type="submit" class="formButton" value="<{$smarty.const._DELETE}>"/>
-      <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel"/>
-    </dd>
-  </dl>
+        <button type="submit" class="btn btn-primary"><{$smarty.const._DELETE}></button>
+        <button type="submit" class="btn" name="_form_control_cancel" value="cancel"><{$smarty.const._CANCEL}></button>
+    </div>
 </form>
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
 </div>

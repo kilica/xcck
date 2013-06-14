@@ -1,35 +1,39 @@
 <div class="xcck">
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
+<div class="page-header">
+  <h1><{$smarty.const._MD_XCCK_LANG_PAGE_DELETE}></h1>
+</div>
 
-<h1><{$smarty.const._MD_XCCK_LANG_PAGE_DELETE}></h1>
+<div class="alert alert-warning"><{$smarty.const._MD_XCCK_MESSAGE_CONFIRM_DELETE}></div>
 
-<div class="confirm"><{$smarty.const._MD_XCCK_MESSAGE_CONFIRM_DELETE}></div>
-
-<form action="<{xoops_cooluri dirname=$dirname dataname=page action=delete}>" method="post">
-  <dl class="view">
-    <dt><{$smarty.const._MD_XCCK_LANG_PAGE_ID}></dt>
-    <dd><{$object->getShow('page_id')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_TITLE}></dt>
-    <dd><{$object->getShow('title')}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_UID}></dt>
-    <dd><{$object->getShow('uid')|xoops_user:"user_name"}></dd>
-    <dt><{$smarty.const._MD_XCCK_LANG_POSTTIME}></dt>
-    <dd><{$object->get('posttime')|xoops_formattimestamp:l}></dd>
-    <dt></dt>
-    <dd>
-      <{xoops_token form=$actionForm}>
-      <{xoops_input type=hidden name=page_id value=$actionForm->get('page_id')}>
-      <input type="submit" class="formButton" value="<{$smarty.const._DELETE}>"/>
-      <input type="submit" class="formButton" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel"/>
-    </dd>
-  </dl>
+<form class="form-horizontal" action="<{xoops_cooluri dirname=$dirname dataname=page action=delete}>" method="post">
+  <div class="control-group">
+    <label class="control-label" for="page_id"><{$smarty.const._MD_XCCK_LANG_PAGE_ID}></label>
+    <div class="controls"><{$object->getShow('page_id')}></div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="title"><{$smarty.const._MD_XCCK_LANG_TITLE}></label>
+    <div class="controls"><{$object->getShow('title')}></div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="uid"><{$smarty.const._MD_XCCK_LANG_UID}></label>
+    <div class="controls"><{$object->getShow('uid')|xoops_user:"user_name"}></div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="posttime"><{$smarty.const._MD_XCCK_LANG_POSTTIME}></label>
+    <div class="controls"><{$object->get('posttime')|xoops_formattimestamp:l}></div>
+  </div>
+  <div class="form-actions">
+    <{xoops_token form=$actionForm}>
+    <{xoops_input type=hidden name=page_id value=$actionForm->get('page_id')}>
+    <button type="submit" class="btn btn-primary"><{$smarty.const._DELETE}></button>
+    <button type="submit" class="btn" name="_form_control_cancel" value="cancel"><{$smarty.const._CANCEL}></button>
+  </div>
 </form>
-<div class="clear"></div>
 
 <{if $isHierarchical==true}>
 <div class="pageTree">
 <h2><{$smarty.const._MD_XCCK_LANG_PAGE_TREE}></h2>
-<p><{$smarty.const._MD_XCCK_LANG_PAGE_TREE_DELETE}></p>
+<div class="alert alert-warning"><{$smarty.const._MD_XCCK_LANG_PAGE_TREE_DELETE}></div>
 <{foreach item=page from=$pageTree name=pageTree}>
 <{if $smarty.foreach.pageTree.first}>
 <{assign var=d value=$page->getDepth()}>
@@ -54,4 +58,6 @@
 <{/foreach}>
 </div><!-- .pageTree -->
 <{/if}>
+
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
 </div>

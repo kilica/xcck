@@ -1,34 +1,37 @@
 <div class="xcck">
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
-
-<h1><{$xoops_modulename}> <{$smarty.const._LIST}></h1>
+<div class="page-header">
+  <h1><{$xoops_modulename}> <{$smarty.const._LIST}></h1>
+</div>
 
 <{foreach item=category from=$tree.category key=k}>
 <h2><{$category->getShow('title')}></h2>
 <dl>
 <{foreach item=obj from=$tree.page[$k]}>
-<dt>
-  <{if $obj->getShow('status')<9}><span class="status" title="<{$obj->getShowStatus()}>">*</span> <{/if}><a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>"><{$obj->getShow('title')}></a>
-  <{if $accessController->isEditor($obj->get('category_id'), $obj->get('uid'))}>
-  [<a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=edit}>"><{$smarty.const._EDIT}></a>]
-  [<a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=delete}>"><{$smarty.const._DELETE}></a>]
-  <{/if}>
-</dt>
-<{foreach item=def from=$definitions}>
-<{if $def->get('field_type')=='checkbox'}>
-<dd>
-  <ul>
-    <{assign var=titleArr value=$obj->showField($def->get('field_name'))}>
-    <{foreach item=option from=$titleArr.checked}>
-    <li><{$option}></li>
+    <dt>
+      <{if $obj->getShow('status')<9}><span class="status" title="<{$obj->getShowStatus()}>">*</span> <{/if}>
+      <a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>"><{$obj->getShow('title')}></a>
+      <{if $accessController->isEditor($obj->get('category_id'), $obj->get('uid'))}>
+      <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=edit}>"><i class="icon-pencil"></i> <{$smarty.const._EDIT}></a>
+      <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=delete}>"><i class="icon-trush"></i> <{$smarty.const._DELETE}></a>
+      <{/if}>
+    </dt>
+    <{foreach item=def from=$definitions}>
+    <dd>
+    <{if $def->get('field_type')=='checkbox'}>
+      <ul>
+        <{assign var=titleArr value=$obj->showField($def->get('field_name'))}>
+        <{foreach item=option from=$titleArr.checked}>
+        <li><{$option}></li>
+        <{/foreach}>
+      </ul>
+    <{else}>
+      <{$obj->showField($def->getShow('field_name'))}>
+    <{/if}>
+    </dd>
     <{/foreach}>
-  </ul>
-</dd>
-<{else}>
-<dd><{$obj->showField($def->getShow('field_name'))}></dd>
-<{/if}>
-<{/foreach}>
 <{/foreach}>
 </dl>
 <{/foreach}>
+
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
 </div>

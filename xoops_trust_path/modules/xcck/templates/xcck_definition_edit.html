@@ -1,37 +1,35 @@
 <div class="xcck">
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
 
 <{if $actionForm->hasError()}>
-  <ul class="error">
+  <ul class="alert alert-error">
     <{foreach item=message from=$actionForm->getErrorMessages()}>
       <li><{$message|xoops_escape}></li>
     <{/foreach}>
   </ul>
 <{/if}>
+<div class="page-header">
+  <h1><{$xoops_modulename}> <{$smarty.const._MD_XCCK_LANG_DEFINITION}> <{$smarty.const._EDIT}></h1>
+</div>
+<div class="description"><{$smarty.const._MD_XCCK_DESC_DEFAULT_FIELDS}></div>
 
-<h1><{$xoops_modulename}> <{$smarty.const._MD_XCCK_LANG_DEFINITION}> <{$smarty.const._EDIT}></h1>
-
-<p class="description"><{$smarty.const._MD_XCCK_DESC_DEFAULT_FIELDS}></p>
-
-<form action="<{xoops_cooluri dirname=$dirname dataname=definition action=edit}>" method="post">
-  <table class=" outer edit">
-    <tr>
-      <th class="required"><{$smarty.const._MD_XCCK_LANG_FIELD_NAME}></th>
-      <td>
+<form class="form-horizontal" action="<{xoops_cooluri dirname=$dirname dataname=definition action=edit}>" method="post">
+    <div class="form-control">
+      <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_FIELD_NAME}></label>
+      <div class="controls">
         <{xoops_input type=text name=field_name value=$actionForm->get('field_name') size=15 maxlength=32}>
         <p class="description"><{$smarty.const._MD_XCCK_TIPS_FIELD_NAME}></p>
-      </td>
-    </tr>
-    <tr>
-      <th class="required"><{$smarty.const._MD_XCCK_LANG_LABEL}></th>
-      <td>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_LABEL}></label>
+      <div class="controls">
         <{xoops_input type=text name=label value=$actionForm->get('label') size=15 maxlength=255}>
         <p class="description"><{$smarty.const._MD_XCCK_TIPS_LABEL}></p>
-      </td>
-    </tr>
-    <tr>
-      <th class="required"><{$smarty.const._MD_XCCK_LANG_FIELD_TYPE}></th>
-      <td>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_FIELD_TYPE}></label>
+      <div class="controls">
           <{if $actionForm->get('definition_id')}>
           <{$object->getShow('field_type')}>
           <{xoops_input type=hidden name=field_type value=$actionForm->get('field_type')}>
@@ -42,11 +40,11 @@
             <{/foreach}>
           </select>
           <{/if}>
-      </td>
-    </tr>
-    <tr>
-      <th><{$smarty.const._MD_XCCK_LANG_OPTIONS}></th>
-      <td>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><{$smarty.const._MD_XCCK_LANG_OPTIONS}></label>
+      <div class="controls">
         <{*xoops_textarea type=text name=options value=$actionForm->get('options')*}>
         <div id="fieldtype_string" class="optionField">
           <input type="text" name="options" id="legacy_xoopsform_options" value="<{$actionForm->get('options')}>" />
@@ -109,58 +107,55 @@
           <p><{$smarty.const._MD_XCCK_DESC_FIELD_CATEGORY}></p>
         </div>
         <{*<p class="description"><{$smarty.const._MD_XCCK_TIPS_OPTIONS}></p>*}>
-      </td>
-    </tr>
-    <tr>
-      <th><{$smarty.const._MD_XCCK_LANG_VALIDATION}></th>
-      <td>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><{$smarty.const._MD_XCCK_LANG_VALIDATION}></label>
+      <div class="controls">
         <select name="validation" id="legacy_xoopsform_validation">
         <option value="<{$validation}>"<{if ! $actionForm->get('validation')}> selected="selected"<{/if}>></option>
         <{foreach item=validation from=$validationArr}>
         <option value="<{$validation}>"<{if $validation==$actionForm->get('validation')}>selected="selected"<{/if}>><{$validation}></option>
         <{/foreach}>
         </select>
-      </td>
-    </tr>
-    <tr>
-      <th><{$smarty.const._MD_XCCK_LANG_REQUIRED}></th>
-      <td>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><{$smarty.const._MD_XCCK_LANG_REQUIRED}></label>
+      <div class="controls">
         <{xoops_input type=checkbox name=required value=1 default=$actionForm->get('required')}>
-      </td>
-    </tr>
-    <tr>
-      <th class="required"><{$smarty.const._MD_XCCK_LANG_WEIGHT}></th>
-      <td>
-        <{xoops_input type=text name=weight value=$actionForm->get('weight')}>
-      </td>
-    </tr>
-    <tr>
-      <th><{$smarty.const._MD_XCCK_LANG_SHOW_LIST}></th>
-      <td>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_WEIGHT}></label>
+      <div class="controls">
+        <{xoops_input type=text name=weight value=$actionForm->get('weight') class="span1"}>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><{$smarty.const._MD_XCCK_LANG_SHOW_LIST}></label>
+      <div class="controls">
         <{xoops_input type=checkbox name=show_list value=1 default=$actionForm->get('show_list')}>
-      </td>
-    </tr>
-    <tr>
-      <th><{$smarty.const._MD_XCCK_LANG_SEARCH_FLAG}></th>
-      <td>
-        <{xoops_input type=checkbox name=search_flag value=1 default=$actionForm->get('show_list')}>
-      </td>
-    </tr>
-    <tr>
-      <th><{$smarty.const._MD_XCCK_LANG_DESCRIPTION}></th>
-      <td>
-        <{xoops_textarea type=text name=description value=$actionForm->get('description')}>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><{$smarty.const._MD_XCCK_LANG_SEARCH_FLAG}></label>
+      <div class="controls">
+        <{xoops_input type=checkbox name=search_flag value=1 default=$actionForm->get('search_flag')}>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><{$smarty.const._MD_XCCK_LANG_DESCRIPTION}></label>
+      <div class="controls">
+        <{xoops_textarea type=text name=description value=$actionForm->get('description') class="span5"}>
+      </div>
+    </div>
+    <div class="form-actions">
         <{xoops_token form=$actionForm}>
         <{xoops_input type=hidden name=definition_id value=$actionForm->get('definition_id')}>
-        <input type="submit" value="<{$smarty.const._SUBMIT}>" />
-        <input type="submit" value="<{$smarty.const._CANCEL}>" name="_form_control_cancel" />
-      </td>
-    </tr>
-  </table>
+        <button type="submit" class="btn btn-primary"><{$smarty.const._SUBMIT}></button>
+        <button type="submit" class="btn" name="_form_control_cancel" value="cancel"><{$smarty.const._CANCEL}></button>
+    </div>
 </form>
-<div class="clear"></div>
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
 </div>

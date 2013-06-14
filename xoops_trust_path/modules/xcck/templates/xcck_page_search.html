@@ -1,10 +1,10 @@
 <div class="xcck">
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
-
-<h1><{$xoops_modulename}> <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname action="search"}>"><{$smarty.const._MD_XCCK_LANG_SEARCH}></a></h1>
+<div class="page-header">
+  <h1><{$xoops_modulename}> <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname action="search"}>"><{$smarty.const._MD_XCCK_LANG_SEARCH}></a></h1>
+</div>
 
 <{* Customize your search conditions !!!
-<form action="index.php" method="GET">
+<form class="form-horizontal" action="index.php" method="GET">
 <div>&lt; <{xcck_search def=$definitions.day condition="like"}></div>
 <div>&gt;=<{xcck_search def=$definitions.matchdate condition=">=" num=1}></div>
 <div><{xcck_search def=$definitions.level condition="*" num=2}></div>
@@ -13,24 +13,25 @@
 </form>
 *}>
 <{if count($objects) > 0}>
-  <div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
+  <ul class="media-list">
   <{foreach item=obj from=$objects}>
-  <dl class="item">
-    <dt class="itemTitle">
+    <li class="media">
+    <div class="media-body">
+    <h3 class="media-heading">
       <{if $obj->getShow('status')<9}><span class="status" title="<{$obj->getShowStatus()}>">*</span> <{/if}><a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>"><{$obj->getShow('title')}></a>
       <{if $accessController->isEditor($obj->get('category_id'), $obj->get('uid'))}>
-      <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=edit}>"><img src="<{$xoops_url}>/images/icons/edit.gif" alt="<{$smarty.const._EDIT}>" /></a>
-      <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=delete}>"><img src="<{$xoops_url}>/images/icons/delete.gif" alt="<{$smarty.const._DELETE}>" /></a>
+      <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=edit}>"><i class="icon-pencil"></i></a>
+      <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$obj->getShow('page_id') action=delete}>"><i class="icon-trash"></i></a>
       <{/if}>
-    </dt>
-    <dd class="itemInfo">
+    </h3>
+    <ul class="inline">
       <{if $catTitleList}>
       <{assign var="catId" value=$obj->get('category_id')}>
-      <span class="itemStat"><{$catTitleList.$catId|xoops_escape}></span>
+      <li><{$catTitleList.$catId|xoops_escape}></li>
       <{/if}>
-      <span class="itemPoster"><{$obj->getShow('uid')|xoops_user:"user_name"}></span>
-      <span class="itemPostDate"><{$obj->get('posttime')|xoops_formattimestamp:s}></span>
-    </dd>
+      <li><{$obj->getShow('uid')|xoops_user:"user_name"}></li>
+      <li class="itemPostDate"><{$obj->get('posttime')|xoops_formattimestamp:s}></li>
+    </ul><!-- .inline -->
     <!--
       if you want to show field outside foreach loop, you can write down 
       like below (when the field's name is "memo").
@@ -38,20 +39,25 @@
     -->
     <{foreach item=def from=$definitions}>
     <{if $def->get('field_type')=='checkbox'}>
-    <dd class="itemBody">
+    <div class="itemBody">
       <ul>
         <{assign var=titleArr value=$obj->showField($def->get('field_name'))}>
         <{foreach item=option from=$titleArr.checked}>
         <li><{$option}></li>
         <{/foreach}>
       </ul>
-    </dd>
+    </div>
     <{else}>
-    <dd class="itemBody"><{$obj->showField($def->getShow('field_name'))}></dd>
+    <div class="itemBody">
+      <{$obj->showField($def->getShow('field_name'))}>
+    </div>
     <{/if}>
     <{/foreach}>
-  </dl>
+    </div><!-- .media-body -->
+  </li><!-- .media -->
   <{/foreach}>
+  </ul>
   <div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
 <{/if}>
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
 </div>

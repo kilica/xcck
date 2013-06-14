@@ -1,11 +1,12 @@
 <div class="xcck">
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
+<div class="page-header">
+  <h1><{$xoops_modulename}> <{$smarty.const._MD_XCCK_LANG_DEFINITION}> <{$smarty.const._LIST}></h1>
+</div>
 
-<h1><{$xoops_modulename}> <{$smarty.const._MD_XCCK_LANG_DEFINITION}> <{$smarty.const._LIST}></h1>
-<p class="description"><{$smarty.const._MD_XCCK_DESC_DEFAULT_FIELDS}></p>
+<div class="description"><{$smarty.const._MD_XCCK_DESC_DEFAULT_FIELDS}></div>
+
 <{if count($objects) > 0}>
-  <div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
-  <table class="outer list" summary="">
+  <table class="table striped">
     <thead>
       <tr>
         <th>
@@ -31,8 +32,8 @@
           <td><{$obj->getShow('field_type')}></td>
           <td><{$obj->getShow('weight')}></td>
           <td>
-            <a href="<{xoops_cooluri dirname=$dirname dataname=definition data_id=$obj->getShow('definition_id') action=edit}>"><{$smarty.const._EDIT}></a>
-            <a href="<{xoops_cooluri dirname=$dirname dataname=definition data_id=$obj->getShow('definition_id') action=delete}>"><{$smarty.const._DELETE}></a>
+            <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=definition data_id=$obj->getShow('definition_id') action=edit}>"><i class="icon-pencil"></i> <{$smarty.const._EDIT}></a>
+            <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=definition data_id=$obj->getShow('definition_id') action=delete}>"><i class="icon-trash"></i> <{$smarty.const._DELETE}></a>
           </td>
         </tr>
       <{/foreach}>
@@ -40,4 +41,5 @@
   </table>
   <div class="pagenavi"><{xoops_pagenavi pagenavi=$pageNavi}></div>
 <{/if}>
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
 </div>

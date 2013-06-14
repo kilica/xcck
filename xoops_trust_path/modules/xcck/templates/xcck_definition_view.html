@@ -1,11 +1,10 @@
 <div class="xcck">
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
-
-<h1><{$object->getShow('label')}> <{$smarty.const._MD_XCCK_LANG_DEFINITION}> <{$smarty.const._EDIT}></h1>
-
+<div class="page-header">
+  <h1><{$object->getShow('label')}> <{$smarty.const._MD_XCCK_LANG_DEFINITION}> <{$smarty.const._EDIT}></h1>
+</div>
 <a href="<{xoops_cooluri dirname=$dirname dataname=definition data_id=$object->getShow('definition_id') action=edit}>"><{$smarty.const._MD_XCCK_LANG_DEFINITION_EDIT}></a>
 
-<dl class="view">
+<dl class="dl-horizontal">
   <dt><{$smarty.const._MD_XCCK_LANG_FIELD_NAME}></dt>
   <dd><{$object->getShow('field_name')}></dd>
   <dt><{$smarty.const._MD_XCCK_LANG_LABEL}></dt>
@@ -27,4 +26,6 @@
   <dt><{$smarty.const._MD_XCCK_LANG_OPTIONS}></dt>
   <dd><{$object->getShow('options')}></dd>
 </dl>
+
+<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable}>
 </div>

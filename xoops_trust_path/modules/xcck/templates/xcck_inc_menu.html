@@ -1,12 +1,11 @@
 <{if $isSubtable===false && ($isPoster===true||$xoops_isadmin)}>
-<ul class="hmenu">
-  <li><a href="<{xoops_cooluri dirname=$dirname}>"><{$xoops_modulename}> Top Page</a></li>
-  <li><a href="<{xoops_cooluri dirname=$dirname dataname=page action=edit}>"><{$smarty.const._MD_XCCK_LANG_ADD_A_NEW_PAGE}></a></li>
+<ul class="inline well well-small">
+  <li><i class="icon-caret-right"></i> <a href="<{xoops_cooluri dirname=$dirname}>"><{$xoops_modulename}> Top Page</a></li>
+  <li><i class="icon-caret-right"></i> <a href="<{xoops_cooluri dirname=$dirname dataname=page action=edit}>"><{$smarty.const._MD_XCCK_LANG_ADD_A_NEW_PAGE}></a></li>
   <{if $xoops_isadmin}>
-  <li><a href="<{xoops_cooluri dirname=$dirname query="show=all"}>"><{$smarty.const._MD_XCCK_LANG_SHOW_ALL}></a></li>
-  <li><a href="<{xoops_cooluri dirname=$dirname dataname=definition}>"><{$smarty.const._MD_XCCK_LANG_DEFINITION_LIST}></a></li>
-  <li><a href="<{xoops_cooluri dirname=$dirname dataname=definition action=edit}>"><{$smarty.const._MD_XCCK_LANG_ADD_A_NEW_DEFINITION}></a></li>
+  <li><i class="icon-caret-right"></i> <a href="<{xoops_cooluri dirname=$dirname query="show=all"}>"><{$smarty.const._MD_XCCK_LANG_SHOW_ALL}></a></li>
+  <li><i class="icon-caret-right"></i> <a href="<{xoops_cooluri dirname=$dirname dataname=definition}>"><{$smarty.const._MD_XCCK_LANG_DEFINITION_LIST}></a></li>
+  <li><i class="icon-caret-right"></i> <a href="<{xoops_cooluri dirname=$dirname dataname=definition action=edit}>"><{$smarty.const._MD_XCCK_LANG_ADD_A_NEW_DEFINITION}></a></li>
   <{/if}>
 </ul>
-<div class="clear"></div>
-  <{/if}>
+<{/if}>
