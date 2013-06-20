@@ -72,7 +72,7 @@ define('_MD_XCCK_LANG_YES', 'Yes');
 define('_MD_XCCK_LANG_NO', 'No');
 define('_MD_XCCK_TIPS_OPTIONS', '<p>When Field Type is ...</p><ul><li>Select box :Set options by one option in one line.</li><li>Check box :Set the display string when "checked" and "unchecked", separated by ENTER code. When empty, "'._MD_XCCK_LANG_YES.'" and "'._MD_XCCK_LANG_YES.'" is used.</li><li>String or Int : Set the default value.</li><li>Date: Set "hour" if you select date and hour. Set "half" if you select date, hour and every half hour. Set "quarter" if you select date, hour and every quarter hour. Set "10min" if you select date, hour and 10 minute. Set "minute" if you select date, hour and minute.</li><li>Text : Set "html" if you use wysiwyg editor(default is bbcode editor)</li><li>Category : Set LEGACY_CATEGORY module\'s dirname.</li></ul>');
 define('_MD_XCCK_DESC_FIELD_SELECTBOX', 'Set options by one option in one line.');
-define('_MD_XCCK_DESC_FIELD_CHECKBOX', 'Set the display string when "checked" and "unchecked", separated by ENTER code. When empty, "'._MD_XCCK_LANG_YES.'" and "'._MD_XCCK_LANG_YES.'" is used.');
+define('_MD_XCCK_DESC_FIELD_CHECKBOX', 'Set the display name AND default value(0:unchecked, 1:checked), separated by "|".<br />You can set multiple lines for multiple checkboxes.<br /> ex)<br />Sports|1<br />Game|0<br />Travel|0');
 define('_MD_XCCK_DESC_FIELD_STRING', 'Set the default value.');
 define('_MD_XCCK_DESC_FIELD_INT', 'Set the default value.');
 define('_MD_XCCK_DESC_FIELD_TEXT', 'Select "html" if you use wysiwyg editor.');
