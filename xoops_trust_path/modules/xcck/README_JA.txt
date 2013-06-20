@@ -32,6 +32,7 @@ XOOPS Cube CCK(Content Creation Kit)
 - PageEditAction における page と revision を交換
 - default_action/ default_query を設定した時、 definition の動作にも影響してしまうバグを修正
 - 子ページ作成時のエラーを修正
+- Bootstrap テンプレート採用
 
 0.99(2013.04.17)
 - Revision と Page の insert まわりのリファクタリング
