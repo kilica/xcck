@@ -7,11 +7,12 @@
       <{if $accessController->isEditor($object->get('category_id'), $object->get('uid'))===true}>
         <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$object->getShow('page_id') action=edit}>"><i class="icon-pencil"> <{$smarty.const._EDIT}></i></a>
         <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$object->getShow('page_id') action=delete}>"><i class="icon-trash"></i> <{$smarty.const._DELETE}></a>
+        <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit query="p_id="|cat:$object->get('page_id')}>"><{$smarty.const._MD_XCCK_LANG_DESCENDANT}><{$smarty.const._ADD}></a>
       <{/if}>
     </h1>
   </div><!-- .page-header -->
   <ul class="inline media-info">
-    <li><{$object->getShow('uid')|xoops_user:'user_name'}></li>
+    <li><i class="icon-user"></i> <{$object->getShow('uid')|xoops_user:'user_name'}></li>
     <!-- tag -->
     <{if count($object->mTag)>0}>
     <li class="tag-list"><span class="label"><{$smarty.const._TAG}></span>
@@ -89,7 +90,6 @@
 <{if $isHierarchical==1}>
 <div class="pageTree">
   <h2><{$smarty.const._MD_XCCK_LANG_PAGE_TREE}></h2>
-  <p><a href="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit query="p_id="|cat:$object->get('page_id')}>"><{$smarty.const._ADD}></a></p>
   <{foreach item=page from=$pageTree name=pageTree}>
   <{if $smarty.foreach.pageTree.first}><{assign var=d value=$page->getDepth()}><{/if}>
   <{if $smarty.foreach.pageTree.first || $d < $page->getDepth()}>
