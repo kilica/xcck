@@ -92,6 +92,16 @@ class Xcck_PageViewAction extends Xcck_AbstractViewAction
     public function prepare()
     {
         $result = parent::prepare();
+        if($result===false){
+            $cri = new CriteriaCompo();
+            $cri->setSort('page_id', 'DESC');
+            $objs = $this->mObjectHandler->getObjects($cri, 1, 0);
+            $maxId = count($objs)>0 ? array_shift($objs)->get('page_id') : 0;
+            $returnCode =($maxId > $this->_getId()) ? 410 : 404;
+            header('HTTP', true, $returnCode);
+
+            $this->mRoot->mController->executeRedirect(XOOPS_URL, 2, _MD_XCCK_ERROR_CONTENT_IS_NOT_FOUND);
+        }
         $this->mObject->loadMaintable();
         $this->mObject->loadPath();
         $this->mObject->loadTag();
