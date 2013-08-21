@@ -93,6 +93,11 @@ class Xcck_PageEditForm extends XCube_ActionForm
             if(in_array($this->_mDef[$key]->get('field_type'), array('startdate', 'enddate'))){
                 $this->mFormProperties['enable_'.$this->_mDef[$key]->get('field_name')] = new XCube_BoolProperty('enable_'.$this->_mDef[$key]->get('field_name'));
             }
+            //add file field
+            if($this->_mDef[$key]->get('field_type')==Xcck_FieldType::FILE){
+                $this->mFormProperties[$this->_mDef[$key]->get('field_name').'_file'] = new XCube_FileProperty($this->_mDef[$key]->get('field_name').'_file');
+                $this->mFormProperties[$this->_mDef[$key]->get('field_name').'_delete'] = new XCube_BoolProperty($this->_mDef[$key]->get('field_name').'_delete');
+            }
         
             //
             //validation checks for custom fields
@@ -111,6 +116,22 @@ class Xcck_PageEditForm extends XCube_ActionForm
                 $this->mFieldProperties[$this->_mDef[$key]->get('field_name')]->addMessage($this->_mDef[$key]->get('field_name'), _MD_XCCK_ERROR_EMAIL);
             break;
             }
+            // file upload validation
+            if($this->_mDef[$key]->get('field_type')==Xcck_FieldType::FILE){
+                $this->mFieldProperties[$this->_mDef[$key]->get('field_name').'_file'] = new XCube_FieldProperty($this);
+                $this->mFieldProperties[$this->_mDef[$key]->get('field_name').'_file']->setDependsByArray(array('extension', 'maxfilesize'));
+
+                $validationArr[] = 'maxfilesize';
+                $this->mFieldProperties[$this->_mDef[$key]->get('field_name').'_file']->addVar('maxfilesize', $this->_mDef[$key]->getOptions('maxFileSize')*1024);
+                $this->mFieldProperties[$this->_mDef[$key]->get('field_name').'_file']->addMessage('maxfilesize', _MD_XCCK_ERROR_MAXFILESIZE, $this->_mDef[$key]->getOptions('maxFileSize'));
+
+                $validationArr[] = 'extension';
+                $extensions = implode(',',$this->_mDef[$key]->getOptions('allowedExtensions'));
+                $this->mFieldProperties[$this->_mDef[$key]->get('field_name').'_file']->addVar('extension', $extensions);
+                $this->mFieldProperties[$this->_mDef[$key]->get('field_name').'_file']->addMessage('extension', _MD_XCCK_ERROR_EXTENSION, $extensions);
+            }
+
+
             $this->mFieldProperties[$this->_mDef[$key]->get('field_name')]->setDependsByArray($validationArr);
         }
     }
@@ -191,29 +212,38 @@ class Xcck_PageEditForm extends XCube_ActionForm
         foreach($this->_mDef as $def){
             switch($def->get('field_type')){
             case Xcck_FieldType::DATE:
-            if($this->get($def->get('field_name'))){
-                $val = $this->_makeUnixtime($def->get('field_name'));
-            }
-            else{
-            $val = 0;
-            }
+                if($this->get($def->get('field_name'))){
+                    $val = $this->_makeUnixtime($def->get('field_name'));
+                }
+                else{
+                    $val = 0;
+                }
                 break;
             case Xcck_FieldType::STARTDATE:
             case Xcck_FieldType::ENDDATE:
-            if($this->get($def->get('field_name')) && $this->get('enable_'.$def->get('field_name'))==1){
-                $val = $this->_makeUnixtime($def->get('field_name'));
-            }
-            else{
-            $val = 0;
-            }
+                if($this->get($def->get('field_name')) && $this->get('enable_'.$def->get('field_name'))==1){
+                    $val = $this->_makeUnixtime($def->get('field_name'));
+                }
+                else{
+                    $val = 0;
+                }
                 break;
             case Xcck_FieldType::TEXT:
                 $val = $def->get('options')=='html' ? $this->_getPurifiedHtml($def->get('field_name')) : $this->get($def->get('field_name'));
                 break;
             case Xcck_FieldType::CHECKBOX:
-$val = decbin(array_sum($this->get($def->get('field_name'))));
-//var_dump($this->get($def->get('field_name')));var_dump($val);die();
-break;
+                $val = decbin(array_sum($this->get($def->get('field_name'))));
+                break;
+            case Xcck_FieldType::FILE:
+                $val = $this->get($def->get('field_name'));
+                if($this->get($def->get('field_name').'_delete')){
+                    $val = '';
+                }
+                $filename = $_FILES[$def->get('field_name').'_file']["name"];
+                if($filename){
+                    $val = $filename;
+                }
+                break;
             default:
                 $val = $this->get($def->get('field_name'));
                 break;

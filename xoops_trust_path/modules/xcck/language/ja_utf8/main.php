@@ -9,7 +9,8 @@
 define('_MD_XCCK_ERROR_REQUIRED', "{0}は必ず入力して下さい");
 define('_MD_XCCK_ERROR_MINLENGTH', "{0}は半角{1}文字以上にして下さい");
 define('_MD_XCCK_ERROR_MAXLENGTH', "{0}は半角{1}文字以内で入力して下さい");
-define('_MD_XCCK_ERROR_EXTENSION', "アップロードされたファイルは許可された拡張子と一致しません");
+define('_MD_XCCK_ERROR_EXTENSION', "アップロードされたファイルは許可された拡張子({0})と一致しません");
+define('_MD_XCCK_ERROR_MAXFILESIZE', "アップロードされたファイルのサイズが {0} KBを超えています");
 define('_MD_XCCK_ERROR_INTRANGE', "{0}の入力値が不正です");
 define('_MD_XCCK_ERROR_MIN', "{0}は{1}以上の数値を指定して下さい");
 define('_MD_XCCK_ERROR_MAX', "{0}は{1}以下の数値を指定して下さい");

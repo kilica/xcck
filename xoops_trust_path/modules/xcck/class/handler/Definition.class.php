@@ -65,16 +65,12 @@ class Xcck_DefinitionObject extends Legacy_AbstractObject
      * 
      * @param   void
      * 
-     * @return  string[]
+     * @return  mixed
     **/
-    public function getOptions()
+    public function getOptions($key=null)
     {
-        if($this->get('options')){
-            return preg_split('/\x0d\x0a|\x0d|\x0a/', $this->get('options'), null);
-        }
-        else{
-            return array();
-        }
+        $fieldType = $this->getFieldType();
+        return $fieldType->getOption($this, $key);
     }
 
     /**

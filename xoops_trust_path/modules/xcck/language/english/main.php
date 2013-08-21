@@ -8,7 +8,8 @@
 define('_MD_XCCK_ERROR_REQUIRED', '{0} is required.');
 define('_MD_XCCK_ERROR_MINLENGTH', 'Input {0} with {1} or more characters.');
 define('_MD_XCCK_ERROR_MAXLENGTH', 'Input {0} with {1} or less characters.');
-define('_MD_XCCK_ERROR_EXTENSION', 'Uploaded file\'s extension does not match any entry in the allowed list.');
+define('_MD_XCCK_ERROR_EXTENSION', 'Uploaded file\'s extension does not match any entry in the allowed list({0}).');
+define('_MD_XCCK_ERROR_MAXFILESIZE', 'Uploaded file\'s size is over the limit of {0} KB.');
 define('_MD_XCCK_ERROR_INTRANGE', 'Incorrect input on {0}.');
 define('_MD_XCCK_ERROR_MIN', 'Input {0} with {1} or more numeric value.');
 define('_MD_XCCK_ERROR_MAX', 'Input {0} with {1} or less numeric value.');

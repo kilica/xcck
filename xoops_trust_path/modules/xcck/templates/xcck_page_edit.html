@@ -45,12 +45,16 @@
       <div class="controls">
         <{if $definition->get('field_type')=="string"}>
         <{xoops_input type=text name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name'))  size=40 maxlength=255}>
+
         <{elseif $definition->get('field_type')=="int"}>
         <{xoops_input type=text name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name')) size=15 maxlength=11}>
+
         <{elseif $definition->get('field_type')=="uri"}>
         <{xoops_input type=text name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name')) size=40}>
+
         <{elseif $definition->get('field_type')=="text"}>
           <{xoops_dhtmltarea type=text name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name')) editor=$definition->mFieldType->getOption($definition, 'editor') class=span5}>
+
         <{elseif $definition->get('field_type')=="date"||$definition->get('field_type')=="startdate"||$definition->get('field_type')=="enddate"}>
           <{assign var=fieldName value=$definition->get('field_name')}>
           <{assign var=datetime value=$actionForm->get($definition->get('field_name'))}>
@@ -72,27 +76,34 @@
           </select>
           <{/if}>
           </div>
+
         <{elseif $definition->get('field_type')=="checkbox"}>
             <{assign var=fieldname value=$definition->get('field_name')}>
             <{assign var=valueArr value=$actionForm->get($definition->get('field_name'))}>
             <{foreach item=opt from=$definition->mFieldType->getOption($definition, 'title') key=k}>
             <label><{xoops_input type=checkbox name=`$fieldname`[$k] value=2|pow:$k default=$valueArr[$k]}><{$opt}></label>
             <{/foreach}>
+
         <{elseif $definition->get('field_type')=="selectbox"}>
           <select name="<{$definition->get('field_name')}>" id="legacy_xoopsform_<{$definition->get('field_name')}>">
             <{foreach item=option from=$definition->getOptions()}>
             <option value="<{$option}>"<{if $actionForm->get($definition->get('field_name'))==$option}> selected="selected"<{/if}>><{$option}></option>
             <{/foreach}>
           </select>
+
         <{elseif $definition->get('field_type')=="category"}>
           <{assign var=fieldName value=$definition->get('field_name')}>
           <select name="<{$definition->get('field_name')}>">
           <{legacy_category_select tree=$catTree.$fieldName selectedValue=$object->getShow($definition->get('field_name')) show="all"}>
           </select>
+
+        <{elseif $definition->get('field_type')=="file"}>
+          <{xoops_input type=file name=$definition->get('field_name')|cat:"_file"}>
+          <label><{xoops_input type="checkbox" name=$definition->get('field_name')|cat:"_delete" value="1"}> <{$smarty.const._DELETE}></label>
         <{/if}>
         <!-- description for this field -->
         <{if $definition->get('description')}>
-          <p class="description"><{$definition->get('description')}></p>
+          <div class="help-block"><{$definition->get('description')}></div>
         <{/if}>
       </div>
     </div>

@@ -27,6 +27,11 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+1.01(2013.08.21)
+- ファイル添付フィールドの追加。
+  xoops_trust_path/uploads の作成と権限付与（777 など）が必要です。
+- PageView で指定のページが見つからなかった場合、404/410を返す。
+
 1.00(2013.05.25)
 - Workflow のバグ修正
 - PageEditAction における page と revision を交換

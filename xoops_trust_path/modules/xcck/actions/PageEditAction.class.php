@@ -11,6 +11,7 @@ if(!defined('XOOPS_ROOT_PATH'))
 }
 
 require_once XCCK_TRUST_PATH . '/class/AbstractEditAction.class.php';
+require_once XCCK_TRUST_PATH . '/class/File.class.php';
 
 /**
  * Xcck_PageEditAction
@@ -316,6 +317,7 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
     {
         $ret = parent::_doExecute();
         $this->_saveWorkflow();
+        $this->_updateFile();
 
         return $ret;
     }
@@ -340,6 +342,19 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
                 $obj->get('page_id'),
                 Legacy_Utils::renderUri($obj->getDirname(), 'revision', $obj->get('revision_id'))
             );
+        }
+    }
+
+    protected function _updateFile()
+    {
+        $fileManager = new Xcck_File($this->mObject);
+        foreach($this->mObject->mDef as $def){
+            if($def->get('field_type')==Xcck_FieldType::FILE){
+                if($this->mActionForm->get($def->get('field_name').'_delete')){
+                    unlink($fileManager->getPath($def->get('field_name')));
+                }
+                move_uploaded_file($_FILES[$def->get('field_name').'_file']["tmp_name"], $fileManager->getPath($def->get('field_name')));
+            }
         }
     }
 

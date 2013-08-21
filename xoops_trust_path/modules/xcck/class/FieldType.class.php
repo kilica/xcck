@@ -5,6 +5,7 @@
  * @version $Id$
 **/
 
+require_once XCCK_TRUST_PATH.'/class/File.class.php';
 if(!defined('XOOPS_ROOT_PATH'))
 {
     exit;
@@ -24,6 +25,7 @@ class Xcck_FieldType
     const CATEGORY = 'category';
 //	const GROUP = 'group';
     const URI = 'uri';
+    const FILE = 'file';
 //    const RATER = 'rater';
 //	const MAP = 'map';
 
@@ -738,5 +740,72 @@ class Xcck_FieldTypeRater implements Xcck_iFieldType
         }
     }
 }
+
+/** --------------------------------------------------------
+ *  String Type
+ **/
+class Xcck_FieldTypeFile implements Xcck_iFieldType
+{
+    const TYPE = 'file';
+
+    public function showField(/*** Xcck_PageObject ***/ $obj, /*** string ***/ $key, /*** Xcck_ActionType ***/ $option=0)
+    {
+        if($option==Xcck_ActionType::NONE||$option==Xcck_ActionType::VIEW){
+            $fileManager = new Xcck_File($obj);
+            $value = $obj->getShow($key).' ('.$fileManager->getFileSize($key).'KB)';
+        }
+        elseif($option==Xcck_ActionType::EDIT){
+            $value = $obj->get($key);
+        }
+
+        return $value;
+    }
+
+    public function getTableQuery()
+    {
+        return 'VARCHAR(255) NOT NULL';
+    }
+
+    public function setInitVar(/*** Xcck_DataObject ***/ $obj, /*** string ***/ $key, /*** string ***/ $default)
+    {
+        $obj->initVar($key, $this->getXObjType(), $default, false, 255);
+    }
+
+    public function getDefault(/*** string ***/ $option)
+    {
+        return isset($option) ? $option : '';
+    }
+
+    public function getXObjType()
+    {
+        return XOBJ_DTYPE_STRING;
+    }
+
+    public function getFormPropertyClass()
+    {
+        return 'XCube_StringProperty';
+    }
+
+    public function getSearchFormString(/*** string ***/ $key)
+    {
+        return '';
+    }
+
+    public function getOption(/*** Xcck_DefinitionsObject ***/ $def, /*** string ***/ $key=null)
+    {
+        $options = explode('|', $def->get('options'));
+        switch($key){
+            case 'maxFileSize':
+                return $options[0];
+                break;
+            case 'allowedExtensions':
+                return explode(',',$options[1]);
+                break;
+        }
+        return $options;
+    }
+}
+
+
 
 ?>
