@@ -752,7 +752,7 @@ class Xcck_FieldTypeFile implements Xcck_iFieldType
     {
         if($option==Xcck_ActionType::NONE||$option==Xcck_ActionType::VIEW){
             $fileManager = new Xcck_File($obj);
-            $value = $obj->getShow($key).' ('.$fileManager->getFileSize($key).'KB)';
+            $value = sprintf('<a href="%s">%s (%s%s)</a>', Legacy_Utils::renderUri($obj->getDirname(), $obj->getDataname(), $obj->getShow('page_id'), 'download', 'field_name='.$key), $obj->getShow($key), $fileManager->getFileSize($key), $this->getOption($obj->mDef[$key], 'unit'));
         }
         elseif($option==Xcck_ActionType::EDIT){
             $value = $obj->get($key);
@@ -801,6 +801,8 @@ class Xcck_FieldTypeFile implements Xcck_iFieldType
             case 'allowedExtensions':
                 return explode(',',$options[1]);
                 break;
+            case 'unit':
+                return $options[2] ? $options[2] : 'KB';
         }
         return $options;
     }

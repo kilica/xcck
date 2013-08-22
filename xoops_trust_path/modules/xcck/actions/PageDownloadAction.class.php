@@ -13,7 +13,7 @@ if(!defined('XOOPS_ROOT_PATH'))
 require_once XCCK_TRUST_PATH . '/class/AbstractViewAction.class.php';
 require_once XCCK_TRUST_PATH . '/class/File.class.php';
 
-class Xcck_DownloadAction extends Xcck_AbstractViewAction
+class Xcck_PageDownloadAction extends Xcck_AbstractViewAction
 {
     const DATANAME = 'page';
 
