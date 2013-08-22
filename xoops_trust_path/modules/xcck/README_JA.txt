@@ -14,6 +14,7 @@ XOOPS Cube CCK(Content Creation Kit)
 --Leprogress module(ワークフロー)
 --Leimg module(画像管理)
 --Letag module(タグ管理)
+--xoops_trust_path/uploads フォルダの設置
 
 主な機能
 --------

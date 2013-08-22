@@ -74,5 +74,14 @@ class Xcck_File
         }
         return round(filesize($this->getPath($fieldName)) / $number, 2);
     }
+
+    /**
+     * @param string $fileName
+     * @return bool
+     */
+    public function existFile($fileName)
+    {
+        return file_exists($this->getPath($fileName));
+    }
 }
 

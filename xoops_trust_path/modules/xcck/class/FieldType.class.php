@@ -742,7 +742,7 @@ class Xcck_FieldTypeRater implements Xcck_iFieldType
 }
 
 /** --------------------------------------------------------
- *  String Type
+ *  File Type
  **/
 class Xcck_FieldTypeFile implements Xcck_iFieldType
 {
@@ -752,7 +752,10 @@ class Xcck_FieldTypeFile implements Xcck_iFieldType
     {
         if($option==Xcck_ActionType::NONE||$option==Xcck_ActionType::VIEW){
             $fileManager = new Xcck_File($obj);
-            $value = sprintf('<a href="%s">%s (%s%s)</a>', Legacy_Utils::renderUri($obj->getDirname(), $obj->getDataname(), $obj->getShow('page_id'), 'download', 'field_name='.$key), $obj->getShow($key), $fileManager->getFileSize($key), $this->getOption($obj->mDef[$key], 'unit'));
+            if($fileManager->existFile($key)===true){
+                $unit = $this->getOption($obj->mDef[$key], 'unit');
+                $value = sprintf('<a href="%s">%s (%s%s)</a>', Legacy_Utils::renderUri($obj->getDirname(), $obj->getDataname(), $obj->getShow('page_id'), 'download', 'field_name='.$key), $obj->getShow($key), $fileManager->getFileSize($key, $unit), $unit);
+            }
         }
         elseif($option==Xcck_ActionType::EDIT){
             $value = $obj->get($key);
