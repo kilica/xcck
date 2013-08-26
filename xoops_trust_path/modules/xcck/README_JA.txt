@@ -28,6 +28,10 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+1.02(2013.08.26)
+- PageSearch の PageNavi でリンクURLが PageLink になっていたバグを修正
+- 一般設定の言語設定を追加
+
 1.01(2013.08.21)
 - ファイル添付フィールドの追加。
   xoops_trust_path/uploads の作成と権限付与（777 など）が必要です。

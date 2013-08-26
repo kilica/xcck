@@ -40,7 +40,7 @@ class Xcck_PageSearchAction extends Xcck_PageListAction
 	**/
 	protected function _getBaseUrl()
 	{
-		return Legacy_Utils::renderUri($this->mAsset->mDirname, 'page', 'search');
+		return Legacy_Utils::renderUri($this->mAsset->mDirname, 'page', null, 'search');
 	}
 
     /**
