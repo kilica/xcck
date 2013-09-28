@@ -28,6 +28,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+1.03(2013.09.28)
+- 一般設定で hierarchical（ページ階層を持つ）にした場合も、カテゴリ別表示の場合は一覧に表示するようにした
+
 1.02(2013.08.26)
 - PageSearch の PageNavi でリンクURLが PageLink になっていたバグを修正
 - 一般設定の言語設定を追加
