@@ -123,7 +123,7 @@ class Xcck_PageListAction extends Xcck_AbstractListAction
 		$criteria=$this->mFilter->getCriteria($limit, $start);
 	
 		if($this->mRoot->mContext->mModuleConfig['hierarchical']){
-			$criteria->add(new Criteria('p_id', 0));
+		//	$criteria->add(new Criteria('p_id', 0));
 		}
 	
 		//Site Owner can add optional condition for list by Delegate
