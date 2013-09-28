@@ -121,11 +121,7 @@ class Xcck_PageListAction extends Xcck_AbstractListAction
         }
         
         $criteria=$this->mFilter->getCriteria($limit, $start);
-    
-        if($this->mRoot->mContext->mModuleConfig['hierarchical'] && $this->mRoot->mContext->mModuleConfig['list_order']!='categorized'){
-            $criteria->add(new Criteria('p_id', 0));
-        }
-    
+
         //Site Owner can add optional condition for list by Delegate
         /*
         XCube_DelegateUtils::call(

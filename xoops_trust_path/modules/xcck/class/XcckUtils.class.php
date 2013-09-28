@@ -181,7 +181,7 @@ class Xcck_Utils
         }
     
         //Is hierarchical ?
-        if(self::getModuleConfig($dirname, 'hierarchical')==true){
+        if(self::getModuleConfig($dirname, 'hierarchical')==true && self::getModuleConfig($dirname, 'list_order')!='categorized'){
             $cri->add(new Criteria('p_id', 0));
         }
     
