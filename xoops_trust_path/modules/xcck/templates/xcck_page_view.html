@@ -7,7 +7,9 @@
       <{if $accessController->isEditor($object->get('category_id'), $object->get('uid'))===true}>
         <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$object->getShow('page_id') action=edit}>"><i class="icon-pencil"> <{$smarty.const._EDIT}></i></a>
         <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$object->getShow('page_id') action=delete}>"><i class="icon-trash"></i> <{$smarty.const._DELETE}></a>
+        <{if $isHierarchical}>
         <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit query="p_id="|cat:$object->get('page_id')}>"><{$smarty.const._MD_XCCK_LANG_DESCENDANT}><{$smarty.const._ADD}></a>
+        <{/if}>
       <{/if}>
     </h1>
   </div><!-- .page-header -->
@@ -129,7 +131,18 @@
   <tr>
     <td><a href="<{xoops_cooluri dirname=$cdirname dataname=page data_id=$subtableId}>"><{$page->getShow('title')}></a> [<a href="<{xoops_cooluri dirname=$cdirname dataname=subtable data_id=$subtableId action=edit}>"><{$smarty.const._EDIT}></a>]</td>
     <{foreach item=def from=$definitionArr.$cdirname}>
-    <td><{$page->showField($def->getShow('field_name'))}></td>
+    <td>
+      <{if $def->get('type')=='checkbox'}>
+      <ul>
+      <{assign var=titleArr value=$page->showField($def->getShow('field_name'))}>
+      <{foreach item=option from=$titleArr.checked}>
+      <li><{$option}></li>
+      <{/foreach}>
+      </ul>
+      <{else}>
+      <{$page->showField($def->getShow('field_name'))}>
+      <{/if}>
+    </td>
     <{/foreach}>
   </tr>
   <{/foreach}>

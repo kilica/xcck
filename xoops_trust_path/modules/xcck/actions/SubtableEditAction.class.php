@@ -241,10 +241,11 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
         //set tag usage
         $render->setAttribute('useTag', ($this->mRoot->mContext->mModuleConfig['tag_dirname']) ? true : false);
         $render->setAttribute('tag_dirname', $this->mRoot->mContext->mModuleConfig['tag_dirname']);
-    
-        //setup image
+
+        //setup images
+        $this->mObject->setupImages($isPost=false);
+        $render->setAttribute('imageObjs', $this->mObject->mImage);
         $render->setAttribute('imageNameList', Xcck_Utils::getImageNameList($this->mAsset->mDirname));
-    
     }
 
     /**

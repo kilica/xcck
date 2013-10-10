@@ -6,7 +6,13 @@
 <{foreach item=category from=$tree.category key=k}>
 <h2><{$category->getShow('title')}></h2>
 <dl>
+<{assign var=depth value=1}>
 <{foreach item=obj from=$tree.page[$k]}>
+  <{if $depth < $obj->getDepth()}>
+  <{assign var=depth value=$obj->getDepth()}>
+  <dl>
+  <{elseif $depth > $obj->getDepth()}>
+  <{/if}>
     <dt>
       <{if $obj->getShow('status')<9}><span class="status" title="<{$obj->getShowStatus()}>">*</span> <{/if}>
       <a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>"><{$obj->getShow('title')}></a>
