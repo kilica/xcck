@@ -180,6 +180,20 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
         $this->mActionForm->prepare($this->mAsset->mDirname);
     }
 
+    protected function _prepareRequest()
+    {
+        $request = $this->mRoot->mContext->mRequest;
+        $textFilter = $this->mRoot->getTextFilter();
+        $setupFields = explode(",", Xcck_Utils::getModuleConfig($this->mAsset->mDirname, 'setup_field'));
+        foreach($setupFields as $field){
+            $value = $request->getRequest($field);
+            if(isset($value)){
+                $this->mObject->set($field, $textFilter->toEdit($value));
+            }
+        }
+        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.PrepareEditAction', $this->mObject);
+    }
+
     /**
      * prepare
      * 
@@ -202,6 +216,7 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
                     $this->mObject->set($field->get('field_name'), $field->get('options'));
                 }
             }
+            $this->_prepareRequest();
         }
         $this->mObject->loadMaintable();
         if(count($this->mObject->mMaintable)!=1){
