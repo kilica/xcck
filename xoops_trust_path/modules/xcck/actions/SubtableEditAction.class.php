@@ -234,7 +234,18 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
         $render->setAttribute('accessController', $this->mCategoryManager);
         $render->setAttribute('isSubtable', $this->_isSubtable());
         $render->setAttribute('defaultOrder', $this->mRoot->mContext->mModuleConfig['default_order']);
-    
+
+        // category fields
+        //set categories of custom field
+        $tree = array();
+        foreach($this->mDefinitions as $field){
+            if($field->get('field_type')==Xcck_FieldType::CATEGORY){
+                $tree[$field->get('field_name')] = array();
+                XCube_DelegateUtils::call('Legacy_Category.'.$field->get('options').'.GetTree', new XCube_Ref($tree[$field->get('field_name')]), $field->get('options'), 'viewer');
+            }
+        }
+        $render->setAttribute('catTree',$tree);
+
         //date field option
         $render->setAttribute('hours', range(1,24));
         $render->setAttribute('minutes', range(0,59));
