@@ -38,7 +38,7 @@ class Xcck_CatCategoryManager extends Xcck_AbstractCategoryManager
      * check
      * 
      * @param    int        $categoryId
-     * @param    string    $action
+     * @param    string    $action ('view', 'post', 'review', 'manage')
      * 
      * @return    bool
     **/

@@ -80,43 +80,45 @@ abstract class Xcck_AbstractAction
 
     /**
      * _setupCategoryManager
-     * 
+     *
      * @param   string  $dataname
-     * 
+     *
      * @return  void
-    **/
+     **/
     protected function _setupCategoryManager(/*** string ***/ $dataname)
     {
-        $server = Xcck_Utils::getAccessController($this->mAsset->mDirname);
+        $moduleDirname = isset($this->mObject->mMaintable) ? $this->mObject->mMaintable->getDirname() : $this->mAsset->mDirname;
+        $server = Xcck_Utils::getAccessController($moduleDirname);
+
         if($server instanceof XoopsModule){
-        	$serverDirname = $server->dirname();
+            $serverDirname = $server->dirname();
         }
-    
+
         //get server's role
         $handler = xoops_gethandler('module');
-        //$module = $handler->getByDirname($serverDirname);
         if(! isset($serverDirname) || ! $module=$handler->getByDirname($serverDirname)){
             require_once XCCK_TRUST_PATH . '/class/NoneCategoryManager.class.php';
-            $this->mCategoryManager = new Xcck_NoneCategoryManager(null, $this->mAsset->mDirname, $dataname);
+            $this->mCategoryManager = new Xcck_NoneCategoryManager(null, $moduleDirname, $dataname);
             return;
         }
         $role = $module->get('role');
-    
+
         switch($role){
-        case 'cat':
-            require_once XCCK_TRUST_PATH . '/class/CatCategoryManager.class.php';
-            $this->mCategoryManager = new Xcck_CatCategoryManager($serverDirname, $this->mAsset->mDirname, $dataname);
-            break;
-        case 'group':
-            require_once XCCK_TRUST_PATH . '/class/GroupCategoryManager.class.php';
-            $this->mCategoryManager = new Xcck_GroupCategoryManager($serverDirname, $this->mAsset->mDirname, $dataname);
-            break;
-        default:
-            require_once XCCK_TRUST_PATH . '/class/NoneCategoryManager.class.php';
-            $this->mCategoryManager = new Xcck_NoneCategoryManager($serverDirname, $this->mAsset->mDirname, $dataname);
-            break;
+            case 'cat':
+                require_once XCCK_TRUST_PATH . '/class/CatCategoryManager.class.php';
+                $this->mCategoryManager = new Xcck_CatCategoryManager($serverDirname, $moduleDirname, $dataname);
+                break;
+            case 'group':
+                require_once XCCK_TRUST_PATH . '/class/GroupCategoryManager.class.php';
+                $this->mCategoryManager = new Xcck_GroupCategoryManager($serverDirname, $moduleDirname, $dataname);
+                break;
+            default:
+                require_once XCCK_TRUST_PATH . '/class/NoneCategoryManager.class.php';
+                $this->mCategoryManager = new Xcck_NoneCategoryManager($serverDirname, $moduleDirname, $dataname);
+                break;
         }
     }
+
 
     /**
      * _isSubtable()

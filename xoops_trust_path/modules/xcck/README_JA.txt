@@ -28,7 +28,8 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
-1.05(2013.11.27)
+1.10(2013.11.27)
+- Subtable 権限の見直し（config : subtable_parent_auth の追加）
 - Subtable の削除時の不具合を修正
 
 1.04(2013.10.10)

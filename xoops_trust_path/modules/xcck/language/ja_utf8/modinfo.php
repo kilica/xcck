@@ -92,8 +92,13 @@ define('_MI_XCCK_LANG_THRESHOLD', '公開に必要な票数（Ratingで承認の
 define('_MI_XCCK_TPL_CHILD_VIEW', 'サブデータの表示');
 define('_MI_XCCK_LANG_MAIN_TABLE', 'メインテーブル');
 define('_MI_XCCK_DESC_MAIN_TABLE', 'このモジュールを他のXCCKモジュールのサブテーブルとして使う場合は、メインとなるXCCKモジュールのディレクトリ名をセットしてください');
-define('_MI_XCCK_LANG_SUBTABLE_AUTH', 'サブテーブル編集の権限');
-define('_MI_XCCK_DESC_SUBTABLE_AUTH', 'サブテーブル編集の権限');
+define('_MI_XCCK_LANG_SUBTABLE_AUTH', 'サブテーブル投稿の権限');
+define('_MI_XCCK_DESC_SUBTABLE_AUTH', 'この項目はサブテーブル側のモジュールで設定します');
+define('_MI_XCCK_LANG_SUBTABLE_PARENT_AUTH', 'サブテーブル編集権限は親ページ作成者のみか？');
+define('_MI_XCCK_DESC_SUBTABLE_PARENT_AUTH', 'この項目はサブテーブル側のモジュールで設定します');
+define('_MI_XCCK_OPTION_SUBTABLE_PARENT_ONLY', '親ページ作成者のみ');
+define('_MI_XCCK_OPTION_SUBTABLE_ALL_POSTER', '投稿権限があれば誰でも');
+define('_MI_XCCK_OPTION_SUBTABLE_PARENT_IS_MANAGER', '投稿権限があれば誰でも。親ページ作者には管理権限');
 define('_MI_XCCK_LANG_IMAGES', '画像');
 define('_MI_XCCK_DESC_IMAGES', '添付する画像のフィールド名（半角英数+アンダースコア）と表示名称（半角・全角自由）を | で区切って入れてください。表示名称を入れない場合、フィールド名がそのまま表示名として使われます。<br />複数の画像を添付可能にする場合は、改行して名称を入れてください。<br />なお、フォームのほかのフィールドの name と同じ名前をつけないように注意してください。img や image などをフィールド名に追加すると良いでしょう。<br />例）<br />img1<br />img2|付属品画像<br />item_image|商品画像<p>なお、この機能を使用するには leimg など、<strong>Legacy_Image に対応したモジュールをインストールする必要があります</strong>。</p>');
 define('_MI_XCCK_LANG_LIST_ORDER', '一覧の表示方法');

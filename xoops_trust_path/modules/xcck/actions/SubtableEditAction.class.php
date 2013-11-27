@@ -156,12 +156,32 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
         }
         //is new post and has post permission ?
         $check = $this->mCategoryManager->check($catId, $auth, 'page');
-        if($check==true && $this->mObject->isNew()){
-            return true;
-        }
-        //is old post and your post ?
-        if($check==true && ! $this->mObject->isNew() && $this->mObject->get('uid')==Legacy_Utils::getUid()){
-                return true;
+        switch($this->mRoot->mContext->mModuleConfig['subtable_parent_auth']){
+            case 'all_poster':
+                if($check==true && $this->mObject->isNew()){
+                    return true;
+                }
+                if($check==true && ! $this->mObject->isNew() && $this->mObject->get('uid')==Legacy_Utils::getUid()){
+                    return true;
+                }
+                break;
+            case 'parent_is_manager':
+                if($check==true && $this->mObject->isNew()){
+                    return true;
+                }
+                if($check==true && ! $this->mObject->isNew() && $this->mObject->get('uid')==Legacy_Utils::getUid()){
+                    return true;
+                }
+                if($check==true && ! $this->mObject->isNew() && $this->mObject->mMaintable->get('uid')==Legacy_Utils::getUid()){
+                    return true;
+                }
+                break;
+            default:
+            case 'parent_only':
+                if($this->mObject->mMaintable->get('uid')==Legacy_Utils::getUid()){
+                    return true;
+                }
+                break;
         }
     
         return false;

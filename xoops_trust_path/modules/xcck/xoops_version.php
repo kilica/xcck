@@ -21,7 +21,7 @@ require_once XCCK_TRUST_PATH . '/class/XcckUtils.class.php';
 // Define a basic manifesto.
 //
 $modversion['name'] = $myDirName;
-$modversion['version'] = 1.04;
+$modversion['version'] = 1.10;
 $modversion['description'] = _MI_XCCK_DESC_XCCK;
 $modversion['author'] = _MI_XCCK_LANG_AUTHOR;
 $modversion['credits'] = _MI_XCCK_LANG_CREDITS;
@@ -290,6 +290,15 @@ $modversion['config'] = array(
         'default'       => 'none',
         'options'       => array("post"=>"post", "view"=>"view", "review"=>"review", "manage"=>"manage")
     ) ,
+    array(
+        'name'          => 'subtable_parent_auth' ,
+        'title'         => "_MI_XCCK_LANG_SUBTABLE_PARENT_AUTH" ,
+        'description'   => "_MI_XCCK_DESC_SUBTABLE_PARENT_AUTH" ,
+        'formtype'      => 'select',
+        'valuetype'     => 'string',
+        'default'       => 'none',
+        'options'       => array(_MI_XCCK_OPTION_SUBTABLE_PARENT_ONLY=>"parent_only", _MI_XCCK_OPTION_SUBTABLE_ALL_POSTER=>"all_poster", _MI_XCCK_OPTION_SUBTABLE_PARENT_IS_MANAGER=>"parent_is_manager")
+    ),
 	array(
 		'name'          => 'setup_field',
 		'title'         => '_MI_XCCK_LANG_SETUP_FIELD',
