@@ -28,6 +28,9 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+1.05(2013.11.27)
+- Subtable の削除時の不具合を修正
+
 1.04(2013.10.10)
 - Subtable で画像添付ができなかった不具合を修正
 - Subtable の内容を表示する際、checkbox タイプが正常に処理されていない不具合を修正
