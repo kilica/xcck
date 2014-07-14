@@ -19,6 +19,10 @@ define('_MD_XCCK_ERROR_DBUPDATE_FAILED', "データベースの更新に失敗�
 define('_MD_XCCK_ERROR_EMAIL', "{0}は不正なメールアドレスです");
 define('_MD_XCCK_ERROR_INVALID_MAINTABLE', 'メインテーブルが取得できませんでした。');
 define('_MD_XCCK_ERROR_INVALID_FIELD_NAME', '次のフィールド名はすでに使われています');
+define('_MD_XCCK_ERROR_PAGE_TREE_INFINITE_LOOP', '親ページIDの指定に問題があります。子孫ページのIDを親IDに指定することはできません。');
+define('_MD_XCCK_ERROR_PAGE_NOT_FOUND', '指定された親ページがみつかりません');
+
+
 define('_MD_XCCK_LANG_FIELD_NAME_RESERVED', 'このフィールド名は予約されているため使えません。');
 define('_MD_XCCK_LANG_FIELD_NAME_DUPLICATED', 'このフィールド名は既に使われています。');
 define('_MD_XCCK_MESSAGE_CONFIRM_DELETE', "以下のデータを本当に削除しますか？");

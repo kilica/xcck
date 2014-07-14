@@ -18,6 +18,7 @@ define('_MD_XCCK_ERROR_DBUPDATE_FAILED', 'Failed updating database.');
 define('_MD_XCCK_ERROR_EMAIL', '{0} is an incorrect email address.');
 define('_MD_XCCK_ERROR_INVALID_MAINTABLE', 'Can\'t get Main Table.');
 define('_MD_XCCK_ERROR_INVALID_FIELD_NAME', 'These Field name is already used : ');
+define('_MD_XCCK_ERROR_PAGE_TREE_INFINITE_LOOP', 'Invalid parent page id. Don\'t assign descendant page id as parent id.');
 define('_MD_XCCK_LANG_FIELD_NAME_RESERVED', 'This Field name is reserved by XCCK. Change to the other field name.');
 define('_MD_XCCK_LANG_FIELD_NAME_DUPLICATED', 'This field_name is already used.');
 

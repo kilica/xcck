@@ -193,7 +193,6 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
                 $this->mObject->set($field, $textFilter->toEdit($value));
             }
         }
-        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.PrepareEditAction', $this->mObject);
     }
 
     /**
@@ -226,6 +225,8 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
     
         //setup tags
         $this->mObject->loadTag();
+
+        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.PrepareEditAction', new XCube_Ref($this->mObject), new XCube_Ref($this->mActionForm));
 
         return true;
     }
@@ -290,6 +291,7 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
         $dataname = $this->_isSubtable() ? 'subtable' : 'page';
         $render->setAttribute('dataname', $dataname);
         $render->setAttribute('fields',$this->mDefinitions);
+        $render->setAttribute('isHierarchical', $this->mRoot->mContext->mModuleConfig['hierarchical']);
     
         //set tag usage
         $render->setAttribute('useTag', ($this->mRoot->mContext->mModuleConfig['tag_dirname']) ? true : false);

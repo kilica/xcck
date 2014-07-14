@@ -145,11 +145,14 @@ class Xcck_Utils
     **/
     public static function getListCriteria(/*** string ***/ $dirname, /*** int ***/ $categoryId=0, /*** bool ***/ $childCategory=false, /*** int[] ***/ $sortArr=null, /*** Enum ***/ $status=Lenum_Status::PUBLISHED, $term=true)
     {
+        static $idList = array();
+        if(! isset($idList[$dirname])){
+            $idList[$dirname] = self::getPermittedIdList($dirname);
+        }
         $accessController = self::getAccessController($dirname);
     
         $cri = new CriteriaCompo();
     
-        $idList = self::getPermittedIdList($dirname);
         //category
         if($categoryId>0){
             //get child category of $categoryId ?
@@ -170,8 +173,8 @@ class Xcck_Utils
         else{
             //get permitted categories to show
             if($accessController instanceof XoopsModule && ($accessController->get('role')=='cat' || $accessController->get('role')=='group')){
-                if(count($idList)>0){
-                    $cri->add(new Criteria('category_id', $idList, 'IN'));
+                if(count($idList[$dirname])>0){
+                    $cri->add(new Criteria('category_id', $idList[$dirname], 'IN'));
                 }
                 else{
                     //no date will be return by this criteria.

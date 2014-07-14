@@ -28,6 +28,13 @@ XOOPS Cube CCK(Content Creation Kit)
 
 更新履歴
 --------
+1.12(2014.06.24)
+- p_id の存在チェック追加
+
+1.11(2014.04.15)
+- p_id を入力できるように変更
+- 子孫ページのIDを p_id に指定していないかをチェック
+
 1.10(2013.11.27)
 - Subtable 権限の見直し（config : subtable_parent_auth の追加）
 - Subtable の削除時の不具合を修正

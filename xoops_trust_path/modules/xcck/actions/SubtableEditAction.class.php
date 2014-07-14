@@ -211,7 +211,6 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
                 $this->mObject->set($field, $textFilter->toEdit($value));
             }
         }
-        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.PrepareEditAction', $this->mObject);
     }
 
     /**
@@ -246,6 +245,9 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
     
         //setup tags
         $this->mObject->loadTag();
+
+        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.PrepareEditAction', new XCube_Ref($this->mObject), new XCube_Ref($this->mActionForm));
+
         return $result;
     }
 

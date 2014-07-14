@@ -8,10 +8,14 @@
 <dl>
 <{assign var=depth value=1}>
 <{foreach item=obj from=$tree.page[$k]}>
-  <{if $depth < $obj->getDepth()}>
+  <{if $depth > $obj->getDepth()}>
+  <{section name=dl loop=$depth-$obj->getDepth()}>
+  <{assign var=depth value=$obj->getDepth()}>
+  </dl>
+  <{/section}>
+  <{elseif $depth < $obj->getDepth()}>
   <{assign var=depth value=$obj->getDepth()}>
   <dl>
-  <{elseif $depth > $obj->getDepth()}>
   <{/if}>
     <dt>
       <{if $obj->getShow('status')<9}><span class="status" title="<{$obj->getShowStatus()}>">*</span> <{/if}>

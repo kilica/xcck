@@ -569,6 +569,27 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
         return $tree;
     }
 
+    public function getCategorizedTree($categories=null)
+    {
+        $tree = array();
+        if(! isset($categories)){
+            $categories[0] = array();
+        }
+        $criteria = Xcck_Utils::getListCriteria($this->getDirname());
+        $criteria->add(new Criteria('p_id', 0));
+
+        foreach(array_keys($categories) as $key){
+            $tree[$key] = array();
+            $cri = clone $criteria;
+            $cri->add(new Criteria('category_id', $categories[$key]->getShow('cat_id')));
+            $topPageIds = $this->getIdList($cri);
+            foreach($topPageIds as $topPageId){
+                 $tree[$key] = array_merge($tree[$key], $this->getTree($topPageId));
+            }
+        }
+        return $tree;
+    }
+
     /**
      * check if use Legacy_Workflow
      *

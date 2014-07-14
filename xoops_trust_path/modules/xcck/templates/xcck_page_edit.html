@@ -12,24 +12,36 @@
 <{/if}>
 <form class="form-horizontal" action="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit}>" method="post"<{if $imageNameList|count > 0}> enctype="multipart/form-data"<{/if}>>
   <div class="control-group">
-      <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_TITLE}></label>
-      <div class="controls">
-        <{xoops_input type=text name=title value=$actionForm->get('title') size=50 maxlength=255 class="span4"}>
-      </div>
+    <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_TITLE}></label>
+    <div class="controls">
+      <{xoops_input type=text name=title value=$actionForm->get('title') size=50 maxlength=255 class="span4"}>
     </div>
-    <{if $categoryType===true && $object->get('p_id')==0}>
-    <div class="control-group">
-      <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_CATEGORY_ID}></label>
-      <div class="controls">
-        <select name="category_id">
-        <{legacy_category_select tree=$mainCatTree selectedValue=$object->getShow('category_id')}>
-        </select>
-      </div>
+  </div>
+  <{if $categoryType===true && $object->get('p_id')==0}>
+  <div class="control-group">
+    <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_CATEGORY_ID}></label>
+    <div class="controls">
+      <select name="category_id">
+      <{legacy_category_select tree=$mainCatTree selectedValue=$object->getShow('category_id')}>
+      </select>
     </div>
-    <{else}>
-      <{xoops_input type=hidden name=category_id value=$actionForm->get('category_id')}>
-    <{/if}>
-    <{if $defaultOrder==8}>
+  </div>
+  <{else}>
+    <{xoops_input type=hidden name=category_id value=$actionForm->get('category_id')}>
+  <{/if}>
+
+  <{if $isHierarchical}>
+  <div class="control-group">
+    <label class="control-label required"><{$smarty.const._MD_XCCK_LANG_P_ID}></label>
+    <div class="controls">
+      <{xoops_input type=text name=p_id value=$actionForm->get('p_id') size=5 maxlength=10 class="span1"}>
+    </div>
+  </div>
+  <{else}>
+  <{xoops_input type=hidden name=p_id value=0}>
+  <{/if}>
+
+  <{if $defaultOrder==8}>
     <div class="control-group">
       <label class="control-label"><{$smarty.const._MD_XCCK_LANG_WEIGHT}></label>
       <div class="controls">
@@ -46,7 +58,7 @@
         <{if $definition->get('field_type')=="string"}>
         <{xoops_input type=text name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name'))  size=40 maxlength=255}>
 
-        <{elseif $definition->get('field_type')=="int"}>
+        <{elseif $definition->get('field_type')=="int" || $definition->get('field_type')=="float"}>
         <{xoops_input type=text name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name')) size=15 maxlength=11}>
 
         <{elseif $definition->get('field_type')=="uri"}>
@@ -146,7 +158,6 @@
     <div class="form-actions">
       <{xoops_token form=$actionForm}>
       <{xoops_input type=hidden name=page_id value=$actionForm->get('page_id')}>
-      <{xoops_input type=hidden name=p_id value=$actionForm->get('p_id')}>
       <{xoops_input type=hidden name=maintable_id value=$actionForm->get('maintable_id')}>
       <{xoops_input type=hidden name=descendant value=$actionForm->get('descendant')}>
       <button type="submit" class="btn btn-primary" <{if $usePreview===true}> name="_form_control_confirm"<{/if}>><{$smarty.const._SUBMIT}></button>

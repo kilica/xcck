@@ -109,7 +109,7 @@ class Xcck_PageListAction extends Xcck_AbstractListAction
     {
         $this->mFilter =& $this->_getFilterForm();
         $this->mFilter->fetch($this->mAsset->mDirname);
-        $handler = $this->_getHandler();
+        $this->mObjectHandler = $this->_getHandler();
     
         if($this->mRoot->mContext->mModuleConfig['list_order']=='categorized' && $this->_getCatId()>0){
             $limit = 0;
@@ -130,15 +130,20 @@ class Xcck_PageListAction extends Xcck_AbstractListAction
         );
         */
     
-        $this->mObjects = $handler->getObjects($criteria);
         if($this->mRoot->mContext->mModuleConfig['list_order']=='categorized'){
             $this->_setupTree();
+        }
+        else{
+            $this->mObjects = $this->mObjectHandler->getObjects($criteria);
         }
         return XCCK_FRAME_VIEW_INDEX;
     }
 
     protected function _setupTree()
     {
+        $this->mTree['category'] = $this->mCategoryManager->getTree(Xcck_AuthType::VIEW, $this->_getCatId());
+        $this->mTree['page'] = $this->mObjectHandler->getCategorizedTree($this->mTree['category']);
+        /*
         $this->mTree['category'] = $this->mCategoryManager->getTree(Xcck_AuthType::VIEW, $this->_getCatId());
         $this->mTree['page'] = array();
         foreach(array_keys($this->mTree['category']) as $key){
@@ -149,6 +154,7 @@ class Xcck_PageListAction extends Xcck_AbstractListAction
                 }
             }
         }
+        */
     }
 
     /**

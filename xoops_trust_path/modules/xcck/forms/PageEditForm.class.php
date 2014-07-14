@@ -155,6 +155,29 @@ class Xcck_PageEditForm extends XCube_ActionForm
     }
 
     /**
+     * check infinite loop
+     */
+    public function validateP_id()
+    {
+        $p_id = $this->get('p_id');
+        $pageId = $this->get('page_id');
+        if($p_id==0){
+            return;
+        }
+        $handler = Legacy_Utils::getModuleHandler('page', $this->mDirname);
+        $obj = $handler->get($p_id);
+        if($obj){
+            $obj->loadPath();
+            if(in_array($pageId, $obj->mPath['page_id']) || $pageId==$p_id){
+                $this->addErrorMessage(_MD_XCCK_ERROR_PAGE_TREE_INFINITE_LOOP);
+            }
+        }
+        else{
+            $this->addErrorMessage(_MD_XCCK_ERROR_PAGE_NOT_FOUND);
+        }
+    }
+
+    /**
      * load
      * 
      * @param   XoopsSimpleObject  &$obj
