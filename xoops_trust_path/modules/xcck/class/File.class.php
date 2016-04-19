@@ -21,8 +21,14 @@ class Xcck_File
         }
     }
 
-    public function getPath($fieldName){
+    public function getPath($fieldName)
+    {
         return $this->getBasePath().'/'.str_pad($this->mPage->get('page_id'), 10, 0, STR_PAD_LEFT).$fieldName;
+
+    }
+
+    public function getTemporaryPath($fieldName)
+    {
 
     }
 

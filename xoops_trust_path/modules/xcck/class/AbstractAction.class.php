@@ -445,7 +445,12 @@ var %s_map = new google.maps.Map($("#%s_map").get(0), %s_Options);', $prefix, $l
     {
         $handler = $this->_getHandler();
         if($this->mObject->get($handler->mPrimary)>0){
-            return Legacy_Utils::renderUri($this->mAsset->mDirname, $tableName, $this->mObject->get($handler->mPrimary), $actionName);
+            if ($tableName == 'page') {
+                return Legacy_Utils::renderUri($this->mAsset->mDirname, null, $this->mObject->get($handler->mPrimary), $actionName);
+            }
+            else{
+                return Legacy_Utils::renderUri($this->mAsset->mDirname, $tableName, $this->mObject->get($handler->mPrimary), $actionName);
+            }
         }
         else{
             return Legacy_Utils::renderUri($this->mAsset->mDirname, $tableName, 0, $actionName);

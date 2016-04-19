@@ -487,7 +487,7 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
         }
     
         $this->_deleteSubtable($obj);
-        $this->_deleteRevision($obj);
+        // $this->_deleteRevision($obj);
     
         return XCCK_FRAME_VIEW_SUCCESS;
     }
