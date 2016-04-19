@@ -317,6 +317,11 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
      **/
     protected function _doExecute()
     {
+        // preview
+        if($this->mRoot->mContext->mRequest->getRequest('_form_control_confirm')){
+            return $this->_executePreview();
+        }
+
         $ret = parent::_doExecute();
         $this->_saveWorkflow();
         $this->_updateFile();
@@ -324,6 +329,48 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
         return $ret;
     }
 
+    protected function _executePreview()
+    {
+        if ($this->mObject->isNew()) {
+            $this->mActionForm->set('status', 3);   // preview status
+            if ($this->_doExecute() != XCCK_FRAME_VIEW_SUCCESS) {
+                return XCCK_FRAME_VIEW_ERROR;
+            }
+        }
+        else{
+            $this->_saveImages($this->mObject);
+            $this->_updateFile();
+        }
+        return XCCK_FRAME_VIEW_PREVIEW;
+    }
+
+    /**
+     * save Image for preview
+     *
+     * @param Legacy_AbstractObject	$obj
+     *
+     * @return	bool
+     */
+    protected function _saveImages(/*** Legacy_AbstractObject ***/ $obj)
+    {
+        $handler = xoops_gethandler('config');
+        $conf = $handler->getConfigsByDirname($obj->getDirname());
+        if (! $conf['images']) {    // no use of Legacy_Image
+            return true;
+        }
+
+        $ret = true;
+        $obj->setupImages();
+        foreach($obj->mImage as $image){
+            $result = false;
+            XCube_DelegateUtils::call('Legacy_Image.SaveImage', new XCube_Ref($result), $image);
+            if($result===false){
+                $ret = false;
+            }
+        }
+
+        return $ret;
+    }
 
     /**
      * save workflow
@@ -350,12 +397,16 @@ class Xcck_PageEditAction extends Xcck_AbstractEditAction
     protected function _updateFile()
     {
         $fileManager = new Xcck_File($this->mObject);
+
         foreach($this->mObject->mDef as $def){
             if($def->get('field_type')==Xcck_FieldType::FILE){
                 if($this->mActionForm->get($def->get('field_name').'_delete')){
                     unlink($fileManager->getPath($def->get('field_name')));
                 }
-                move_uploaded_file($_FILES[$def->get('field_name').'_file']["tmp_name"], $fileManager->getPath($def->get('field_name')));
+
+                $uploadedFilepath = $_FILES[$def->get('field_name').'_file']["tmp_name"];
+
+                move_uploaded_file($uploadedFilepath, $fileManager->getPath($def->get('field_name')));
             }
         }
     }
@@ -399,6 +450,27 @@ google.maps.event.addListener(%s, "click", function(e)
     $("#legacy_xoopsform_%s").value(e.latLng.lng()); 
 }); 
         ', $mapObjName, $mapObjName, $fieldName, $fieldName);
+    }
+
+    public function executeViewPreview(&$render)
+    {
+        $render->setTemplateName($this->mAsset->mDirname . '_page_preview.html');
+        $render->setAttribute('dirname', $this->mAsset->mDirname);
+        $render->setAttribute('dataname', 'page');
+        $render->setAttribute('catTitle', $this->mCategoryManager->getTitle($this->mObject->get('category_id')));
+        $render->setAttribute('object', $this->mObject);
+        $render->setAttribute('definitions',Legacy_Utils::getModuleHandler('definition', $this->mAsset->mDirname)->getFields());
+        $render->setAttribute('accessController', $this->mCategoryManager);
+
+        $render->setAttribute('useMap', $this->mRoot->mContext->mModuleConfig['use_map']);
+
+        //setup images
+        $this->mObject->setupImages($isPost=false);
+        $render->setAttribute('imageObjs', $this->mObject->mImage);
+        $render->setAttribute('imageNameList', Xcck_Utils::getImageNameList($this->mAsset->mDirname));
+
+
+        $render->setAttribute('xoops_breadcrumbs', $this->_getBreadcrumb($this->mObject));
     }
 
     /**

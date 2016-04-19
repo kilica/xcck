@@ -165,13 +165,9 @@ abstract class Xcck_AbstractEditAction extends Xcck_AbstractAction
 			return XCCK_FRAME_VIEW_INPUT;
 		}
 	
-        if($this->mRoot->mContext->mRequest->getRequest('_form_control_confirm')){
-            return XCCK_FRAME_VIEW_PREVIEW;
-        }
-	
 		$this->mActionForm->update($this->mObject);
-	
-		return $this->_doExecute();
+
+        return $this->_doExecute();
 	}
 
 	/**

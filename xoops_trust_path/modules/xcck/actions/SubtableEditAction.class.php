@@ -267,7 +267,9 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
         $dataname = $this->_isSubtable() ? 'subtable' : 'page';
         $render->setAttribute('dataname', $dataname);
         $render->setAttribute('fields',$this->mDefinitions);
-    
+
+        $render->setAttribute('usePreview', ($this->mRoot->mContext->mModuleConfig['preview']) ? true : false);
+
         $render->setAttribute('accessController', $this->mCategoryManager);
         $render->setAttribute('isSubtable', $this->_isSubtable());
         $render->setAttribute('defaultOrder', $this->mRoot->mContext->mModuleConfig['default_order']);
@@ -294,6 +296,34 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
         $this->mObject->setupImages($isPost=false);
         $render->setAttribute('imageObjs', $this->mObject->mImage);
         $render->setAttribute('imageNameList', Xcck_Utils::getImageNameList($this->mAsset->mDirname));
+    }
+
+    public function executeViewPreview(&$render)
+    {
+        $render->setTemplateName($this->mAsset->mDirname . '_page_preview.html');
+        $render->setAttribute('is_preview', true);
+        $render->setAttribute('dirname', $this->mAsset->mDirname);
+        $render->setAttribute('dataname', 'page');
+        $render->setAttribute('catTitle', $this->mCategoryManager->getTitle($this->mObject->get('category_id')));
+        $render->setAttribute('actionForm', $this->mActionForm);
+        $render->setAttribute('object', $this->mObject);
+        $render->setAttribute('fields',Legacy_Utils::getModuleHandler('definition', $this->mAsset->mDirname)->getFields());
+        $render->setAttribute('accessController', $this->mCategoryManager);
+
+        $render->setAttribute('useMap', $this->mRoot->mContext->mModuleConfig['use_map']);
+
+        //setup images
+        $this->mObject->setupImages(false);
+        $imageHandler = Legacy_Utils::getModuleHandler('image', LEGACY_IMAGE_DIRNAME);
+        foreach(array_keys($this->mObject->mImage) as $key){
+            $this->mObject->mImage[$key]->setupPreviewData($key);
+            $imageHandler->savePreviewImage($this->mObject->mImage[$key]);
+        }
+        $render->setAttribute('imageObjs', $this->mObject->mImage);
+        $render->setAttribute('imageNameList', Xcck_Utils::getImageNameList($this->mAsset->mDirname));
+
+
+        $render->setAttribute('xoops_breadcrumbs', $this->_getBreadcrumb($this->mObject));
     }
 
     /**
