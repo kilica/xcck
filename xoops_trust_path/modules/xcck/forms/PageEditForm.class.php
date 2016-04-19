@@ -151,7 +151,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
          * 
          * @param   &Xcck_PageEditForm
         **/
-        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ValidateRegisterForm', $this);
+        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ValidateRegisterForm', new XCube_Ref($this));
     }
 
     /**
@@ -221,7 +221,11 @@ class Xcck_PageEditForm extends XCube_ActionForm
     **/
     public function update(/*** XoopsSimpleObject ***/ &$obj)
     {
-        XCube_DelegateUtils::call('Module.'.$this->mDirname.'.ActionForm.Update', $this, $obj);
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mDirname.'.ActionForm.Update',
+            new XCube_Ref($this),
+            new XCube_Ref($obj)
+        );
 
         //$obj->set('page_id', $this->get('page_id'));
         $obj->set('title', $this->get('title'));
@@ -308,5 +312,3 @@ class Xcck_PageEditForm extends XCube_ActionForm
         return $textFilter->purifyHtml($this->get($key), $encoding, $doctype);
     }
 }
-
-?>

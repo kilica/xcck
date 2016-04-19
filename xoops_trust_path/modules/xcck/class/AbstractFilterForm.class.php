@@ -167,9 +167,13 @@ abstract class Xcck_AbstractFilterForm
         $t_limit = ($limit === null) ? $this->mNavi->getPerpage() : intval($limit);
     
         $criteria = $this->_mCriteria;
-    
+        $t_start = $criteria->getStart() ? $criteria->getStart() : $t_start;
+        $t_limit = $criteria->getLimit() ? $criteria->getLimit() : $t_limit;
+
         $criteria->setStart($t_start);
         $criteria->setLimit($t_limit);
+
+        $this->mNavi->setPerpage($t_limit);
         return $criteria;
     }
 }

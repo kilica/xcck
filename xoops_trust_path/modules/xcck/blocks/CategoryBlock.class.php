@@ -128,7 +128,7 @@ class Xcck_CategoryBlock extends Legacy_BlockProcedure
     
         $this->_mHandler = Legacy_Utils::getModuleHandler('page', $this->_mBlock->get('dirname'));
     
-    	XCube_DelegateUtils::call('Legacy_Category.'.$accessController->get('dirname').'.GetTree', new XCube_Ref($this->_mObject), $accessController->get('dirname'), 'view', $this->getBlockOption('catId'));
+    	XCube_DelegateUtils::call('Legacy_Category.'.$accessController->get('dirname').'.GetTree', new XCube_Ref($this->_mObject), $accessController->get('dirname'), 'viewer', $this->getBlockOption('catId'));
     
     	foreach(array_keys($this->_mObject) as $key){
     		$this->_mCount[$key] = $this->_mHandler->countPageByCategory($this->_mObject[$key]->get('cat_id'));

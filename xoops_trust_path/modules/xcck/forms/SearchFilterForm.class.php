@@ -61,8 +61,8 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
             'type'=>array(Xcck_FieldType::INT, Xcck_FieldType::STRING, Xcck_FieldType::INT, Xcck_FieldType::INT, Xcck_FieldType::DATE, Xcck_FieldType::DATE)
         );
         foreach(array_keys($definedFields['name']) as $key){
-            if($value = $request->getRequest($definedFields['name'][$key])!==null){
-                $this->_setDefinedFieldRequest($definedFields['name'][$key], $definedFields['type'][$key], $value);
+            if(($value = $request->getRequest($definedFields['name'][$key])) !== null){
+                $this->_setDefinedRequest($definedFields['name'][$key], $definedFields['type'][$key], $value);
             }
         }
     
@@ -123,6 +123,9 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
     protected function _setRequest(Xcck_DefinitionObject $definition, /*** mixed[] ***/ $request)
     {
         if (! isset($request)) return;
+        if (! is_array($request)) {
+            $request = array($request);
+        }
         foreach(array_keys($request) as $key){
             if(count($request[$key])!==2) continue;
             $value = $request[$key][0];
