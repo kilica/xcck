@@ -185,8 +185,16 @@ class Xcck_PageViewAction extends Xcck_AbstractViewAction
     **/
     public function executeViewError(/*** XCube_RenderTarget ***/ &$render)
     {
-        $this->mRoot->mController->executeRedirect($this->_getNextUri('page', 'list'), 1, _MD_XCCK_ERROR_CONTENT_IS_NOT_FOUND);
+        $url = $this->_getNextUri('page', 'list');
+        $message = _MD_XCCK_ERROR_CONTENT_IS_NOT_FOUND;
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.View.Error',
+            new XCube_Ref($url),
+            new XCube_Ref($message)
+        );
+
+        $this->mRoot->mController->executeRedirect(url, 1, $message);
+
     }
 }
 
-?>

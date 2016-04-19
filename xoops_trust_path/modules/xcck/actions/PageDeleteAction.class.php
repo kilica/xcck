@@ -160,13 +160,15 @@ class Xcck_PageDeleteAction extends Xcck_AbstractDeleteAction
     **/
     public function executeViewSuccess(/*** XCube_RenderTarget ***/ &$render)
     {
-        $url = null;
-        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Delete.Success', new XCube_Ref($url), $this->mObject);
-        if(isset($url)){
-            $this->mRoot->mController->executeForward($url);
-        }
+        $url = $this->_isSubtable()
+            ? Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id'))
+            : Legacy_Utils::renderUri($this->mAsset->mDirname);
 
-        $url = $this->_isSubtable() ? Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id')) : Legacy_Utils::renderUri($this->mAsset->mDirname);
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Delete.Success',
+            new XCube_Ref($url),
+            $this->mObject
+        );
 
         $this->mRoot->mController->executeForward($url);
     }
@@ -180,9 +182,19 @@ class Xcck_PageDeleteAction extends Xcck_AbstractDeleteAction
      **/
     public function executeViewError(/*** XCube_RenderTarget ***/ &$render)
     {
-        $url = $this->_isSubtable() ? Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id')) : $this->_getNextUri('page', 'list');
+        $url = $this->_isSubtable()
+            ? Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id'))
+            : $this->_getNextUri('page', 'list');
+        $message = _MD_XCCK_ERROR_DBUPDATE_FAILED;
 
-        $this->mRoot->mController->executeRedirect($url, 1, _MD_XCCK_ERROR_DBUPDATE_FAILED);
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Delete.Error',
+            new XCube_Ref($url),
+            new XCube_Ref($message),
+            $this->mObject
+        );
+
+        $this->mRoot->mController->executeRedirect($url, 1, $message);
     }
 
     /**

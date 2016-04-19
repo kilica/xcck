@@ -348,7 +348,25 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
     **/
     public function executeViewSuccess(/*** XCube_RenderTarget ***/ &$render)
     {
-        $this->mRoot->mController->executeForward(Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id')));
+        $forwardAction = $this->mRoot->mContext->mModuleConfig['forward_action'];
+
+        if ($forwardAction=='list') {
+            $url = Legacy_Utils::renderUri($this->mAsset->mDirname, 'page', 0, 'list', 'maintable_id='.$this->mObject->getShow('maintable_id'));
+        }
+        elseif ($forwardAction=='search') {
+            $url = Legacy_Utils::renderUri($this->mAsset->mDirname, 'page', 0, 'search', 'maintable_id='.$this->mObject->getShow('maintable_id'));
+        }
+        else {
+            $url = Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id'));
+        }
+
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Subtable.Edit.Success',
+            new XCube_Ref($url),
+            $this->mObject
+        );
+
+        $this->mRoot->mController->executeForward($url);
     }
 
     /**
@@ -360,7 +378,17 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
     **/
     public function executeViewError(/*** XCube_RenderTarget ***/ &$render)
     {
-        $this->mRoot->mController->executeRedirect(Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id')), 1, _MD_XCCK_ERROR_DBUPDATE_FAILED);
+        $url = Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id'));
+        $message = _MD_XCCK_ERROR_DBUPDATE_FAILED;
+
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Subtable.Edit.Error',
+            new XCube_Ref($url),
+            new XCube_Ref($message),
+            $this->mObject
+        );
+
+        $this->mRoot->mController->executeRedirect($url, 1, $message);
     }
 
     /**
@@ -375,5 +403,3 @@ class Xcck_SubtableEditAction extends Xcck_AbstractEditAction
         $this->mRoot->mController->executeForward(Legacy_Utils::renderUri($this->mRoot->mContext->mModuleConfig['maintable'], 'page', $this->mObject->getShow('maintable_id')));
     }
 }
-
-?>

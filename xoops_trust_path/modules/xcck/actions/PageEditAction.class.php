@@ -482,21 +482,23 @@ google.maps.event.addListener(%s, "click", function(e)
     **/
     public function executeViewSuccess(/*** XCube_RenderTarget ***/ &$render)
     {
-        $url = null;
-        XCube_DelegateUtils::call('Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Success', new XCube_Ref($url), $this->mObject);
-        if(isset($url)){
-            $this->mRoot->mController->executeForward($url);
+        if ($this->mRoot->mContext->mModuleConfig['forward_action']=='list') {
+            $url = Legacy_Utils::renderUri($this->mAsset->mDirname);
         }
-    
-        if($this->mRoot->mContext->mModuleConfig['forward_action']=='list'){
-            $this->mRoot->mController->executeForward(Legacy_Utils::renderUri($this->mAsset->mDirname));
+        elseif ($this->mRoot->mContext->mModuleConfig['forward_action']=='search') {
+            $url = Legacy_Utils::renderUri($this->mAsset->mDirname, 'page', 0, 'search');
         }
-        if($this->mRoot->mContext->mModuleConfig['forward_action']=='search'){
-            $this->mRoot->mController->executeForward(Legacy_Utils::renderUri($this->mAsset->mDirname, 'page', 0, 'search'));
+        else {
+            $url = $this->_getNextUri('page');
         }
-        else{
-            $this->mRoot->mController->executeForward($this->_getNextUri('page'));
-        }
+
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Edit.Success',
+            new XCube_Ref($url),
+            $this->mObject
+        );
+
+        $this->mRoot->mController->executeForward($url);
     }
 
     /**
@@ -508,7 +510,16 @@ google.maps.event.addListener(%s, "click", function(e)
     **/
     public function executeViewError(/*** XCube_RenderTarget ***/ &$render)
     {
-        $this->mRoot->mController->executeRedirect($this->_getNextUri('page', 'list'), 1, _MD_XCCK_ERROR_DBUPDATE_FAILED);
+        $url = $this->_getNextUri('page', 'list');
+        $message = _MD_XCCK_ERROR_DBUPDATE_FAILED;
+        XCube_DelegateUtils::call(
+            'Module.'.$this->mAsset->mDirname.'.Event.GetForwardUri.Edit.Error',
+            new XCube_Ref($url),
+            new XCube_Ref($message),
+            $this->mObject
+        );
+
+        $this->mRoot->mController->executeRedirect($url, 1, $message);
     }
 
     /**
@@ -523,5 +534,3 @@ google.maps.event.addListener(%s, "click", function(e)
         $this->mRoot->mController->executeForward($this->_getNextUri('page'));
     }
 }
-
-?>
