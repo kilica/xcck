@@ -1,0 +1,8 @@
+<{foreach item=yearCounter from=$block key=year}>
+<h3><{$year}></h3>
+<ul>
+<{foreach item=counter from=$yearCounter key=month}>
+<li><{$year}>-<{$month}> (<{$counter}>)</li>
+<{/foreach}>
+</ul>
+<{/foreach}>

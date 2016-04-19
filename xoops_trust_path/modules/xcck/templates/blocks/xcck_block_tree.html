@@ -1,0 +1,19 @@
+<{foreach item=obj from=$block name=block}>
+<{if $smarty.foreach.block.first}>
+<{assign var=categoryId value=$obj->get('category_id')}>
+<h3><{$obj->showCategory()}></h3>
+<ul>
+<{/if}>
+<{if $obj->get('category_id') != $categoryId}>
+<{assign var=categoryId value=$obj->get('category_id')}>
+</ul>
+<h3><{$obj->showCategory()}></h3>
+<ul>
+<{/if}>
+  <li>
+    <a href="<{xoops_cooluri dirname=$dirname data_id=$obj->getShow('page_id')}>">
+      <{$obj->getShow('title')}>
+    </a>
+  </li>
+<{/foreach}>
+</ul>

@@ -21,7 +21,7 @@ require_once XCCK_TRUST_PATH . '/class/XcckUtils.class.php';
 // Define a basic manifesto.
 //
 $modversion['name'] = $myDirName;
-$modversion['version'] = 1.12;
+$modversion['version'] = 1.21;
 $modversion['description'] = _MI_XCCK_DESC_XCCK;
 $modversion['author'] = _MI_XCCK_LANG_AUTHOR;
 $modversion['credits'] = _MI_XCCK_LANG_CREDITS;
@@ -221,6 +221,14 @@ $modversion['config'] = array(
         'options'       => array()
     ) ,
     array(
+        'name'          => 'preview',
+        'title'         => '_MI_XCCK_LANG_PREVIEW',
+        'description'   => '_MI_XCCK_DESC_PREVIEW',
+        'formtype'      => 'yesno',
+        'valuetype'     => 'int',
+        'default'       => 0,
+    ),
+    array(
         'name'          => 'singlepost',
         'title'         => '_MI_XCCK_LANG_SINGLEPOST',
         'description'   => '_MI_XCCK_DESC_SINGLEPOST',
@@ -379,6 +387,30 @@ $modversion['blocks'] = array(
         'description'       => _MI_XCCK_BLOCK_DESC_CATEGORY,
         'options'           => '',
         'template'          => '{dirname}_block_category.html',
+        'show_all_module'   => true,
+        'can_clone'         => true,
+        'visible_any'       => false
+    ),
+    3 => array(
+        'func_num'          => 3,
+        'file'              => 'MonthlyBlock.class.php',
+        'class'             => 'MonthlyBlock',
+        'name'              => 'Monthly Block',
+        'description'       => 'Monthly page block for blog',
+        'options'           => '',
+        'template'          => '{dirname}_block_monthly.html',
+        'show_all_module'   => false,
+        'can_clone'         => true,
+        'visible_any'       => false
+    ),
+    4 => array(
+        'func_num'          => 4,
+        'file'              => 'TreeBlock.class.php',
+        'class'             => 'TreeBlock',
+        'name'              => 'Tree Block',
+        'description'       => 'xCCK Tree block',
+        'options'           => '|false',
+        'template'          => '{dirname}_block_tree.html',
         'show_all_module'   => true,
         'can_clone'         => true,
         'visible_any'       => false
