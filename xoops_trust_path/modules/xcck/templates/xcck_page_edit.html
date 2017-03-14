@@ -112,6 +112,7 @@
         <{elseif $definition->get('field_type')=="file"}>
           <{xoops_input type=file name=$definition->get('field_name')|cat:"_file"}>
           <label><{xoops_input type="checkbox" name=$definition->get('field_name')|cat:"_delete" value="1"}> <{$smarty.const._DELETE}></label>
+          <{xoops_input type="hidden" name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name'))}>
         <{/if}>
         <!-- description for this field -->
         <{if $definition->get('description')}>

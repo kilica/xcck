@@ -436,6 +436,23 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
         if($obj->isNew() || $obj->get('status')===Lenum_Status::PUBLISHED){
             $ret = parent::insert($obj, $force);
         }
+        else {
+            // 編集中でもタグ、画像の更新は行う
+            $handler = xoops_gethandler('config');
+            $conf = $handler->getConfigsByDirname($obj->getDirname());
+
+            if($this->_isTagClient($conf)===true){
+                if($this->_saveTags($obj, $conf[$this->_mClientConfig['tag']])===false){
+                    $ret = false;
+                }
+            }
+
+            if($this->_isImageClient($conf)===true){
+                if($this->_saveImages($obj)===false){
+                    $ret = false;
+                }
+            }
+        }
 
         if($ret===false){
             return false;
@@ -446,9 +463,23 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
         $handler = Legacy_Utils::getModuleHandler('revision', $this->getDirname());
         $ret = $handler->insert($revision, $force);
 
+        $this->_updateChildPages($obj, $force);
+
         return $ret;
     }
 
+    protected function _updateChildPages($obj, $force)
+    {
+        // update child page's category_id
+        $cri = new CriteriaCompo();
+        $cri->add(new Criteria('p_id', $obj->get('page_id')));
+        $cri->add(new Criteria('category_id', $obj->get('category_id'), '!='));
+        $children = $this->getObjects($cri);
+        foreach ($children as $page) {
+            $page->set('category_id', $obj->get('category_id'));
+            $this->insert($page, $force);
+        }
+    }
 
     /**
      * @deprecated

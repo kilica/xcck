@@ -27,9 +27,34 @@ class Xcck_File
 
     }
 
-    public function getTemporaryPath($fieldName)
+    public function savePreviewFile(Xcck_DefinitionObject $definition)
     {
+        $uploadedFilePath = @$_FILES[$definition->getShow('field_name').'_file']['tmp_name'] ? $_FILES[$definition->getShow('field_name').'_file']['tmp_name'] : null;
+        if(isset($uploadedFilePath) && file_exists($uploadedFilePath)){
+            $filename = $this->getPreviewFileName();
+            move_uploaded_file(
+                $uploadedFilePath,
+                sprintf('%s/%s/%s', $this->mRootPath, $this->mPage->getDirname(), $filename)
+            );
+            return $filename;
+        }
+        return null;
+    }
 
+    public function saveFile($fieldName, $tmpFilename)
+    {
+        $path = sprintf('%s/%s/%s', $this->mRootPath, $this->mPage->getDirname(), $tmpFilename);
+        if (! file_exists($path)) {
+           return false;
+        }
+        return rename($path, $this->getPath($fieldName));
+    }
+
+    protected function getPreviewFileName()
+    {
+        $salt = XCube_Root::getSingleton()->getSiteConfig('Cube', 'Salt');
+        srand(microtime() *1000000);
+        return md5($salt . rand());
     }
 
     /**

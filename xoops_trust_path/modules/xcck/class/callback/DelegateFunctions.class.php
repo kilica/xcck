@@ -66,7 +66,7 @@ class Xcck_DelegateFunctions
     	if(! $cri instanceof CriteriaCompo){
     		$cri = Xcck_Utils::getListCriteria($dirname);
     	}
-        $handler = Legacy_Utils::getModuleHandler('page', dirname);
+        $handler = Legacy_Utils::getModuleHandler('page', $dirname);
         $pageObjs = $handler->getObjects($cri);
     }
 

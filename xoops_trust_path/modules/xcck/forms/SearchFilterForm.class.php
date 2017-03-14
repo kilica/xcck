@@ -61,7 +61,7 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
             'type'=>array(Xcck_FieldType::INT, Xcck_FieldType::STRING, Xcck_FieldType::INT, Xcck_FieldType::INT, Xcck_FieldType::DATE, Xcck_FieldType::DATE)
         );
         foreach(array_keys($definedFields['name']) as $key){
-            if(($value = $request->getRequest($definedFields['name'][$key])) !== null){
+            if($value = $request->getRequest($definedFields['name'][$key])){
                 $this->_setDefinedRequest($definedFields['name'][$key], $definedFields['type'][$key], $value);
             }
         }
@@ -127,46 +127,47 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
             $request = array($request);
         }
         foreach(array_keys($request) as $key){
-            if(count($request[$key])!==2) continue;
-            $value = $request[$key][0];
-            $cond = intval($request[$key][1]);    //Xcck_Cond search condition
-            //set criteria
-            switch($definition->get('field_type')){
-            case Xcck_FieldType::STRING:
-            case Xcck_FieldType::TEXT:
-            case Xcck_FieldType::URI:
-                if($cond===Xcck_Cond::LIKE || $cond===Xcck_Cond::NOTLIKE){
-                    $reqArr = Xcck_SearchUtils::splitKeywords($value);
-                    if(count($reqArr)===0){
-                        continue 2;
-                    }
-                    $cri = new CriteriaCompo();
-                    foreach($reqArr as $value){
-                        $cri->add(new Criteria($definition->get('field_name'), Xcck_SearchUtils::makeKeyword($value), Xcck_Cond::getString($cond)));
-                    }
-                    $this->_mCriteria->add($cri);
+            if (is_array($request[$key])) {
+                if (count($request[$key]) !== 2) continue;
+                $value = $request[$key][0];
+                $cond = intval($request[$key][1]);    //Xcck_Cond search condition
+                //set criteria
+                switch ($definition->get('field_type')) {
+                    case Xcck_FieldType::STRING:
+                    case Xcck_FieldType::TEXT:
+                    case Xcck_FieldType::URI:
+                        if ($cond === Xcck_Cond::LIKE || $cond === Xcck_Cond::NOTLIKE) {
+                            $reqArr = Xcck_SearchUtils::splitKeywords($value);
+                            if (count($reqArr) === 0) {
+                                continue 2;
+                            }
+                            $cri = new CriteriaCompo();
+                            foreach ($reqArr as $value) {
+                                $cri->add(new Criteria($definition->get('field_name'), Xcck_SearchUtils::makeKeyword($value), Xcck_Cond::getString($cond)));
+                            }
+                            $this->_mCriteria->add($cri);
+                        } else {
+                            $this->_mCriteria->add(new Criteria($definition->get('field_name'), $value, Xcck_Cond::getString($cond)));
+                        }
+                        break;
+                    case Xcck_FieldType::DATE:
+                        if ($cond === Xcck_Cond::LIKE) {
+                            $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'start'), Xcck_Cond::getString(Xcck_Cond::GE)));
+                            $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'end'), Xcck_Cond::getString(Xcck_Cond::LT)));
+                        } elseif ($cond === Xcck_Cond::LE) {
+                            $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'end'), Xcck_Cond::getString(Xcck_Cond::LT)));
+                        } else {
+                            $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'start'), Xcck_Cond::getString($cond)));
+                        }
+                        break;
+                    default:
+                        $this->_mCriteria->add(new Criteria($definition->get('field_name'), $value, Xcck_Cond::getString($cond)));
+                        break;
                 }
-                else{
-                    $this->_mCriteria->add(new Criteria($definition->get('field_name'), $value, Xcck_Cond::getString($cond)));
-                }
-                break;
-            case Xcck_FieldType::DATE:
-                if($cond===Xcck_Cond::LIKE){
-                    $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'start'), Xcck_Cond::getString(Xcck_Cond::GE)));
-                    $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'end'), Xcck_Cond::getString(Xcck_Cond::LT)));
-                }
-                elseif($cond===Xcck_Cond::LE){
-                    $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'end'), Xcck_Cond::getString(Xcck_Cond::LT)));
-                }
-                else{
-                    $this->_mCriteria->add(new Criteria($definition->get('field_name'), $this->_makeUnixtime($value, 'start'), Xcck_Cond::getString($cond)));
-                }
-                break;
-            default:
-                $this->_mCriteria->add(new Criteria($definition->get('field_name'), $value, Xcck_Cond::getString($cond)));
-                break;
             }
-        
+            else {  // default condition is "equal"
+                $this->_mCriteria->add(new Criteria($definition->get('field_name'), $request[$key]));
+            }
             //set page navi
             $this->mNavi->addExtra($definition->get('field_name'), $request);
 //            $this->mNavi->addExtra(sprintf('%s[%d][%d]', $definition->get('field_name'), $key, 1), $request[$key][1]);
@@ -179,7 +180,7 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
      * @param   string    $value    //Y-m-d or Ymd format date
      * @param   string    $type    //return starttime or endtime
      * 
-     * @return  void
+     * @return  int
     **/
     protected function _makeUnixtime(/*** string ***/ $value, /*** int ***/ $type='start')
     {

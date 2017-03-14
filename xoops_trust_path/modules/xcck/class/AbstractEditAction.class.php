@@ -159,13 +159,23 @@ abstract class Xcck_AbstractEditAction extends Xcck_AbstractAction
 	
 		$this->mActionForm->fetch();
 		$this->mActionForm->validate();
-	
+
+		// Preview Cancel. Redirect to Edit page
+		if ($this->mRoot->mContext->mRequest->getRequest('_form_control_preview_cancel') != null)
+		{
+			return XCCK_FRAME_VIEW_INPUT;
+		}
+
 		if ($this->mActionForm->hasError())
 		{
 			return XCCK_FRAME_VIEW_INPUT;
 		}
 	
 		$this->mActionForm->update($this->mObject);
+
+		if($this->mRoot->mContext->mRequest->getRequest('_form_control_confirm')){
+			return XCCK_FRAME_VIEW_PREVIEW;
+		}
 
         return $this->_doExecute();
 	}

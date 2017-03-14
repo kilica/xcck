@@ -139,7 +139,7 @@ class Xcck_MonthlyBlock extends Legacy_BlockProcedure
     
         $this->_mHandler =& $asset->getObject('handler','page');
         $criteria = Xcck_Utils::getListCriteria($this->_mBlock->get('dirname'), null, false);
-        XCube_DelegateUtils::call('Module.'.$this->_mBlock->get('dirname').'.SetupBlockCriteria', $criteria, $this->_mBlock->get('bid'));
+        XCube_DelegateUtils::call('Module.'.$this->_mBlock->get('dirname').'.SetupBlockCriteria', new XCube_Ref($criteria), $this->_mBlock->get('bid'));
     	if($this->getBlockOption('catIds')){
 	    	$categoryIds = explode(',', $this->getBlockOption('catIds'));
 	    	if(count($categoryIds)>0){
