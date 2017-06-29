@@ -509,6 +509,8 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
 
     public function delete(&$obj, $force=false)
     {
+        $this->_deleteSubtable($obj);
+
         //delete page tree
         $tree = $this->getTree($obj->get('page_id'));
         foreach($tree as $page){
@@ -517,7 +519,6 @@ class Xcck_PageHandler extends Xcck_ObjectGenericHandler
             }
         }
     
-        $this->_deleteSubtable($obj);
         // $this->_deleteRevision($obj);
     
         return XCCK_FRAME_VIEW_SUCCESS;

@@ -65,18 +65,23 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
                 $this->_setDefinedRequest($definedFields['name'][$key], $definedFields['type'][$key], $value);
             }
         }
-    
+
         //Search User defined fields
         foreach($this->mDefinitions as $definition){
-            if ($value = $request->getRequest($definition->get('field_name')) !== null) {
-                $value = $request->getRequest($definition->get('field_name'));
-                $this->_setRequest($definition, $value);
+            $value = $request->getRequest($definition->get('field_name'));
+            if (! isset($value)) {
+                continue;
+            }
+            foreach ($value as $key=>$val) {
+                if ($value[$key][0]) {
+                    $this->_setRequest($definition, $value);
+                }
             }
         }
     
         //Search by keyword: search all string and text field
         if (($value = $request->getRequest('keyword')) !== null) {
-            $this->mNavi->addExtra('keywords', $value);
+            $this->mNavi->addExtra('keyword', $value);
             Xcck_SearchUtils::makeKeywordCriteria($this->_mCriteria, $dirname, $value);
         }
     
@@ -89,7 +94,7 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
             $this->_setTagRequest($tags, $dirname);
         }
 
-        XCube_DelegateUtils::call('Module.'.$dirname.'.FetchSearchFilter', $this);
+        XCube_DelegateUtils::call('Module.'.$dirname.'.FetchSearchFilter', new XCube_Ref($this));
     }
 
     /**
@@ -136,6 +141,9 @@ class Xcck_SearchFilterForm extends Xcck_PageFilterForm
                     case Xcck_FieldType::STRING:
                     case Xcck_FieldType::TEXT:
                     case Xcck_FieldType::URI:
+                        if (! $value) {
+                            continue;
+                        }
                         if ($cond === Xcck_Cond::LIKE || $cond === Xcck_Cond::NOTLIKE) {
                             $reqArr = Xcck_SearchUtils::splitKeywords($value);
                             if (count($reqArr) === 0) {

@@ -270,6 +270,9 @@ class Xcck_PageEditForm extends XCube_ActionForm
                 if($filename){
                     $val = $filename;
                 }
+                else {
+                    $val = $obj->get($def->get('field_name'));
+                }
                 break;
             default:
                 $val = $this->get($def->get('field_name'));
