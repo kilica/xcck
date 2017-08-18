@@ -103,11 +103,19 @@
             <{/foreach}>
           </select>
 
+        <{elseif $definition->get('field_type')=="enum"}>
+        <select name="<{$definition->get('field_name')}>" id="legacy_xoopsform_<{$definition->get('field_name')}>">
+          <{foreach item=option from=$definition->getOptions() key=k}>
+          <option value="<{$k}>"<{if $actionForm->get($definition->get('field_name'))==$k}> selected="selected"<{/if}>><{$option}></option>
+          <{/foreach}>
+        </select>
+
         <{elseif $definition->get('field_type')=="category"}>
           <{assign var=fieldName value=$definition->get('field_name')}>
           <select name="<{$definition->get('field_name')}>">
           <{legacy_category_select tree=$catTree.$fieldName selectedValue=$object->getShow($definition->get('field_name')) show="all"}>
           </select>
+
 
         <{elseif $definition->get('field_type')=="file"}>
           <{xoops_input type=file name=$definition->get('field_name')|cat:"_file"}>

@@ -77,6 +77,7 @@ define('_MD_XCCK_LANG_YES', 'はい');
 define('_MD_XCCK_LANG_NO', 'いいえ');
 define('_MD_XCCK_TIPS_OPTIONS', '<p>「タイプ」が……</p><ul><li>Selectbox の場合：選択肢を改行で区切って入力してください</li><li>Checkbox の場合：「チェックありの場合の表示」「チェック無しの場合の表示」を改行で区切って入力してください。空の場合は、「'._MD_XCCK_LANG_YES.'」と 「'._MD_XCCK_LANG_YES.'」が表示されます。</li><li>String, Int の場合：初期値を入れてください。</li><li>Text の場合："html" と入れると、Wysiwygエディタになります（初期値はBBコードエディタ）</li><li>Dateの場合：空の場合は日付のみ。"hour"で日付と時刻、"half"で日付と30分単位の時間、"quarter"で日付と15分単位の時間、"10min" で日付と10分単位の時間、"minute" で日付と分単位の時間を指定します。</li><li>Categoryの場合：カテゴリモジュールのディレクトリ名を入れてください。</li></ul>');
 define('_MD_XCCK_DESC_FIELD_SELECTBOX', '選択肢を改行で区切って入力してください');
+define('_MD_XCCK_DESC_FIELD_ENUM', 'ENUMのクラス名を入力して下さい。');
 define('_MD_XCCK_DESC_FIELD_CHECKBOX', 'チェックボックスの表示名とデフォルト値（0:チェックなし、1:チェックあり）を | で区切って入力してください。<br />複数のチェックボックスを設置する場合は、改行で区切って入力できます<br /> 例)<br />スポーツ|1<br />ゲーム|0<br />旅行|0');
 define('_MD_XCCK_DESC_FIELD_STRING', '初期値を入れてください。');
 define('_MD_XCCK_DESC_FIELD_INT', '初期値を入れてください。');

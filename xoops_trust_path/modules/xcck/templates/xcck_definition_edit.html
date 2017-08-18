@@ -98,6 +98,10 @@
           <textarea name="options" id="legacy_xoopsform_options"><{$actionForm->get('options')}></textarea>
           <p><{$smarty.const._MD_XCCK_DESC_FIELD_SELECTBOX}></p>
         </div>
+        <div id="fieldtype_enum" class="optionField">
+          <input type="text" name="options" id="legacy_xoopsform_options" value="<{$actionForm->get('options')}>" />
+          <p><{$smarty.const._MD_XCCK_DESC_FIELD_ENUM}></p>
+        </div>
         <div id="fieldtype_category" class="optionField">
           <select name="options" id="legacy_xoopsform_options">
             <{foreach item="catDir" from=$catDirnames}>

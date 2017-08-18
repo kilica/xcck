@@ -25,6 +25,7 @@ class Xcck_FieldType
     const CATEGORY = 'category';
 //	const GROUP = 'group';
     const URI = 'uri';
+    const ENUM = 'enum';
     const FILE = 'file';
 //    const RATER = 'rater';
 //	const MAP = 'map';
@@ -426,6 +427,67 @@ class Xcck_FieldTypeSelectbox implements Xcck_iFieldType
     public function getOption(/*** Xcck_DefinitionsObject ***/ $def, /*** string ***/ $key=null)
     {
         return preg_split('/\x0d\x0a|\x0d|\x0a/', $def->get('options'), null);
+    }
+}
+
+
+/** --------------------------------------------------------
+ *  Enum Type
+ **/
+class Xcck_FieldTypeEnum implements Xcck_iFieldType
+{
+    const TYPE = 'enum';
+
+    public function showField(/*** Xcck_DataObject ***/ $obj, /*** string ***/ $key, /*** Xcck_ActionType ***/ $option=0)
+    {
+        if($option==Xcck_ActionType::NONE||$option==Xcck_ActionType::EDIT){
+            $value = $obj->get($key);
+        }
+        elseif($option==Xcck_ActionType::VIEW){
+            $enumClass = $obj->mDef[$key]->get('options');
+            $enum = new $enumClass();
+            if ($enum instanceof Xcck_AbstractEnum) {
+                $value = $enum->getLabel($obj->get($key));
+            }
+        }
+        return $value;
+    }
+
+    public function getTableQuery()
+    {
+        return 'INT(5) UNSIGNED NOT NULL';
+    }
+
+    public function setInitVar(/*** Xcck_DataObject ***/ $obj, /*** string ***/ $key, /*** string ***/ $default)
+    {
+        $obj->initVar($key, $this->getXObjType(), $default, false);
+    }
+
+    public function getDefault(/*** string ***/ $option)
+    {
+        return 0;
+    }
+
+    public function getXObjType()
+    {
+        return XOBJ_DTYPE_INT;
+    }
+
+    public function getFormPropertyClass()
+    {
+        return 'XCube_IntProperty';
+    }
+
+    public function getSearchFormString(/*** string ***/ $key)
+    {
+        return '<dt></dt><dd></dd>';
+    }
+
+    public function getOption(/*** Xcck_DefinitionsObject ***/ $def, /*** string ***/ $key=null)
+    {
+        $enumClass = $def->get('options');
+        $enum = new $enumClass();
+        return $enum->getList();
     }
 }
 
