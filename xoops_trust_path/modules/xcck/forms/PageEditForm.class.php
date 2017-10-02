@@ -262,7 +262,7 @@ class Xcck_PageEditForm extends XCube_ActionForm
                 $val = decbin(array_sum($this->get($def->get('field_name'))));
                 break;
             case Xcck_FieldType::FILE:
-                $val = $this->get($def->get('field_name'));
+                $val = $obj->get($def->get('field_name'));
                 if($this->get($def->get('field_name').'_delete')){
                     $val = '';
                 }
