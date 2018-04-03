@@ -27,6 +27,21 @@ class Xcck_SearchUtils
 
         //page
         $fieldCri = new CriteriaCompo();
+
+        // search title
+        $wordCri = new CriteriaCompo();
+        foreach($keywordArr as $keyword){
+            if(strtoupper($andor)=='OR'){
+                $wordCri->add(new Criteria('title', self::makeKeyword($keyword), 'LIKE'), 'OR');
+            }
+            else{
+                $wordCri->add(new Criteria('title', self::makeKeyword($keyword), 'LIKE'));
+            }
+        }
+        $fieldCri->add($wordCri, 'OR');
+        unset($wordCri);
+        
+        // search fields
         foreach($defObjs as $def){
             $wordCri = new CriteriaCompo();
             foreach($keywordArr as $keyword){
