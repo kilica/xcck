@@ -150,7 +150,8 @@ class Xcck_Utils
             $idList[$dirname] = self::getPermittedIdList($dirname);
         }
         $accessController = self::getAccessController($dirname);
-    
+        $categoryDir = $accessController->dirname();
+
         $cri = new CriteriaCompo();
     
         //category
@@ -159,7 +160,6 @@ class Xcck_Utils
             if($childCategory===true){
                 $ids = array($categoryId);
                 $tree = array();    // Legacy_Category Objects array
-                $categoryDir = $accessController->dirname();
                 XCube_DelegateUtils::call('Legacy_Category.'.$categoryDir.'.GetTree', new XCube_Ref($tree), $categoryDir, 'viewer', $categoryId);
                 foreach($tree as $cat){
                     $ids[] = $cat->get('cat_id');
@@ -193,7 +193,10 @@ class Xcck_Utils
             $cri->add(new Criteria('status', $status));
         }
         //startdate and enddate
-        if($term===true){
+        $permittedIdList = array();
+        XCube_DelegateUtils::call('Legacy_Category.'.$categoryDir.'.GetPermittedIdList', new XCube_Ref($permittedIdList), $categoryDir, 'poster', Legacy_Utils::getUid(), $categoryId);
+
+        if($term===true && count($permittedIdList) == 0){
             $defHandler = Legacy_Utils::getModuleHandler('definition', $dirname);
             if($startField = $defHandler->getStartField()){
                 $cri->add(new Criteria($startField->get('field_name'), time(), '<'));
@@ -227,7 +230,7 @@ class Xcck_Utils
 
         XCube_DelegateUtils::call(
             'Module.'.$dirname.'.SetupListCriteria',
-            $cri
+            new XCube_Ref($cri)
         );
 
         return $cri;
