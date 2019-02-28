@@ -1,93 +1,37 @@
-<div class="xcck">
+<{include file="`$smarty.const.XOOPS_THEME_PATH`/`$xoops_theme`/templates/`$dirname`_page_view.html" isPreview=true}>
 
-<div class="media">
-  <div class="page-header">
-    <h1>
-      <{$object->getShow('title')}>
-      <{if $accessController->isEditor($object->get('category_id'), $object->get('uid'))===true}>
-        <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$object->getShow('page_id') action=edit}>"><i class="icon-pencil"> <{$smarty.const._EDIT}></i></a>
-        <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname data_id=$object->getShow('page_id') action=delete}>"><i class="icon-trash"></i> <{$smarty.const._DELETE}></a>
-        <{if $isHierarchical}>
-        <a class="btn btn-small" href="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit query="p_id="|cat:$object->get('page_id')}>"><{$smarty.const._MD_XCCK_LANG_DESCENDANT}><{$smarty.const._ADD}></a>
-        <{/if}>
-      <{/if}>
-    </h1>
-  </div><!-- .page-header -->
-  <ul class="inline media-info">
-    <li><i class="icon-user"></i> <{$object->getShow('uid')|xoops_user:'user_name'}></li>
-    <!-- tag -->
-    <{if count($object->mTag)>0}>
-    <li class="tag-list"><span class="label"><{$smarty.const._TAG}></span>
-    <{foreach item=tag from=$object->mTag}>
-     <{assign var=tagurl value=$tag|xoops_escape:url}>
-      <a href="<{xoops_cooluri dirname=$dirname dataname=$dataname query="tag=`$tag`"}>"><{$tag|xoops_escape}></a>
-    <{/foreach}>
-    </li>
-    <{/if}>
 
-    <{if $object->get('status')==constant('Lenum_WorkflowStatus::PROGRESS')}>
-    <li><{$smarty.const._MD_XCCK_MESSAGE_STATUS_POSTED}></li>
-    <{/if}>
-    <li><span class="label"><{$smarty.const._MD_XCCK_LANG_POSTTIME}></span>
-    <{$object->getShow('posttime')|xoops_formattimestamp:m}></li>
-    <{if $catTitle}>
-    <li><span class="label"><{$smarty.const._MD_XCCK_LANG_CATEGORY_ID}></span>
-    <{$catTitle|xoops_escape}></li>
-    <{/if}>
-  </ul><!-- .media-info -->
-  <div class="media-body">
-    <table class="table">
-      <tbody>
-      <!--
-        if you want to show field outside foreach loop, you can write down 
-        like below (when the field's name is "memo").
-        <dt>< {$definitions.memo->get('field_name')} ></dt>
-        <dd>< {$object->showField($definitions.memo->get('field_name'))} ></dd>
-      -->
-      <{foreach item=definition from=$definitions}>
-      <{if $definition->get('field_type')!='startdate' && $definition->get('field_type')!='enddate'}>
-      <tr>
-      <th class="span3"><{$definition->getShow('label')}></th>
-      <td>
-        <{if $definition->get('field_type')=='checkbox'}>
-        <ul>
-          <{assign var=titleArr value=$object->showField($definition->get('field_name'))}>
-          <{foreach item=option from=$titleArr.checked}>
-          <li><{$option}></li>
-          <{/foreach}>
-        </ul>
-        <{else}>
-          <{$object->showField($definition->get('field_name'))}>
-        <{/if}>
-      </td>
-      </tr>
-      <{/if}>
-      <{/foreach}>
-      </tbody>
-    </table>
-  </div><!-- .itemBody -->
-</div><!-- .media -->
+<form action="<{xoops_cooluri dirname=$dirname dataname=$dataname action=edit}>" method="post" enctype="multipart/form-data">
+  <{xoops_token form=$actionForm}>
+  <{xoops_input type=hidden name=title value=$actionForm->get('title')}>
+  <{xoops_input type=hidden name=category_id value=$actionForm->get('category_id')}>
+  <{xoops_input type=hidden name=p_id value=$actionForm->get('p_id')}>
+  <{xoops_input type=hidden name=weight value=$actionForm->get('weight')}>
+  <{xoops_input type=hidden name=tags value=$actionForm->get('tags')}>
+  <{xoops_input type=hidden name=page_id value=$actionForm->get('page_id')}>
+  <{xoops_input type=hidden name=maintable_id value=$actionForm->get('maintable_id')}>
+  <{xoops_input type=hidden name=descendant value=$actionForm->get('descendant')}>
 
-<!-- image list -->
-<{if count($imageObjs)>0}>
-<div class="imageList">
-  <h2><{$smarty.const._MD_XCCK_LANG_IMAGE_LIST}></h2>
-  <dl>
-    <{foreach item=imageName from=$imageNameList key=n}>
-      <td><{$imageName}></td>
-      <dd>
-        <{$imageObjs[$n]->makeImageTag()}><br />
-      </dd>
-    <{/foreach}>
-  </dl>
-</div><!-- .imageList -->
-<{/if}>
+  <{foreach item=definition from=$fields}>
+  <{elseif in_array($definition->get('field_type'), array('startdate', 'enddate'))}>
+  <{assign var=fieldName value=$definition->get('field_name')}>
+  <{assign var=enableFieldName value='enable_'|cat:$definition->get('field_name')}>
+  <{xoops_input type=hidden name=`$enableFieldName` value=$actionForm->get($enableFieldName)}>
+  <{xoops_input type=hidden name=`$fieldName`[0] value=$actionForm->get($fieldName, 0)}>
+  <{xoops_input type=hidden name=`$fieldName`[1] value=$actionForm->get($fieldName, 1)}>
+  <{xoops_input type=hidden name=`$fieldName`[2] value=$actionForm->get($fieldName, 2)}>
+  <{else}>
+  <{xoops_input type=hidden name=$definition->get('field_name') value=$actionForm->get($definition->get('field_name'))}>
+  <{/if}>
+  <{/foreach}>
 
-<{if $useMap}>
-<!-- Map -->
-<{legacy_map_view dirname=$dirname dataname=$dataname data_id=$object->get('page_id') template=lemap_inc_view.html}>
-<{/if}>
-
-<{include file="db:`$dirname`_inc_menu.html" isSubtable=$isSubtable isPoster=$accessController->isPoster()}>
-
-</div>
+  <{foreach item=imageKey from=$imageNameList key=m}>
+  <{xoops_input type="hidden" name="legacy_preview_filename[$m]" value=$imageObjs[$m]->getFilename()}>
+  <{xoops_input type="hidden" name="legacy_image_id[$m]" value=$imageObjs[$m]->getShow('image_id')}>
+  <{xoops_input type="hidden" name="legacy_image_delete[$m]" value=$smarty.post.legacy_image_delete[$m]}>
+  <{/foreach}>
+  <div class="admin-block-btn">
+    <button type="submit" class="btn--edit"><{$smarty.const._SUBMIT}></button>
+    <button type="submit" class="btn--cancel" name="_form_control_preview_cancel" value="cancel"><{$smarty.const.THEME_BUTTON_EDIT_AGAIN}></button>
+  </div>
+</form>
