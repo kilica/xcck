@@ -10,7 +10,7 @@ if(!defined('XOOPS_ROOT_PATH'))
     exit;
 }
 
-require_once XCCK_TRUST_PATH.'/forms/PageFilterForm.class.php'
+require_once XCCK_TRUST_PATH.'/forms/PageFilterForm.class.php';
 
 /**
  * Xcck_PageFilterForm
