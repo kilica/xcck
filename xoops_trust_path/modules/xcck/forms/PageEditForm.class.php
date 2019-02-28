@@ -294,9 +294,9 @@ class Xcck_PageEditForm extends XCube_ActionForm
     {
         $req = $this->get($key);
         $timeArray = explode('-', $req[0]);
-        $hour = isset($req[1]) ? $req[1] : 0;
-        $minute = isset($req[2]) ? $req[2] : 0;
-        return mktime($hour, $minute, 0, $timeArray[1], $timeArray[2], $timeArray[0]);
+        $hour = isset($req[1]) ? trim($req[1]) : 0;
+        $minute = isset($req[2]) ? trim($req[2]) : 0;
+        return mktime((int)$hour, (int)$minute, 0, $timeArray[1], $timeArray[2], $timeArray[0]);
     }
 
     /**
