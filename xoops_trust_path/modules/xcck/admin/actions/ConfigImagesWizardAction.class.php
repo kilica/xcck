@@ -58,7 +58,7 @@ class Xcck_Admin_ConfigImagesWizardAction extends Xcck_Admin_AbstractWizardActio
 	**/
 	protected function _getForwardUrl()
 	{
-		return XOOPS_MODULE_URL .'/'. $this->mAsset->mDirname .'/admin/;
+		return XOOPS_MODULE_URL .'/'. $this->mAsset->mDirname .'/admin/';
 	}
 }
 
